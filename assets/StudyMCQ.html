@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>StudyMCQ - Mega PYQ Portal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
+
+/* GLASS BOX */
+.glass-box{background:rgba(255,255,255,.02);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:20px;width:100%;max-width:750px;margin:0 auto;box-shadow:0 25px 50px rgba(0,0,0,.6)}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block}
+
+/* TOP CONTROLS */
+.top-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px}
+.btn-control{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:8px 16px;border-radius:10px;cursor:pointer;font-size:14px;transition:all .2s}
+.btn-control:active{transform:scale(.95)}
+.lang-switch{display:flex;gap:5px}
+.lang-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#aaa;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s}
+.lang-btn.active{background:#38b6ff;color:#000;font-weight:700;box-shadow:0 0 10px rgba(56,182,255,.5)}
+
+/* HOME SCREEN */
+.home-banner{
+  text-align:center;
+  background:rgba(30,30,10,.7);
+  border:1px solid rgba(56,182,255,.35);
+  border-radius:16px;
+  padding:18px 20px 14px;
+  margin-bottom:20px;
+  box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.06);
+}
+.banner-logo{font-size:36px;margin-bottom:6px}
+.banner-title{
+  color:#38b6ff;font-size:22px;font-weight:800;letter-spacing:1px;
+  text-shadow:0 0 12px rgba(56,182,255,.5);
+}
+.banner-sub{color:#3a8bb0;font-size:12px;letter-spacing:2px;margin-top:4px}
+.banner-tags{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btag{font-size:11px;font-weight:700;border:1px solid rgba(56,182,255,.3);color:#38b6ff;border-radius:20px;padding:3px 10px}
+
+.portal-label{
+  color:#38b6ff;text-align:center;font-size:16px;font-weight:700;
+  padding:10px 20px;
+  background:rgba(30,30,10,.5);border:1px solid rgba(56,182,255,.3);border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.4),inset 0 1px 1px rgba(255,255,255,.06);
+  text-shadow:0 0 8px rgba(56,182,255,.4);
+  display:block;margin-bottom:18px;
+}
+
+.exam-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.exam-card{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  padding:28px 15px 22px;border-radius:16px;text-align:center;cursor:pointer;
+  transition:all .25s cubic-bezier(.4,0,.2,1);font-size:16px;font-weight:700;
+}
+.exam-card .ec-icon{font-size:26px;margin-bottom:10px}
+.exam-card .ec-name{font-size:15px;font-weight:800;margin-bottom:4px}
+.exam-card .ec-desc{font-size:11px;color:#888;line-height:1.4}
+.exam-card:active{transform:scale(.95)}
+
+.ec-upsc:hover,.ec-upsc:active{background:rgba(124,111,255,.1);border-color:#7c6fff;box-shadow:0 8px 20px rgba(124,111,255,.2)}
+.ec-upsc .ec-name{color:#7c6fff}
+
+.ec-jee:hover,.ec-jee:active{background:rgba(255,107,53,.1);border-color:#ff6b35;box-shadow:0 8px 20px rgba(255,107,53,.2)}
+.ec-jee .ec-name{color:#ff6b35}
+.ec-neet:hover,.ec-neet:active{background:rgba(0,229,160,.1);border-color:#00e5a0;box-shadow:0 8px 20px rgba(0,229,160,.2)}
+.ec-neet .ec-name{color:#00e5a0}
+
+
+.ec-ibps:hover,.ec-ibps:active{background:rgba(255,215,0,.1);border-color:#FFD700;box-shadow:0 8px 20px rgba(255,215,0,.2)}
+.ec-ibps .ec-name{color:#FFD700}
+.ec-nism:hover,.ec-nism:active{background:rgba(168,85,247,.1);border-color:#a855f7;box-shadow:0 8px 20px rgba(168,85,247,.2)}
+.ec-nism .ec-name{color:#a855f7}
+.ec-railway:hover,.ec-railway:active{background:rgba(255,159,28,.1);border-color:#ff9f1c;box-shadow:0 8px 20px rgba(255,159,28,.2)}
+.ec-railway .ec-name{color:#ff9f1c}
+
+.privacy-link{display:block;text-align:center;color:rgba(56,182,255,.6);font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;padding:8px;text-decoration:none}
+.privacy-link:active{color:#38b6ff}
+
+/* PRIVACY SCREEN */
+.privacy-content{background:rgba(255,255,255,.04);border:1px solid rgba(56,182,255,.2);border-radius:14px;padding:18px;font-size:13px;color:#b0b8c8;line-height:1.8}
+.privacy-title{color:#38b6ff;font-weight:700;font-size:15px;margin-bottom:12px}
+.privacy-date{color:#888;font-size:11px;margin-bottom:16px}
+.privacy-h{color:#38b6ff;font-weight:700;margin-bottom:8px;margin-top:14px}
+.back-btn{background:rgba(56,182,255,.15);border:1px solid rgba(56,182,255,.4);color:#38b6ff;padding:8px 16px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:18px}
+
+/* QUIZ SCREEN */
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.quiz-stat{font-size:13px;color:#cbd5e1}
+.quiz-stat span{font-weight:700}
+.stat-name{color:#38b6ff}
+.stat-mark{color:#f43f5e}
+.stat-score{color:#34d399}
+
+.prog-bar-wrap{height:5px;background:rgba(255,255,255,.08);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:3px;background:#38b6ff;transition:width .4s ease}
+
+.question-text{font-size:18px;line-height:1.7;margin-bottom:20px;font-weight:500;color:#f1f5f9}
+.options-list{display:flex;flex-direction:column;gap:12px}
+.opt-btn{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  color:#e2e8f0;padding:15px 20px;font-size:15px;
+  border-radius:14px;cursor:pointer;text-align:left;
+  transition:all .2s ease;font-family:inherit;width:100%;
+  display:flex;align-items:flex-start;gap:12px;line-height:1.5;
+}
+.opt-btn:not([disabled]):active{transform:scale(.98);background:rgba(255,255,255,.08)}
+.opt-lbl{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.opt-btn.correct{background:rgba(57,255,20,.1)!important;border-color:#39FF14!important;color:#39FF14!important;box-shadow:0 0 20px rgba(57,255,20,.4)}
+.opt-btn.correct .opt-lbl{background:#39FF14;border-color:#39FF14;color:#000}
+.opt-btn.wrong{background:rgba(255,7,58,.1)!important;border-color:#FF073A!important;color:#FF073A!important;box-shadow:0 0 20px rgba(255,7,58,.4)}
+.opt-btn.wrong .opt-lbl{background:#FF073A;border-color:#FF073A;color:#fff}
+.opt-btn.showok{border-color:#39FF14!important}
+.opt-btn.showok .opt-lbl{background:#39FF14;border-color:#39FF14;color:#000}
+.opt-btn:disabled{pointer-events:none;opacity:.55}
+.opt-btn.correct:disabled,.opt-btn.wrong:disabled,.opt-btn.showok:disabled{opacity:1}
+
+.explanation{display:none;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-left:3px solid #38b6ff;border-radius:12px;padding:13px 15px;margin-top:14px;font-size:13px;color:#b0b8d0;line-height:1.7}
+.explanation.on{display:block}
+.exp-lbl{font-size:10px;font-weight:700;letter-spacing:1px;color:#38b6ff;margin-bottom:6px}
+
+.next-btn{
+  width:100%;background:#38b6ff;color:#000;border:none;
+  padding:15px;font-size:16px;font-weight:700;border-radius:12px;
+  cursor:pointer;margin-top:20px;display:none;font-family:inherit;
+  box-shadow:0 4px 15px rgba(184,134,11,.4);transition:all .2s;letter-spacing:.5px;
+}
+.next-btn:active{transform:scale(.97)}
+
+/* RESULT SCREEN */
+.result-hero{text-align:center;padding:20px 0}
+.result-em{font-size:56px;display:block;margin-bottom:10px}
+.result-title{font-size:26px;font-weight:800;letter-spacing:2px;color:#38b6ff}
+.result-sub{color:#888;font-size:14px;margin-top:6px}
+.ring-wrap{display:flex;justify-content:center;margin:20px 0}
+.ring{width:130px;height:130px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-size:30px;font-weight:700;color:#38b6ff}
+.ring-lbl{font-size:10px;color:#888;letter-spacing:1px}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.rs{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 8px;text-align:center}
+.rsn{font-size:24px;font-weight:700}
+.rsl{font-size:10px;color:#888;margin-top:3px;letter-spacing:.5px}
+.rs.c .rsn{color:#39FF14}.rs.w .rsn{color:#FF073A}.rs.s .rsn{color:#38b6ff}
+.result-btns{display:flex;flex-direction:column;gap:12px}
+.res-btn-primary{width:100%;padding:15px;border-radius:12px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;background:#38b6ff;color:#000;transition:all .2s}
+.res-btn-sec{width:100%;padding:15px;border-radius:12px;border:1px solid rgba(255,255,255,.12);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.04);color:#e2e8f0;transition:all .2s}
+.res-btn-primary:active,.res-btn-sec:active{transform:scale(.97)}
+
+/* TOAST */
+
+/* DAILY EXAM */
+.daily-section{margin-top:20px;margin-bottom:8px}
+.daily-title{color:#38b6ff;font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase}
+.daily-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .2s}
+.daily-card.active-now{border-color:#38b6ff;background:rgba(56,182,255,.08);box-shadow:0 0 15px rgba(56,182,255,.2)}
+.daily-card.locked{opacity:.5;cursor:not-allowed}
+.daily-card.expired{opacity:.4;cursor:not-allowed}
+.daily-left{display:flex;flex-direction:column;gap:3px}
+.daily-subject{font-size:14px;font-weight:700}
+.daily-time{font-size:11px;color:#888}
+.daily-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.daily-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.status-live{background:rgba(57,255,20,.15);color:#39FF14;border:1px solid #39FF14}
+.status-locked{background:rgba(255,255,255,.05);color:#666;border:1px solid rgba(255,255,255,.1)}
+.status-expired{background:rgba(255,7,58,.1);color:#FF073A;border:1px solid rgba(255,7,58,.3)}
+.status-done{background:rgba(56,182,255,.15);color:#38b6ff;border:1px solid rgba(56,182,255,.3)}
+.daily-coins{font-size:11px;color:#38b6ff}
+
+/* COINS DISPLAY */
+.coins-bar{display:flex;align-items:center;gap:6px;background:rgba(56,182,255,.08);border:1px solid rgba(56,182,255,.2);border-radius:10px;padding:6px 14px;margin-bottom:16px}
+.coins-icon{font-size:18px}
+.coins-label{font-size:12px;color:#888}
+.coins-value{font-size:16px;font-weight:800;color:#38b6ff;margin-left:auto}
+
+/* RESULT COINS */
+.coins-earned{text-align:center;margin:12px 0;padding:12px;background:rgba(56,182,255,.1);border:1px solid rgba(56,182,255,.3);border-radius:12px}
+.coins-earned-num{font-size:28px;font-weight:800;color:#38b6ff}
+.coins-earned-label{font-size:12px;color:#888;margin-top:2px}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(30,30,30,.95);border:1px solid rgba(255,255,255,.12);border-radius:30px;padding:10px 22px;font-size:13px;font-weight:600;z-index:999;transition:transform .25s ease;white-space:nowrap;pointer-events:none}
+.toast.on{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div style="padding:15px;min-height:100vh">
+<div class="glass-box">
+
+  <!-- TOP CONTROLS -->
+  <div class="top-controls">
+    <button class="btn-control" id="home-nav-btn" onclick="goToHome()" style="display:none">Home</button>
+    <div style="flex-grow:1"></div>
+    <div class="lang-switch">
+      <button class="lang-btn active" id="lang-en" onclick="setLanguage('en')">English</button>
+      <button class="lang-btn" id="lang-hi" onclick="setLanguage('hi')">हिंदी</button>
+    </div>
+  </div>
+
+  <!-- HOME SCREEN -->
+  <div id="home-screen" class="screen active">
+    <div class="home-banner">
+      <img src="banner.png" alt="StudyMCQ" 
+           style="width:100%;border-radius:12px;display:block"
+           onerror="this.style.display='none';document.getElementById('banner-fallback').style.display='block'">
+      <div id="banner-fallback" style="display:none;padding:10px 0">
+        <div class="banner-title">ONLINE EXAMS</div>
+        <div class="banner-sub">SUCCESS IN YOUR EXAMS</div>
+      </div>
+    </div>
+
+    
+    <div class="coins-bar">
+      <span class="coins-icon">🪙</span>
+      <span class="coins-label">My Coins</span>
+      <span class="coins-value" id="total-coins">0</span>
+    </div>
+<div class="portal-label">Mega PYQ Exam Portal</div>
+    <div class="daily-section">
+      <div class="daily-title">⏰ Today's Daily Exams</div>
+      <div id="daily-cards-container"></div>
+    </div>
+
+
+    <div class="exam-grid">
+      <div class="exam-card ec-upsc" onclick="startExam('UPSC')">
+        
+        <div class="ec-name">UPSC Prelims</div>
+        <div class="ec-desc">GS · History · Geography · Polity</div>
+      </div>
+      <div class="exam-card ec-ibps" onclick="startExam('IBPS')">
+        <div class="ec-name">IBPS Banking</div>
+        <div class="ec-desc">Quantitative · Economy</div>
+      </div>
+
+      <div class="exam-card ec-jee" onclick="startExam('JEE')">
+        
+        <div class="ec-name">JEE Main</div>
+        <div class="ec-desc">Physics · Chemistry · Maths</div>
+      </div>
+      <div class="exam-card ec-neet" onclick="startExam('NEET')">
+        
+        <div class="ec-name">NEET UG</div>
+        <div class="ec-desc">Biology · Physics · Chemistry</div>
+      </div>
+      <div class="exam-card ec-nism" onclick="startExam('NISM')" style="grid-column:1/-1">
+        <div class="ec-name">📈 NISM Stock Market</div>
+        <div class="ec-desc">Insurance · Mutual Fund · Currency · Equity · Derivatives</div>
+      </div>
+      <div class="exam-card ec-railway" onclick="startExam('RAILWAY')" style="grid-column:1/-1">
+        <div class="ec-name">🚂 RRB Railway</div>
+        <div class="ec-desc">Reasoning · Maths · General Science · Current Affairs</div>
+      </div>
+    </div>
+
+    <a class="privacy-link" onclick="showPrivacy()">Privacy Policy</a>
+  </div>
+
+  <!-- PRIVACY SCREEN -->
+  <div id="privacy-screen" class="screen">
+    <button class="back-btn" onclick="hidePrivacy()">← Back</button>
+    <div class="privacy-content">
+      <div class="privacy-title">Privacy Policy – StudyMCQ App</div>
+      <div class="privacy-date">Last updated: May 2026</div>
+      <p>Welcome to StudyMCQ. We are committed to protecting your personal information and your right to privacy.</p>
+      <div class="privacy-h">1. Information We Collect</div>
+      <p><b style="color:#ddd">Log Data:</b> When you use our app, we may collect data and information on your phone in case of an error in the app.</p>
+      <p style="margin-top:8px"><b style="color:#ddd">Cookies:</b> This service does not use cookies explicitly. Third-party libraries may use cookies to improve their services.</p>
+      <div class="privacy-h">2. How We Use Your Information</div>
+      <p>We use collected data to provide and improve the app experience, track quiz progress, and display relevant advertisements through ad partners.</p>
+      <div class="privacy-h">3. Third-Party Services</div>
+      <p>This app uses third-party services such as Google AdMob that may collect information used to identify you.</p>
+      <div class="privacy-h">4. Security</div>
+      <p>We value your trust and strive to use commercially acceptable means to protect your personal information.</p>
+      <div class="privacy-h">5. Children's Privacy</div>
+      <p>This app is designed for students of all ages. We do not knowingly collect personal information from children under 13 without parental consent.</p>
+      <div class="privacy-h">6. Contact Us</div>
+      <p>If you have any questions, contact us at: <span style="color:#38b6ff">supportnafa@gmail.com</span></p>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen">
+    <div class="quiz-header">
+      <div class="quiz-stat">Exam: <span class="stat-name" id="stat-name">-</span></div>
+      <div class="quiz-stat">Marking: <span class="stat-mark" id="stat-marking">-</span></div>
+      <div class="quiz-stat">Score: <span class="stat-score" id="stat-score">0</span></div>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="prog-bar-fill" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:#666;margin-bottom:14px">
+      <span id="q-counter">Q 1 / 10</span>
+      <span id="q-subj-tag" style="color:#38b6ff"></span>
+    </div>
+    <div class="question-text" id="q-display">Loading...</div>
+    <div class="options-list" id="opts-display"></div>
+    <div class="explanation" id="exp-box">
+      <div class="exp-lbl">EXPLANATION</div>
+      <div id="exp-text"></div>
+    </div>
+    <button class="next-btn" id="next-q-btn" onclick="loadNextQuestion()">Next Question ›</button>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-hero">
+      <span class="result-em" id="res-em" style="display:none"></span>
+      <div class="result-title" id="res-title">EXCELLENT!</div>
+      <div class="result-sub" id="res-sub"></div>
+    </div>
+    <div class="ring-wrap">
+      <div class="ring">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="11"/>
+          <circle cx="65" cy="65" r="54" fill="none" stroke-width="11" stroke-linecap="round"
+            stroke-dasharray="339" stroke-dashoffset="339" id="score-arc"
+            style="stroke:#38b6ff;transition:stroke-dashoffset 1s ease"/>
+        </svg>
+        <div class="ring-text">
+          <span class="ring-pct" id="ring-pct">0%</span>
+          <span class="ring-lbl">SCORE</span>
+        </div>
+      </div>
+    </div>
+    <div class="result-stats">
+      <div class="rs c"><div class="rsn" id="rc">0</div><div class="rsl">✅ CORRECT</div></div>
+      <div class="rs w"><div class="rsn" id="rw">0</div><div class="rsl">❌ WRONG</div></div>
+      <div class="rs s"><div class="rsn" id="rs2">0</div><div class="rsl">⏭ SKIP</div></div>
+    </div>
+        <div class="coins-earned" id="coins-earned-box" style="display:none">
+      <div class="coins-earned-num" id="coins-earned-num">+0 🪙</div>
+      <div class="coins-earned-label">Coins Earned!</div>
+    </div>
+<div class="result-btns" style="margin-top:16px">
+      <button class="res-btn-primary" onclick="retryExam()">Try Again</button>
+      <button class="res-btn-sec" onclick="goToHome()">Home</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- DATA FILES -->
+<script src="assets/neet_data.js"></script>
+<script src="assets/jee_data.js"></script>
+<script src="assets/upsc_data.js"></script>
+<script src="assets/ibps_data.js"></script>
+<script src="assets/nism_data.js"></script>
+<script src="assets/railwayrrb_data.js"></script>
+
+<script>
+// ── STATE ──
+var currentLang = 'en';
+var currentExam = '';
+var questions = [];
+var currentIndex = 0;
+var score = 0;
+var answered = false;
+var markingScheme = {correct:1, wrong:0, label:'+1 | 0'};
+
+var MARKING = {
+  UPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
+  JEE:{correct:4, wrong:-1, label:'+4 | -1'},
+  NEET:{correct:4, wrong:-1, label:'+4 | -1'},
+  IBPS:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  RAILWAY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  NISM:{correct:4, wrong:-1, label:'+4 | -1'}
+};
+
+// ── LANGUAGE ──
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('lang-en').className = 'lang-btn' + (lang==='en'?' active':'');
+  document.getElementById('lang-hi').className = 'lang-btn' + (lang==='hi'?' active':'');
+  if(document.getElementById('quiz-screen').classList.contains('active') && !answered) {
+    renderQuestion();
+  }
+}
+
+// ── SCREENS ──
+function showScreen(id) {
+  ['home-screen','privacy-screen','quiz-screen','result-screen'].forEach(function(s){
+    document.getElementById(s).classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('home-nav-btn').style.display = (id==='home-screen')?'none':'block';
+}
+
+function goToHome(){showScreen('home-screen');}
+function showPrivacy(){showScreen('privacy-screen');}
+function hidePrivacy(){showScreen('home-screen');}
+
+// ── START EXAM ──
+function startExam(exam) {
+  var raw = null;
+  try {
+    if(exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:(typeof neetData!=='undefined')?neetData:null;
+    else if(exam==='JEE') raw=(typeof JEE_DATA!=='undefined')?JEE_DATA:(typeof jeeData!=='undefined')?jeeData:null;
+    else if(exam==='UPSC') raw=(typeof UPSC_DATA!=='undefined')?UPSC_DATA:(typeof upscData!=='undefined')?upscData:null;
+    else if(exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
+    else if(exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
+    else if(exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
+  } catch(e){raw=null;}
+
+  if(!raw) {
+    toast('⚠️ ' + exam + ' data not available yet. Coming soon!');
+    return;
+  }
+
+  // Normalize questions
+  var qs = [];
+  if(Array.isArray(raw)) qs = raw;
+  else if(raw.questions && Array.isArray(raw.questions)) qs = raw.questions;
+  else {
+    Object.keys(raw).forEach(function(k){
+      if(k==='marking'||k==='label') return;
+      if(Array.isArray(raw[k])) raw[k].forEach(function(q){q._subj=k; qs.push(q);});
+    });
+  }
+
+  if(qs.length===0){toast('⚠️ No questions found for ' + exam + '!');return;}
+
+  questions = shuffle(qs);
+  currentIndex = 0;
+  score = 0;
+  currentExam = exam;
+  markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
+
+  document.getElementById('stat-name').textContent = exam;
+  document.getElementById('stat-marking').textContent = markingScheme.label;
+  document.getElementById('stat-score').textContent = '0';
+
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+function retryExam(){startExam(currentExam);}
+
+// ── RENDER QUESTION ──
+function renderQuestion() {
+  answered = false;
+  var q = questions[currentIndex];
+  var total = questions.length;
+
+  document.getElementById('q-counter').textContent = 'Q ' + (currentIndex+1) + ' / ' + total;
+  document.getElementById('prog-bar-fill').style.width = ((currentIndex/total)*100) + '%';
+  document.getElementById('exp-box').classList.remove('on');
+  document.getElementById('next-q-btn').style.display = 'none';
+
+  var subj = q._subj || q.subject || currentExam;
+  document.getElementById('q-subj-tag').textContent = subj;
+
+  // Get question text and options for current language
+  var qText, opts;
+  if(q.en || q.hi) {
+    var src = (currentLang==='hi' && q.hi) ? q.hi : (q.en || q.hi);
+    qText = src.q || src.question || '';
+    opts  = src.opts || src.options || [];
+  } else {
+    qText = q.question || q.q || '';
+    opts  = q.options || q.opts || q.choices || [];
+  }
+
+  document.getElementById('q-display').textContent = qText || '(Question not available)';
+
+  // Get correct index
+  var correctIdx = q.correct;
+  if(typeof correctIdx==='undefined') correctIdx = q.answer;
+  if(typeof correctIdx==='undefined') correctIdx = 0;
+  if(typeof correctIdx==='string') {
+    var m={A:0,B:1,C:2,D:3,a:0,b:1,c:2,d:3};
+    correctIdx = (correctIdx in m) ? m[correctIdx] : parseInt(correctIdx);
+  }
+
+  var labels = ['A','B','C','D','E'];
+  var list = document.getElementById('opts-display');
+  list.innerHTML = '';
+  opts.forEach(function(opt, i){
+    var btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.setAttribute('data-i', i);
+    btn.innerHTML = '<span class="opt-lbl">' + (labels[i]||i+1) + '</span><span>' + opt + '</span>';
+    btn.onclick = (function(ci, oi){ return function(){ checkAnswer(oi, ci); }; })(correctIdx, i);
+    list.appendChild(btn);
+  });
+}
+
+// ── CHECK ANSWER ──
+function checkAnswer(selected, correctIdx) {
+  if(answered) return;
+  answered = true;
+
+  var btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(function(b){ b.disabled = true; });
+
+  if(selected === correctIdx) {
+    btns[selected].classList.add('correct');
+    score += markingScheme.correct;
+    triggerSound('right');
+    toast('✅ Correct!');
+  } else {
+    btns[selected].classList.add('wrong');
+    if(btns[correctIdx]) btns[correctIdx].classList.add('showok');
+    triggerSound('wrong');
+    score += markingScheme.wrong;
+    toast('❌ Wrong! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
+  }
+
+  document.getElementById('stat-score').textContent = score.toFixed(2).replace(/\.00$/,'');
+
+  // Show explanation
+  var q = questions[currentIndex];
+  var expText = q.explanation || q.exp || q.reason || '';
+  if(!expText && (q.en||q.hi)) {
+    var src = (currentLang==='hi' && q.hi) ? q.hi : (q.en||q.hi);
+    expText = (src && src.explanation) || '';
+  }
+  if(expText) {
+    document.getElementById('exp-text').textContent = expText;
+    document.getElementById('exp-box').classList.add('on');
+  }
+
+  document.getElementById('next-q-btn').style.display = 'block';
+}
+
+// ── NEXT QUESTION ──
+function loadNextQuestion() {
+  currentIndex++;
+  if(currentIndex >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+    window.scrollTo(0,0);
+  }
+}
+
+// ── RESULT ──
+function showResult() {
+  var total = questions.length;
+  var maxScore = total * markingScheme.correct;
+  var pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+  pct = Math.max(0, Math.min(100, pct));
+
+  document.getElementById('ring-pct').textContent = pct + '%';
+  document.getElementById('res-sub').textContent = 'Score: ' + score.toFixed(2).replace(/\.00$/,'') + ' / ' + maxScore + ' · ' + total + ' Questions';
+
+  // Count correct/wrong/skip
+  var correct = 0, wrong = 0;
+  // Re-count from score
+  correct = Math.round(score > 0 ? score / markingScheme.correct : 0);
+
+  document.getElementById('rc').textContent = correct;
+  document.getElementById('rw').textContent = total - correct;
+  document.getElementById('rs2').textContent = 0;
+
+  setTimeout(function(){
+    document.getElementById('score-arc').style.strokeDashoffset = 339 - (pct/100)*339;
+  }, 100);
+
+  var em, title;
+  if(pct>=90){em="";;title='OUTSTANDING!';}
+  else if(pct>=75){em="";;title='EXCELLENT!';}
+  else if(pct>=60){em="";;title='GOOD JOB!';}
+  else if(pct>=40){em="";;title='KEEP GOING!';}
+  else{em="";;title='PRACTICE MORE!';}
+
+  document.getElementById('res-em').textContent = em;
+  document.getElementById('res-title').textContent = title;
+  setTimeout(function(){ showScreen('result-screen'); }, 300);
+}
+
+
+// ── DAILY EXAM SYSTEM ──
+var DAILY_SCHEDULE = [
+  { exam: 'JEE',  startH: 8,  startM: 0,  endH: 9,  endM: 0,  color: '#ff6b35' },
+  { exam: 'NEET', startH: 9,  startM: 30, endH: 10, endM: 30, color: '#00e5a0' },
+  { exam: 'UPSC', startH: 18, startM: 0,  endH: 19, endM: 0,  color: '#7c6fff' },
+  { exam: 'IBPS', startH: 20, startM: 0,  endH: 21, endM: 0,  color: '#FFD700' },
+  { exam: 'RAILWAY', startH: 22, startM: 0,  endH: 23, endM: 0,  color: '#ff9f1c' },
+
+  { exam: 'NISM', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
+];
+
+var DAILY_QUESTIONS = 50;
+var isDailyExam = false;
+var dailyExamData = null;
+var coinsEarnedThisSession = 0;
+
+// localStorage wrapper — safe for WebView
+var _memStore = {};
+function _lsGet(k) { try { return localStorage.getItem(k); } catch(e) { return _memStore[k]||null; } }
+function _lsSet(k,v) { try { localStorage.setItem(k,v); } catch(e) { _memStore[k]=String(v); } }
+
+function getTotalCoins() {
+  return parseInt(_lsGet('totalCoins') || '0');
+}
+
+function addCoins(amount) {
+  var total = getTotalCoins() + amount;
+  _lsSet('totalCoins', total);
+  document.getElementById('total-coins').textContent = total;
+  return total;
+}
+
+function updateCoinsDisplay() {
+  document.getElementById('total-coins').textContent = getTotalCoins();
+}
+
+function getDailyKey(exam) {
+  var now = new Date();
+  return 'daily_done_' + exam + '_' + now.getFullYear() + '_' + (now.getMonth()+1) + '_' + now.getDate();
+}
+
+function isDailyDone(exam) {
+  return _lsGet(getDailyKey(exam)) === '1';
+}
+
+function markDailyDone(exam) {
+  _lsSet(getDailyKey(exam), '1');
+}
+
+function getStatus(slot) {
+  var now = new Date();
+  var h = now.getHours();
+  var m = now.getMinutes();
+  var cur = h * 60 + m;
+  var start = slot.startH * 60 + slot.startM;
+  var end = slot.endH * 60 + slot.endM;
+
+  if(isDailyDone(slot.exam)) return 'done';
+  if(cur < start) return 'locked';
+  if(cur >= start && cur < end) return 'live';
+  return 'expired';
+}
+
+function pad(n) { return n < 10 ? '0' + n : n; }
+
+function renderDailyCards() {
+  var container = document.getElementById('daily-cards-container');
+  if(!container) return;
+  container.innerHTML = '';
+
+  DAILY_SCHEDULE.forEach(function(slot) {
+    var status = getStatus(slot);
+    var card = document.createElement('div');
+    card.className = 'daily-card' + (status === 'live' ? ' active-now' : '') + (status === 'locked' ? ' locked' : '') + (status === 'expired' ? ' expired' : '');
+
+    var statusLabel = '';
+    var statusClass = '';
+    if(status === 'live') { statusLabel = '🔴 LIVE'; statusClass = 'status-live'; }
+    else if(status === 'locked') { statusLabel = '🔒 Upcoming'; statusClass = 'status-locked'; }
+    else if(status === 'expired') { statusLabel = '⏰ Expired'; statusClass = 'status-expired'; }
+    else if(status === 'done') { statusLabel = '✅ Done'; statusClass = 'status-done'; }
+
+    card.innerHTML = '<div class="daily-left">' +
+      '<div class="daily-subject" style="color:' + slot.color + '">' + slot.exam + ' Daily</div>' +
+      '<div class="daily-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + ' · ' + DAILY_QUESTIONS + ' Qs</div>' +
+      '</div>' +
+      '<div class="daily-right">' +
+      '<div class="daily-status ' + statusClass + '">' + statusLabel + '</div>' +
+      '<div class="daily-coins">🪙 1 coin/correct · Get2xCoins@60% · Get3xCoins@80%</div>' +
+      '</div>';
+
+    if(status === 'live') {
+      card.onclick = function() { startDailyExam(slot); };
+    } else if(status === 'done') {
+      card.onclick = function() { toast('✅ Already completed today!'); };
+    } else if(status === 'expired') {
+      card.onclick = function() { toast('⏰ This exam has expired for today!'); };
+    } else {
+      card.onclick = function() { 
+        toast('🔒 Opens at ' + pad(slot.startH) + ':' + pad(slot.startM));
+      };
+    }
+
+    container.appendChild(card);
+  });
+}
+
+function startDailyExam(slot) {
+  isDailyExam = true;
+  dailyExamData = slot;
+  coinsEarnedThisSession = 0;
+
+  // Get questions with date-based seed for consistency
+  var raw = null;
+  try {
+    if(slot.exam==='JEE') raw=(typeof JEE_DATA!=='undefined')?JEE_DATA:null;
+    else if(slot.exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:null;
+    else if(slot.exam==='UPSC') raw=(typeof UPSC_DATA!=='undefined')?UPSC_DATA:null;
+    else if(slot.exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
+    else if(slot.exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
+    else if(slot.exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
+  } catch(e){raw=null;}
+
+  if(!raw) { toast('⚠️ Data not available!'); return; }
+
+  var qs = [];
+  if(Array.isArray(raw)) qs = raw;
+  else if(raw.questions && Array.isArray(raw.questions)) qs = raw.questions;
+
+  if(qs.length === 0) { toast('⚠️ No questions!'); return; }
+
+  // Date-based seed so same questions for everyone
+  var now = new Date();
+  var seed = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate() + slot.startH;
+  var shuffled = seededShuffle(qs, seed);
+  questions = shuffled.slice(0, Math.min(DAILY_QUESTIONS, shuffled.length));
+  currentIndex = 0;
+  score = 0;
+  currentExam = slot.exam;
+  markingScheme = MARKING[slot.exam] || {correct:1, wrong:0, label:'+1 | 0'};
+
+  document.getElementById('stat-name').textContent = slot.exam + ' Daily';
+  document.getElementById('stat-marking').textContent = markingScheme.label;
+  document.getElementById('stat-score').textContent = '0';
+
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+function seededShuffle(arr, seed) {
+  var a = arr.slice();
+  var s = seed;
+  for(var i = a.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    var j = Math.abs(s) % (i + 1);
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+// Override showResult to add coins
+var _originalShowResult = showResult;
+showResult = function() {
+  _originalShowResult();
+
+  if(!isDailyExam) {
+    document.getElementById('coins-earned-box').style.display = 'none';
+    return;
+  }
+
+  // Calculate coins
+  var total = questions.length;
+  var maxScore = total * markingScheme.correct;
+  var pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+  pct = Math.max(0, pct);
+
+  // Count correct answers
+  var correctCount = 0;
+  questions.forEach(function(q, idx) {
+    // We track this via score
+  });
+  // Estimate from score
+  var wrong = 0;
+  if(markingScheme.wrong < 0) {
+    // correct*4 + wrong*(-1) = score => need to solve
+    // Use: correct + wrong_count <= total
+    correctCount = Math.round((score + total * Math.abs(markingScheme.wrong)) / (markingScheme.correct + Math.abs(markingScheme.wrong)));
+  } else {
+    correctCount = Math.round(score / markingScheme.correct);
+  }
+  correctCount = Math.max(0, correctCount);
+
+  var multiplier = 1;
+  if(pct >= 80) multiplier = 3;
+  else if(pct >= 60) multiplier = 2;
+
+  var coins = correctCount * multiplier;
+  coinsEarnedThisSession = coins;
+
+  // Save
+  markDailyDone(dailyExamData.exam);
+  addCoins(coins);
+
+  // Show
+  var box = document.getElementById('coins-earned-box');
+  var num = document.getElementById('coins-earned-num');
+  box.style.display = 'block';
+  num.textContent = '+' + coins + ' 🪙' + (multiplier > 1 ? ' (' + multiplier + 'x bonus!)' : '');
+
+  isDailyExam = false;
+};
+
+// Init
+updateCoinsDisplay();
+renderDailyCards();
+// Refresh every minute
+setInterval(renderDailyCards, 60000);
+
+// ── UTILS ──
+function shuffle(arr) {
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+
+var _tt;
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(_tt);
+  _tt = setTimeout(function(){ t.classList.remove('on'); }, 2000);
+}
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function triggerSound(style) {
+  const osc = audioCtx.createOscillator();
+  const node = audioCtx.createGain();
+  osc.connect(node);
+  node.connect(audioCtx.destination);
+  if (style === 'right') {
+    osc.frequency.setValueAtTime(550, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(850, audioCtx.currentTime + 0.08);
+    node.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+  } else if (style === 'wrong') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(170, audioCtx.currentTime);
+    node.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+  }
+}
+</script>
+</body>
+</html>
