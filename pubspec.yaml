@@ -1,0 +1,25 @@
+name: study_mcq
+description: Study MCQ App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_inappwebview: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/StudyMCQ.html
+    - assets/ibps_data.js
+    - assets/jee_data.js
+    - assets/neet_data.js
+    - assets/nism_data.js
+    - assets/railwayrrb_data.js
+    - assets/upsc_data.js
+    - assets/StudyBanner.png
+    - assets/StudyLogo.png
