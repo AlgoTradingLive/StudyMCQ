@@ -186,6 +186,10 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(30,30,30,.95);border:1px solid rgba(255,255,255,.12);border-radius:30px;padding:10px 22px;font-size:13px;font-weight:600;z-index:999;transition:transform .25s ease;white-space:nowrap;pointer-events:none}
 .toast.on{transform:translateX(-50%) translateY(0)}
+
+.timer-bar-wrap{background:rgba(255,255,255,0.1);border-radius:10px;height:8px;margin:10px 0 15px 0;overflow:hidden;}
+.timer-bar{height:8px;border-radius:10px;background:linear-gradient(90deg,#00ff88,#ffea00);transition:width 1s linear;}
+.timer-text{text-align:right;font-size:12px;color:#38b6ff;margin-bottom:4px;}
 </style>
 </head>
 <body>
@@ -296,7 +300,7 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
       <span id="q-counter">Q 1 / 10</span>
       <span id="q-subj-tag" style="color:#38b6ff"></span>
     </div>
-    <div class="question-text" id="q-display">Loading...</div>
+    <div class="timer-text" id="timer-text">⏱ 40s</div><div class="timer-bar-wrap"><div class="timer-bar" id="timer-bar" style="width:100%"></div></div><div class="question-text" id="q-display">Loading...</div>
     <div class="options-list" id="opts-display"></div>
     <div class="explanation" id="exp-box">
       <div class="exp-lbl">EXPLANATION</div>
@@ -445,6 +449,21 @@ function retryExam(){startExam(currentExam);}
 
 // ── RENDER QUESTION ──
 function renderQuestion() {
+  if(window._timerInterval) clearInterval(window._timerInterval);
+  var timeLeft = 40;
+  var timerBar = document.getElementById('timer-bar');
+  var timerText = document.getElementById('timer-text');
+  if(timerBar) timerBar.style.width = '100%';
+  if(timerBar) timerBar.style.background = 'linear-gradient(90deg,#00ff88,#ffea00)';
+  if(timerText) timerText.textContent = '⏱ 40s';
+  window._timerInterval = setInterval(function(){
+    timeLeft--;
+    if(timerBar) timerBar.style.width = (timeLeft/40*100) + '%';
+    if(timerText) timerText.textContent = '⏱ ' + timeLeft + 's';
+    if(timeLeft <= 10 && timerBar) timerBar.style.background = 'linear-gradient(90deg,#ff4444,#ff8800)';
+    if(timeLeft <= 0){ clearInterval(window._timerInterval); if(!answered) checkAnswer(-1, correctIdx); }
+  }, 1000);
+
   answered = false;
   var q = questions[currentIndex];
   var total = questions.length;
