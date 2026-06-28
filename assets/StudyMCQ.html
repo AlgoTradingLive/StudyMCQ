@@ -473,7 +473,7 @@ function renderQuestion() {
     if(timerBar) timerBar.style.width = (timeLeft/40*100) + '%';
     if(timerText) timerText.textContent = '⏱ ' + timeLeft + 's';
     if(timeLeft <= 10 && timerBar) timerBar.style.background = 'linear-gradient(90deg,#ff4444,#ff8800)';
-    if(timeLeft <= 0){ clearInterval(window._timerInterval); if(!answered) checkAnswer(-1, correctIdx); }
+    if(timeLeft <= 0){ clearInterval(window._timerInterval); if(!answered) checkAnswer(-1, window._currentCorrectIdx); }
   }, 1000);
 
   answered = false;
@@ -509,7 +509,7 @@ function renderQuestion() {
     var m={A:0,B:1,C:2,D:3,a:0,b:1,c:2,d:3};
     correctIdx = (correctIdx in m) ? m[correctIdx] : parseInt(correctIdx);
   }
-
+window._currentCorrectIdx = correctIdx;
   var labels = ['A','B','C','D','E'];
   var list = document.getElementById('opts-display');
   list.innerHTML = '';
