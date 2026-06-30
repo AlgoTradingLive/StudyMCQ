@@ -473,7 +473,7 @@ function renderQuestion() {
     if(timerBar) timerBar.style.width = (timeLeft/40*100) + '%';
     if(timerText) timerText.textContent = '⏱ ' + timeLeft + 's';
     if(timeLeft <= 10 && timerBar) timerBar.style.background = 'linear-gradient(90deg,#ff4444,#ff8800)';
-    if(timeLeft <= 0){ clearInterval(window._timerInterval); if(!answered) checkAnswer(-1, window._currentCorrectIdx); }
+    if(timeLeft <= 0){ clearInterval(window._timerInterval); if(!answered) checkAnswer(-1, correctIdx); }
   }, 1000);
 
   answered = false;
@@ -509,7 +509,7 @@ function renderQuestion() {
     var m={A:0,B:1,C:2,D:3,a:0,b:1,c:2,d:3};
     correctIdx = (correctIdx in m) ? m[correctIdx] : parseInt(correctIdx);
   }
-window._currentCorrectIdx = correctIdx;
+
   var labels = ['A','B','C','D','E'];
   var list = document.getElementById('opts-display');
   list.innerHTML = '';
@@ -532,16 +532,20 @@ function checkAnswer(selected, correctIdx) {
   btns.forEach(function(b){ b.disabled = true; });
 
   if(selected === correctIdx) {
-    btns[selected].classList.add('correct');
+    if(btns[selected]) btns[selected].classList.add('correct');
     score += markingScheme.correct;
     triggerSound('right');
     toast('✅ Correct!');
   } else {
-    btns[selected].classList.add('wrong');
+    if(selected >= 0 && btns[selected]) btns[selected].classList.add('wrong');
     if(btns[correctIdx]) btns[correctIdx].classList.add('showok');
     triggerSound('wrong');
     score += markingScheme.wrong;
-    toast('❌ Wrong! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
+    if(selected === -1) {
+      toast('⏱ Time up! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
+    } else {
+      toast('❌ Wrong! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
+    }
   }
 
   document.getElementById('stat-score').textContent = score.toFixed(2).replace(/\.00$/,'');
