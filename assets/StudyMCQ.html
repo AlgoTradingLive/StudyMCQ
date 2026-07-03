@@ -532,20 +532,16 @@ function checkAnswer(selected, correctIdx) {
   btns.forEach(function(b){ b.disabled = true; });
 
   if(selected === correctIdx) {
-    if(btns[selected]) btns[selected].classList.add('correct');
+    btns[selected].classList.add('correct');
     score += markingScheme.correct;
     triggerSound('right');
     toast('✅ Correct!');
   } else {
-    if(selected >= 0 && btns[selected]) btns[selected].classList.add('wrong');
+    btns[selected].classList.add('wrong');
     if(btns[correctIdx]) btns[correctIdx].classList.add('showok');
     triggerSound('wrong');
     score += markingScheme.wrong;
-    if(selected === -1) {
-      toast('⏱ Time up! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
-    } else {
-      toast('❌ Wrong! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
-    }
+    toast('❌ Wrong! Correct: ' + (['A','B','C','D'][correctIdx]||(correctIdx+1)));
   }
 
   document.getElementById('stat-score').textContent = score.toFixed(2).replace(/\.00$/,'');
@@ -772,9 +768,15 @@ function seededShuffle(arr, seed) {
   return a;
 }
 
-// Override showResult to add coins
+// Override showResult to add coins + show interstitial ad
 var _originalShowResult = showResult;
 showResult = function() {
+  // Interstitial ad via Flutter bridge
+  try {
+    if(window.AdMobBridge) {
+      window.AdMobBridge.postMessage('showInterstitial');
+    }
+  } catch(e) {}
   _originalShowResult();
 
   if(!isDailyExam) {
