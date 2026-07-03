@@ -231,10 +231,20 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
     </div>
 
     
-    <div class="coins-bar">
-      <span class="coins-icon">🪙</span>
-      <span class="coins-label">My Coins</span>
-      <span class="coins-value" id="total-coins">0</span>
+    <div class="coins-bar" style="flex-direction:column;align-items:stretch;gap:8px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="coins-icon">🪙</span>
+        <span class="coins-label">My Coins</span>
+        <span class="coins-value" id="total-coins">0</span>
+        <span style="margin-left:auto;font-size:11px;color:#888">/ 15,000</span>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:6px;height:8px;overflow:hidden">
+        <div id="coins-progress-bar" style="height:100%;background:linear-gradient(90deg,#38b6ff,#a855f7);border-radius:6px;width:0%;transition:width 0.5s"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;color:#888" id="coins-remaining-text">15,000 coins बाकी</span>
+        <button id="redeem-btn" onclick="showRedeemForm()" style="display:none;background:linear-gradient(90deg,#38b6ff,#a855f7);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;padding:4px 12px;cursor:pointer">🎁 Redeem ₹150</button>
+      </div>
     </div>
 <div class="portal-label">Mega PYQ Exam Portal</div>
     <div class="daily-section">
@@ -277,6 +287,25 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
     <a class="privacy-link" onclick="showPrivacy()">Privacy Policy</a>
   </div>
 
+  <!-- REDEEM SCREEN -->
+  <div id="redeem-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('home-screen')">← Back</button>
+    <div style="padding:20px">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:40px">🎁</div>
+        <div style="font-size:20px;font-weight:800;color:#38b6ff;margin-top:8px">₹150 Google Play Voucher</div>
+        <div style="font-size:13px;color:#888;margin-top:4px">तुमचे <span id="redeem-coins-show" style="color:#38b6ff;font-weight:700">0</span> coins redeem करा</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(56,182,255,.2);border-radius:14px;padding:18px">
+        <div style="font-size:13px;color:#888;margin-bottom:16px">खाली तुमचा mobile number टाका. आम्ही 24-48 तासांत voucher पाठवू.</div>
+        <input id="redeem-mobile" type="tel" maxlength="10" placeholder="Mobile Number (10 digits)" 
+          style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(56,182,255,.3);border-radius:10px;padding:12px;color:#fff;font-size:15px;box-sizing:border-box;margin-bottom:12px">
+        <button onclick="submitRedeem()" style="width:100%;background:linear-gradient(90deg,#38b6ff,#a855f7);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;padding:14px;cursor:pointer">Submit करा</button>
+        <div style="font-size:11px;color:#666;margin-top:12px;text-align:center">Redeem केल्यावर 15,000 coins वजा होतील</div>
+      </div>
+    </div>
+  </div>
+
   <!-- PRIVACY SCREEN -->
   <div id="privacy-screen" class="screen">
     <button class="back-btn" onclick="hidePrivacy()">← Back</button>
@@ -295,7 +324,15 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
       <p>We value your trust and strive to use commercially acceptable means to protect your personal information.</p>
       <div class="privacy-h">5. Children's Privacy</div>
       <p>This app is designed for students of all ages. We do not knowingly collect personal information from children under 13 without parental consent.</p>
-      <div class="privacy-h">6. Contact Us</div>
+      <div class="privacy-h">6. Coins & Rewards Program</div>
+      <p>StudyMCQ offers a coins reward system to encourage learning:</p>
+      <p style="margin-top:6px">• <b style="color:#ddd">Daily Exams:</b> Coins are awarded based on your score and performance percentage.</p>
+      <p style="margin-top:6px">• <b style="color:#ddd">Normal Exams:</b> 1 coin is awarded for each correct answer.</p>
+      <p style="margin-top:6px">• <b style="color:#ddd">Redemption:</b> 15,000 coins can be redeemed for a ₹150 Google Play Gift Voucher.</p>
+      <p style="margin-top:6px">• <b style="color:#ddd">Verification:</b> Redemption requests are manually verified. Your mobile number is collected solely for voucher delivery purposes.</p>
+      <p style="margin-top:6px">• <b style="color:#ddd">Storage:</b> Coins are stored locally on your device. Uninstalling the app will result in loss of coins.</p>
+      <p style="margin-top:6px">• <b style="color:#ddd">Validity:</b> We reserve the right to modify or discontinue the rewards program at any time.</p>
+      <div class="privacy-h">7. Contact Us</div>
       <p>If you have any questions, contact us at: <span style="color:#38b6ff">supportnafa@gmail.com</span></p>
     </div>
   </div>
@@ -401,7 +438,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -535,7 +572,18 @@ function checkAnswer(selected, correctIdx) {
     if(btns[selected]) btns[selected].classList.add('correct');
     score += markingScheme.correct;
     triggerSound('right');
-    toast('✅ Correct!');
+    // Normal exam: 1 coin per correct answer
+    if(!isDailyExam) {
+      var newTotal = addCoins(1);
+      toast('✅ Correct! +1🪙');
+      // दर 25 correct answers वर interstitial
+      var correctSoFar = parseInt(_lsGet('normalCorrectCount') || '0') + 1;
+      _lsSet('normalCorrectCount', correctSoFar);
+      if(correctSoFar % 25 === 0) {
+        setTimeout(function(){
+          try { if(window.AdMobBridge) window.AdMobBridge.postMessage('showInterstitial'); } catch(e){}
+        }, 500);
+      }
   } else {
     if(selected >= 0 && btns[selected]) btns[selected].classList.add('wrong');
     if(btns[correctIdx]) btns[correctIdx].classList.add('showok');
@@ -640,12 +688,48 @@ function getTotalCoins() {
 function addCoins(amount) {
   var total = getTotalCoins() + amount;
   _lsSet('totalCoins', total);
-  document.getElementById('total-coins').textContent = total;
+  updateCoinsDisplay();
   return total;
 }
 
 function updateCoinsDisplay() {
-  document.getElementById('total-coins').textContent = getTotalCoins();
+  var total = getTotalCoins();
+  var target = 15000;
+  document.getElementById('total-coins').textContent = total.toLocaleString('en-IN');
+  var pct = Math.min(100, (total / target) * 100);
+  var bar = document.getElementById('coins-progress-bar');
+  if(bar) bar.style.width = pct + '%';
+  var rem = document.getElementById('coins-remaining-text');
+  var redeemBtn = document.getElementById('redeem-btn');
+  if(total >= target) {
+    if(rem) rem.textContent = '🎉 Redeem करा!';
+    if(redeemBtn) redeemBtn.style.display = 'block';
+  } else {
+    var left = target - total;
+    if(rem) rem.textContent = left.toLocaleString('en-IN') + ' coins बाकी';
+    if(redeemBtn) redeemBtn.style.display = 'none';
+  }
+}
+
+function showRedeemForm() {
+  if(getTotalCoins() < 15000) { toast('15,000 coins लागतात!'); return; }
+  document.getElementById('redeem-coins-show').textContent = getTotalCoins().toLocaleString('en-IN');
+  showScreen('redeem-screen');
+}
+
+function submitRedeem() {
+  var mobile = document.getElementById('redeem-mobile').value.trim();
+  if(mobile.length !== 10 || isNaN(mobile)) { toast('⚠️ Valid 10-digit mobile number टाका'); return; }
+  if(getTotalCoins() < 15000) { toast('15,000 coins लागतात!'); return; }
+  // Google Form submit
+  var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf_PLACEHOLDER/formResponse';
+  var params = 'entry.MOBILE=' + encodeURIComponent(mobile) + '&entry.COINS=' + encodeURIComponent(getTotalCoins());
+  fetch(formUrl + '?' + params, {method:'POST', mode:'no-cors'}).catch(function(){});
+  // Coins वजा करा
+  _lsSet('totalCoins', getTotalCoins() - 15000);
+  updateCoinsDisplay();
+  toast('🎉 Request submit झाली! 24-48 तासांत voucher मिळेल.');
+  showScreen('home-screen');
 }
 
 function getDailyKey(exam) {
