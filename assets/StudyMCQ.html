@@ -574,7 +574,7 @@ function checkAnswer(selected, correctIdx) {
     triggerSound('right');
     // Normal exam: 1 coin per correct answer
     if(!isDailyExam) {
-      var newTotal = addCoins(1);
+      addCoins(1);
       toast('✅ Correct! +1🪙');
       // दर 25 correct answers वर interstitial
       var correctSoFar = parseInt(_lsGet('normalCorrectCount') || '0') + 1;
@@ -584,6 +584,9 @@ function checkAnswer(selected, correctIdx) {
           try { if(window.AdMobBridge) window.AdMobBridge.postMessage('showInterstitial'); } catch(e){}
         }, 500);
       }
+    } else {
+      toast('✅ Correct!');
+    }
   } else {
     if(selected >= 0 && btns[selected]) btns[selected].classList.add('wrong');
     if(btns[correctIdx]) btns[correctIdx].classList.add('showok');
