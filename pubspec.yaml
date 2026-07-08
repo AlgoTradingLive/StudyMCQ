@@ -22,5 +22,7 @@ flutter:
     - assets/nism_data.js
     - assets/railwayrrb_data.js
     - assets/upsc_data.js
+    - assets/maths_data_10.js
+    - assets/SCIENCE_DATA_10.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
