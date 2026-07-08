@@ -78,6 +78,13 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
 .ec-railway:hover,.ec-railway:active{background:rgba(255,159,28,.1);border-color:#ff9f1c;box-shadow:0 8px 20px rgba(255,159,28,.2)}
 .ec-railway .ec-name{color:#ff9f1c}
 
+.ec-class10:hover,.ec-class10:active{background:rgba(255,105,180,.1);border-color:#ff69b4;box-shadow:0 8px 20px rgba(255,105,180,.2)}
+.ec-class10 .ec-name{color:#ff69b4}
+.ec-science:hover,.ec-science:active{background:rgba(0,229,160,.1);border-color:#00e5a0;box-shadow:0 8px 20px rgba(0,229,160,.2)}
+.ec-science .ec-name{color:#00e5a0}
+.ec-maths:hover,.ec-maths:active{background:rgba(56,182,255,.1);border-color:#38b6ff;box-shadow:0 8px 20px rgba(56,182,255,.2)}
+.ec-maths .ec-name{color:#38b6ff}
+
 .privacy-link{display:block;text-align:center;color:rgba(56,182,255,.6);font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;padding:8px;text-decoration:none}
 .privacy-link:active{color:#38b6ff}
 
@@ -282,9 +289,29 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
         <div class="ec-name">🚂 RRB Railway</div>
         <div class="ec-desc">Reasoning · Maths · General Science · Current Affairs</div>
       </div>
+      <div class="exam-card ec-class10" onclick="showScreen('class10-screen')" style="grid-column:1/-1">
+        <div class="ec-name">🎓 10th Class</div>
+        <div class="ec-desc">Science · अजून विषय लवकरच येतील</div>
+      </div>
     </div>
 
     <a class="privacy-link" onclick="showPrivacy()">Privacy Policy</a>
+  </div>
+
+  <!-- 10TH CLASS SUBJECT SCREEN -->
+  <div id="class10-screen" class="screen">
+    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <div class="portal-label">10th Class Subjects</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-science" onclick="startExam('SCIENCE_10')" style="grid-column:1/-1">
+        <div class="ec-name">🔬 Science</div>
+        <div class="ec-desc">Physics · Chemistry · Biology</div>
+      </div>
+      <div class="exam-card ec-maths" onclick="startExam('MATHS_10')" style="grid-column:1/-1">
+        <div class="ec-name">📐 Maths</div>
+        <div class="ec-desc">Algebra · Geometry · A.P. · Polynomials</div>
+      </div>
+    </div>
   </div>
 
   <!-- REDEEM SCREEN -->
@@ -406,6 +433,8 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
 <script src="ibps_data.js"></script>
 <script src="nism_data.js"></script>
 <script src="railwayrrb_data.js"></script>
+<script src="SCIENCE_DATA_10.js"></script>
+<script src="maths_data_10.js"></script>
 
 <script>
 // ── STATE ──
@@ -423,7 +452,9 @@ var MARKING = {
   NEET:{correct:4, wrong:-1, label:'+4 | -1'},
   IBPS:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   RAILWAY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  NISM:{correct:4, wrong:-1, label:'+4 | -1'}
+  NISM:{correct:4, wrong:-1, label:'+4 | -1'},
+  SCIENCE_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  MATHS_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -438,7 +469,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class10-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -460,6 +491,8 @@ function startExam(exam) {
     else if(exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
     else if(exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
     else if(exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
+    else if(exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
+    else if(exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -486,7 +519,8 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  document.getElementById('stat-name').textContent = exam;
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths' };
+  document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
 
