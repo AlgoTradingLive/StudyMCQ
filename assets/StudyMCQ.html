@@ -420,6 +420,7 @@ body{
 
   <!-- QUIZ SCREEN -->
   <div id="quiz-screen" class="screen">
+    <button class="back-btn" onclick="exitQuiz()" style="margin-bottom:12px">← Back</button>
     <div class="quiz-header">
       <div class="quiz-stat">Exam: <span class="stat-name" id="stat-name">-</span></div>
       <div class="quiz-stat">Marking: <span class="stat-mark" id="stat-marking">-</span></div>
@@ -471,7 +472,7 @@ body{
     </div>
 <div class="result-btns" style="margin-top:16px">
       <button class="res-btn-primary" onclick="retryExam()">Try Again</button>
-      <button class="res-btn-sec" onclick="goToHome()">Home</button>
+      <button class="res-btn-sec" onclick="exitQuiz()">← Back</button>
     </div>
   </div>
 
@@ -495,6 +496,7 @@ body{
 // ── STATE ──
 var currentLang = 'en';
 var currentExam = '';
+var examOrigin = 'home-screen';
 var questions = [];
 var currentIndex = 0;
 var score = 0;
@@ -536,9 +538,17 @@ function showScreen(id) {
 function goToHome(){showScreen('home-screen');}
 function showPrivacy(){showScreen('privacy-screen');}
 function hidePrivacy(){showScreen('home-screen');}
+function exitQuiz(){
+  if(window._timerInterval) clearInterval(window._timerInterval);
+  showScreen(examOrigin || 'home-screen');
+}
 
 // ── START EXAM ──
 function startExam(exam) {
+  var _activeEl = document.querySelector('.screen.active');
+  if(_activeEl && _activeEl.id !== 'quiz-screen' && _activeEl.id !== 'result-screen') {
+    examOrigin = _activeEl.id;
+  }
   var raw = null;
   try {
     if(exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:(typeof neetData!=='undefined')?neetData:null;
@@ -915,6 +925,11 @@ function startDailyExam(slot) {
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
+
+  var _activeEl2 = document.querySelector('.screen.active');
+  if(_activeEl2 && _activeEl2.id !== 'quiz-screen' && _activeEl2.id !== 'result-screen') {
+    examOrigin = _activeEl2.id;
+  }
 
   var qs = [];
   if(Array.isArray(raw)) qs = raw;
