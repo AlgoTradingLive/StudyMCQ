@@ -84,6 +84,8 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
 .ec-science .ec-name{color:#00e5a0}
 .ec-maths:hover,.ec-maths:active{background:rgba(56,182,255,.1);border-color:#38b6ff;box-shadow:0 8px 20px rgba(56,182,255,.2)}
 .ec-maths .ec-name{color:#38b6ff}
+.ec-history:hover,.ec-history:active{background:rgba(255,196,0,.1);border-color:#ffc400;box-shadow:0 8px 20px rgba(255,196,0,.2)}
+.ec-history .ec-name{color:#ffc400}
 
 .privacy-link{display:block;text-align:center;color:rgba(56,182,255,.6);font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;padding:8px;text-decoration:none}
 .privacy-link:active{color:#38b6ff}
@@ -311,6 +313,10 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
         <div class="ec-name">📐 Maths</div>
         <div class="ec-desc">Algebra · Geometry · A.P. · Polynomials</div>
       </div>
+      <div class="exam-card ec-history" onclick="startExam('HISTORY_10')" style="grid-column:1/-1">
+        <div class="ec-name">🏛️ Social Science</div>
+        <div class="ec-desc">History · Geography · Political Science</div>
+      </div>
     </div>
   </div>
 
@@ -435,6 +441,7 @@ body{background:#050505;color:#fff;min-height:100vh;overflow-x:hidden}
 <script src="railwayrrb_data.js"></script>
 <script src="SCIENCE_DATA_10.js"></script>
 <script src="maths_data_10.js"></script>
+<script src="history_data_10.js"></script>
 
 <script>
 // ── STATE ──
@@ -454,7 +461,8 @@ var MARKING = {
   RAILWAY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   NISM:{correct:4, wrong:-1, label:'+4 | -1'},
   SCIENCE_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  MATHS_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
+  MATHS_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  HISTORY_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -493,6 +501,7 @@ function startExam(exam) {
     else if(exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
     else if(exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
     else if(exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
+    else if(exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -519,7 +528,7 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
