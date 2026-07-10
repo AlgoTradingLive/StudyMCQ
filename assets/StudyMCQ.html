@@ -295,7 +295,7 @@ body{
         <button id="redeem-btn" onclick="showRedeemForm()" style="display:none;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;padding:4px 12px;cursor:pointer">🎁 Redeem ₹150</button>
       </div>
     </div>
-<div class="portal-label">Mega PYQ Exam Portal</div>
+
     <div class="daily-section">
       <div class="daily-title"><span class="sh-icon">⏰</span> Today's Daily Exams</div>
       <div id="daily-cards-container"></div>
@@ -325,17 +325,17 @@ body{
         <div class="ec-name">NEET UG</div>
         <div class="ec-desc">Biology · Physics · Chemistry</div>
       </div>
-      <div class="exam-card ec-nism" onclick="startExam('NISM')" style="grid-column:1/-1">
+      <div class="exam-card ec-nism" onclick="startExam('NISM')">
         <div class="ec-badge">📈</div>
         <div class="ec-name">NISM Stock Market</div>
         <div class="ec-desc">Insurance · Mutual Fund · Currency · Equity · Derivatives</div>
       </div>
-      <div class="exam-card ec-railway" onclick="startExam('RAILWAY')" style="grid-column:1/-1">
+      <div class="exam-card ec-railway" onclick="startExam('RAILWAY')">
         <div class="ec-badge">🚂</div>
         <div class="ec-name">RRB Railway</div>
         <div class="ec-desc">Reasoning · Maths · General Science · Current Affairs</div>
       </div>
-      <div class="exam-card ec-class10" onclick="showScreen('class10-screen')" style="grid-column:1/-1">
+      <div class="exam-card ec-class10" onclick="showScreen('class10-screen')">
         <div class="ec-badge">🎓</div>
         <div class="ec-name">10th Class</div>
         <div class="ec-desc">Science · अजून विषय लवकरच येतील</div>
@@ -773,6 +773,10 @@ var DAILY_SCHEDULE = [
   { exam: 'RAILWAY', startH: 22, startM: 0,  endH: 23, endM: 0,  color: '#ff9f1c' },
 
   { exam: 'NISM', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
+
+  { exam: 'MATHS_10',   label: '10th Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#38b6ff' },
+  { exam: 'HISTORY_10', label: '10th Social Science',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ffc400' },
+  { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#00e5a0' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -884,7 +888,7 @@ function renderDailyCards() {
     else if(status === 'done') { statusLabel = '✅ Done'; statusClass = 'status-done'; }
 
     card.innerHTML = '<div class="daily-left">' +
-      '<div class="daily-subject" style="color:' + slot.color + '">' + slot.exam + ' Daily</div>' +
+      '<div class="daily-subject" style="color:' + slot.color + '">' + (slot.label || slot.exam) + ' Daily</div>' +
       '<div class="daily-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + ' · ' + DAILY_QUESTIONS + ' Qs</div>' +
       '</div>' +
       '<div class="daily-right">' +
@@ -922,6 +926,9 @@ function startDailyExam(slot) {
     else if(slot.exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
     else if(slot.exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
     else if(slot.exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
+    else if(slot.exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
+    else if(slot.exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
+    else if(slot.exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
@@ -947,7 +954,7 @@ function startDailyExam(slot) {
   currentExam = slot.exam;
   markingScheme = MARKING[slot.exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  document.getElementById('stat-name').textContent = slot.exam + ' Daily';
+  document.getElementById('stat-name').textContent = (slot.label || slot.exam) + ' Daily';
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
 
