@@ -270,7 +270,7 @@ body{
            style="width:100%;border-radius:12px;display:block"
            onerror="this.style.display='none';document.getElementById('banner-fallback').style.display='block'">
       <div id="banner-fallback" style="display:none">
-        <div class="banner-title">📚 चला सुरू करूया!</div>
+        <div class="banner-title">📚 let's start</div>
         <div class="banner-sub">"Discipline today, success tomorrow."</div>
         <div class="banner-tags">
           <span class="btag">🎯 Daily Practice</span>
@@ -338,7 +338,7 @@ body{
       <div class="exam-card ec-class10" onclick="showScreen('class10-screen')">
         <div class="ec-badge">🎓</div>
         <div class="ec-name">10th Class</div>
-        <div class="ec-desc">Science · अजून विषय लवकरच येतील</div>
+        <div class="ec-desc">Science · More Subjects Coming soon</div>
       </div>
     </div>
 
@@ -775,7 +775,7 @@ var DAILY_SCHEDULE = [
   { exam: 'NISM', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
 
   { exam: 'MATHS_10',   label: '10th Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#38b6ff' },
-  { exam: 'HISTORY_10', label: '10th Social Science',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ffc400' },
+  { exam: 'HISTORY_10', label: '10th History',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ffc400' },
   { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#00e5a0' },
 ];
 
@@ -836,7 +836,7 @@ function submitRedeem() {
   // Coins वजा करा
   _lsSet('totalCoins', getTotalCoins() - 15000);
   updateCoinsDisplay();
-  toast('🎉 Request submit झाली! 24-48 तासांत voucher मिळेल.');
+  toast('🎉 Request submit ! voucher in 24-48 hour);
   showScreen('home-screen');
 }
 
