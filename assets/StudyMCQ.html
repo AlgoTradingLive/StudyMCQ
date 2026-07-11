@@ -118,6 +118,12 @@ body{
 .ec-class10 .ec-badge{background:rgba(255,105,180,.16);color:#ff69b4}
 .ec-class10:hover,.ec-class10:active{background:rgba(255,105,180,.1);border-color:#ff69b4;box-shadow:0 8px 20px rgba(255,105,180,.2)}
 .ec-class10 .ec-name{color:#ff69b4}
+.ec-class12 .ec-badge{background:rgba(20,184,166,.16);color:#14b8a6}
+.ec-class12:hover,.ec-class12:active{background:rgba(20,184,166,.1);border-color:#14b8a6;box-shadow:0 8px 20px rgba(20,184,166,.2)}
+.ec-class12 .ec-name{color:#14b8a6}
+.ec-accounts .ec-badge{background:rgba(99,179,237,.16);color:#63b3ed}
+.ec-accounts:hover,.ec-accounts:active{background:rgba(99,179,237,.1);border-color:#63b3ed;box-shadow:0 8px 20px rgba(99,179,237,.2)}
+.ec-accounts .ec-name{color:#63b3ed}
 .ec-science .ec-badge{background:rgba(0,229,160,.16);color:#00e5a0}
 .ec-science:hover,.ec-science:active{background:rgba(0,229,160,.1);border-color:#00e5a0;box-shadow:0 8px 20px rgba(0,229,160,.2)}
 .ec-science .ec-name{color:#00e5a0}
@@ -340,6 +346,11 @@ body{
         <div class="ec-name">10th Class</div>
         <div class="ec-desc">Science · More Subjects Coming soon</div>
       </div>
+      <div class="exam-card ec-class12" onclick="showScreen('class12commerce-screen')">
+        <div class="ec-badge">💼</div>
+        <div class="ec-name">12th Commerce</div>
+        <div class="ec-desc">Accounts · More Subjects Coming soon</div>
+      </div>
     </div>
 
     <a class="privacy-link" onclick="showPrivacy()">Privacy Policy</a>
@@ -364,6 +375,19 @@ body{
         <div class="ec-badge">🏛️</div>
         <div class="ec-name">Social Science</div>
         <div class="ec-desc">History · Geography · Political Science</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12TH COMMERCE SUBJECT SCREEN -->
+  <div id="class12commerce-screen" class="screen">
+    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <div class="portal-label">12th Commerce Subjects</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-accounts" onclick="startExam('ACCOUNTS_12')" style="grid-column:1/-1">
+        <div class="ec-badge">📒</div>
+        <div class="ec-name">Accounts</div>
+        <div class="ec-desc">Company Accounts · Shares · Partnership</div>
       </div>
     </div>
   </div>
@@ -491,6 +515,7 @@ body{
 <script src="science_data_10.js"></script>
 <script src="maths_data_10.js"></script>
 <script src="history_data_10.js"></script>
+<script src="commerce12_accounts.js"></script>
 
 <script>
 // ── STATE ──
@@ -512,7 +537,8 @@ var MARKING = {
   NISM:{correct:4, wrong:-1, label:'+4 | -1'},
   SCIENCE_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   MATHS_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  HISTORY_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
+  HISTORY_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ACCOUNTS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -527,7 +553,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class10-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class10-screen','class12commerce-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -560,6 +586,7 @@ function startExam(exam) {
     else if(exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
     else if(exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
     else if(exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
+    else if(exam==='ACCOUNTS_12') raw=(typeof COMMERCE12_ACCOUNTS_DATA!=='undefined')?COMMERCE12_ACCOUNTS_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -586,7 +613,7 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -836,7 +863,7 @@ function submitRedeem() {
   // Coins वजा करा
   _lsSet('totalCoins', getTotalCoins() - 15000);
   updateCoinsDisplay();
-  toast('🎉 Request submit ! voucher in 24-48 hour);
+  toast('🎉 Request submitted! Voucher in 24-48 hours');
   showScreen('home-screen');
 }
 
