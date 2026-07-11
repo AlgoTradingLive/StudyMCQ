@@ -17,11 +17,7 @@
   --card-border:rgba(255,255,255,.08);
 }
 body{
-  background:
-    radial-gradient(900px 500px at 15% -10%, rgba(91,61,240,.25), transparent 60%),
-    radial-gradient(700px 400px at 110% 10%, rgba(76,139,255,.14), transparent 55%),
-    linear-gradient(180deg,#0a0d1e 0%, #070914 45%, #05060d 100%);
-  background-attachment:fixed;
+  background:#000000;
   color:#fff;min-height:100vh;overflow-x:hidden;
 }
 
@@ -214,20 +210,21 @@ body{
 /* DAILY EXAM */
 .daily-section{margin-top:4px;margin-bottom:8px}
 .daily-title{color:#f5f7fb;font-size:14px;font-weight:800;letter-spacing:.2px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
-.daily-card{background:var(--card-bg);border:1px solid var(--card-border);border-left:3px solid var(--accent-blue);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .2s}
-.daily-card.active-now{border-color:var(--accent-blue);border-left-color:var(--accent-blue);background:rgba(76,139,255,.08);box-shadow:0 0 15px rgba(76,139,255,.15)}
-.daily-card.locked{opacity:.55;cursor:not-allowed}
-.daily-card.expired{opacity:.4;cursor:not-allowed}
-.daily-left{display:flex;flex-direction:column;gap:3px}
-.daily-subject{font-size:14px;font-weight:700}
-.daily-time{font-size:11px;color:var(--text-dim)}
-.daily-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
-.daily-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
-.status-live{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid #22c55e}
-.status-locked{background:rgba(255,255,255,.05);color:#666;border:1px solid rgba(255,255,255,.1)}
-.status-expired{background:rgba(255,7,58,.1);color:#FF073A;border:1px solid rgba(255,7,58,.3)}
+#daily-cards-container{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.daily-card{background:#0c0c0f;border:1px solid var(--card-border);border-top:4px solid var(--accent-blue);border-radius:14px;padding:14px 14px 12px;cursor:pointer;transition:all .2s}
+.daily-card.active-now{border-color:#8b5cf6;border-top-color:#8b5cf6;box-shadow:0 0 4px rgba(139,92,246,.8),0 0 18px rgba(139,92,246,.55),0 0 34px rgba(139,92,246,.3)}
+.daily-card.locked{opacity:.6;cursor:not-allowed}
+.daily-card.expired{opacity:.45;cursor:not-allowed}
+.daily-left{display:flex;flex-direction:column;gap:4px}
+.daily-subject{font-size:15px;font-weight:800;margin-top:8px}
+.daily-time{font-size:12px;color:var(--text-dim)}
+.daily-right{margin-bottom:2px}
+.daily-status{font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:5px}
+.status-live{background:rgba(34,197,94,.12);color:#39ff6a;border:1px solid #39ff6a;box-shadow:0 0 6px rgba(57,255,106,.7),0 0 14px rgba(57,255,106,.4);text-shadow:0 0 6px rgba(57,255,106,.8)}
+.status-locked{background:rgba(255,255,255,.05);color:#777;border:1px solid rgba(255,255,255,.15)}
+.status-expired{background:rgba(255,7,58,.1);color:#ff4d6a;border:1px solid rgba(255,77,106,.4)}
 .status-done{background:rgba(76,139,255,.15);color:var(--accent-blue);border:1px solid rgba(76,139,255,.3)}
-.daily-coins{font-size:11px;color:var(--accent-blue)}
+.daily-coins{font-size:10.5px;color:#c8ab52;margin-top:4px}
 
 /* COINS DISPLAY */
 .coins-bar{display:flex;align-items:center;gap:6px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;margin-bottom:16px}
@@ -297,7 +294,7 @@ body{
         <div id="coins-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));border-radius:6px;width:0%;transition:width 0.5s"></div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:11px;color:var(--text-dim)" id="coins-remaining-text">15,000 coins बाकी</span>
+        <span style="font-size:11px;color:var(--text-dim)" id="coins-remaining-text">15,000 coins left</span>
         <button id="redeem-btn" onclick="showRedeemForm()" style="display:none;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;padding:4px 12px;cursor:pointer">🎁 Redeem ₹150</button>
       </div>
     </div>
@@ -308,7 +305,7 @@ body{
     </div>
 
 
-    <div class="section-header"><span class="sh-icon">🧭</span> Explore Exams</div>
+    <div class="section-header"><span class="sh-icon">🧭</span> Explore Mock Tests</div>
     <div class="exam-grid">
       <div class="exam-card ec-upsc" onclick="startExam('UPSC')">
         <div class="ec-badge">📄</div>
@@ -399,14 +396,14 @@ body{
       <div style="text-align:center;margin-bottom:20px">
         <div style="font-size:40px">🎁</div>
         <div style="font-size:20px;font-weight:800;color:#38b6ff;margin-top:8px">₹150 Google Play Voucher</div>
-        <div style="font-size:13px;color:#888;margin-top:4px">तुमचे <span id="redeem-coins-show" style="color:#38b6ff;font-weight:700">0</span> coins redeem करा</div>
+        <div style="font-size:13px;color:#888;margin-top:4px">Redeem your <span id="redeem-coins-show" style="color:#38b6ff;font-weight:700">0</span> coins</div>
       </div>
       <div style="background:rgba(255,255,255,.04);border:1px solid rgba(56,182,255,.2);border-radius:14px;padding:18px">
-        <div style="font-size:13px;color:#888;margin-bottom:16px">खाली तुमचा mobile number टाका. आम्ही 24-48 तासांत voucher पाठवू.</div>
+        <div style="font-size:13px;color:#888;margin-bottom:16px">Enter your mobile number below. We'll send the voucher within 24-48 hours.</div>
         <input id="redeem-mobile" type="tel" maxlength="10" placeholder="Mobile Number (10 digits)" 
           style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(56,182,255,.3);border-radius:10px;padding:12px;color:#fff;font-size:15px;box-sizing:border-box;margin-bottom:12px">
-        <button onclick="submitRedeem()" style="width:100%;background:linear-gradient(90deg,#38b6ff,#a855f7);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;padding:14px;cursor:pointer">Submit करा</button>
-        <div style="font-size:11px;color:#666;margin-top:12px;text-align:center">Redeem केल्यावर 15,000 coins वजा होतील</div>
+        <button onclick="submitRedeem()" style="width:100%;background:linear-gradient(90deg,#38b6ff,#a855f7);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;padding:14px;cursor:pointer">Submit</button>
+        <div style="font-size:11px;color:#666;margin-top:12px;text-align:center">15,000 coins will be deducted after redeem</div>
       </div>
     </div>
   </div>
@@ -704,7 +701,7 @@ function checkAnswer(selected, correctIdx) {
     if(!isDailyExam) {
       addCoins(1);
       toast('✅ Correct! +1🪙');
-      // दर 25 correct answers वर interstitial
+      // every 25 correct answers - interstitial
       var correctSoFar = parseInt(_lsGet('normalCorrectCount') || '0') + 1;
       _lsSet('normalCorrectCount', correctSoFar);
       if(correctSoFar % 25 === 0) {
@@ -839,30 +836,30 @@ function updateCoinsDisplay() {
   var rem = document.getElementById('coins-remaining-text');
   var redeemBtn = document.getElementById('redeem-btn');
   if(total >= target) {
-    if(rem) rem.textContent = '🎉 Redeem करा!';
+    if(rem) rem.textContent = '🎉 Redeem Now!';
     if(redeemBtn) redeemBtn.style.display = 'block';
   } else {
     var left = target - total;
-    if(rem) rem.textContent = left.toLocaleString('en-IN') + ' coins बाकी';
+    if(rem) rem.textContent = left.toLocaleString('en-IN') + ' coins left';
     if(redeemBtn) redeemBtn.style.display = 'none';
   }
 }
 
 function showRedeemForm() {
-  if(getTotalCoins() < 15000) { toast('15,000 coins लागतात!'); return; }
+  if(getTotalCoins() < 15000) { toast('15,000 coins needed!'); return; }
   document.getElementById('redeem-coins-show').textContent = getTotalCoins().toLocaleString('en-IN');
   showScreen('redeem-screen');
 }
 
 function submitRedeem() {
   var mobile = document.getElementById('redeem-mobile').value.trim();
-  if(mobile.length !== 10 || isNaN(mobile)) { toast('⚠️ Valid 10-digit mobile number टाका'); return; }
-  if(getTotalCoins() < 15000) { toast('15,000 coins लागतात!'); return; }
+  if(mobile.length !== 10 || isNaN(mobile)) { toast('⚠️ Enter a valid 10-digit mobile number'); return; }
+  if(getTotalCoins() < 15000) { toast('15,000 coins needed!'); return; }
   // Google Form submit
   var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf_PLACEHOLDER/formResponse';
   var params = 'entry.MOBILE=' + encodeURIComponent(mobile) + '&entry.COINS=' + encodeURIComponent(getTotalCoins());
   fetch(formUrl + '?' + params, {method:'POST', mode:'no-cors'}).catch(function(){});
-  // Coins वजा करा
+  // Deduct coins
   _lsSet('totalCoins', getTotalCoins() - 15000);
   updateCoinsDisplay();
   toast('🎉 Request submitted! Voucher in 24-48 hours');
@@ -898,6 +895,14 @@ function getStatus(slot) {
 
 function pad(n) { return n < 10 ? '0' + n : n; }
 
+function hexToRgba(hex, alpha) {
+  hex = (hex || '#4c8bff').replace('#', '');
+  if(hex.length === 3) hex = hex.split('').map(function(c){return c+c;}).join('');
+  var num = parseInt(hex, 16);
+  var r = (num >> 16) & 255, g = (num >> 8) & 255, b = num & 255;
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
 function renderDailyCards() {
   var container = document.getElementById('daily-cards-container');
   if(!container) return;
@@ -907,7 +912,12 @@ function renderDailyCards() {
     var status = getStatus(slot);
     var card = document.createElement('div');
     card.className = 'daily-card' + (status === 'live' ? ' active-now' : '') + (status === 'locked' ? ' locked' : '') + (status === 'expired' ? ' expired' : '');
-    card.style.borderLeftColor = slot.color;
+    card.style.borderColor = slot.color;
+    card.style.borderTopColor = slot.color;
+    var glowA = (status === 'live') ? [0.9,0.6,0.35] : (status === 'locked' || status === 'expired') ? [0.35,0.15,0] : [0.55,0.28,0.12];
+    card.style.boxShadow = '0 0 4px ' + hexToRgba(slot.color, glowA[0]) +
+      ', 0 0 16px ' + hexToRgba(slot.color, glowA[1]) +
+      (glowA[2] ? ', 0 0 30px ' + hexToRgba(slot.color, glowA[2]) : '');
 
     var statusLabel = '';
     var statusClass = '';
