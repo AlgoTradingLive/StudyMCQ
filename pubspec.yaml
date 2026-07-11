@@ -24,6 +24,7 @@ flutter:
     - assets/upsc_data.js
     - assets/maths_data_10.js
     - assets/science_data_10.js
+    - assets/commerce12_accounts.js
     - assets/history_data_10.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
