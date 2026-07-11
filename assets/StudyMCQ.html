@@ -804,6 +804,8 @@ var DAILY_SCHEDULE = [
   { exam: 'MATHS_10',   label: '10th Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#38b6ff' },
   { exam: 'HISTORY_10', label: '10th History',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ffc400' },
   { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#00e5a0' },
+
+  { exam: 'ACCOUNTS_12', label: '12th Accounts', startH: 20, startM: 0, endH: 21, endM: 0, color: '#63b3ed' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -956,6 +958,7 @@ function startDailyExam(slot) {
     else if(slot.exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
     else if(slot.exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
     else if(slot.exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
+    else if(slot.exam==='ACCOUNTS_12') raw=(typeof COMMERCE12_ACCOUNTS_DATA!=='undefined')?COMMERCE12_ACCOUNTS_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
