@@ -343,10 +343,10 @@ body{
         <div class="ec-name">10th Class</div>
         <div class="ec-desc">Science · More Subjects Coming soon</div>
       </div>
-      <div class="exam-card ec-class12" onclick="showScreen('class12commerce-screen')">
-        <div class="ec-badge">💼</div>
-        <div class="ec-name">12th Commerce</div>
-        <div class="ec-desc">Accounts · More Subjects Coming soon</div>
+      <div class="exam-card ec-class12" onclick="showScreen('class12-screen')">
+        <div class="ec-badge">🎓</div>
+        <div class="ec-name">12th Class</div>
+        <div class="ec-desc">Science · Commerce · Arts</div>
       </div>
     </div>
 
@@ -376,15 +376,79 @@ body{
     </div>
   </div>
 
+  <!-- 12TH CLASS STREAM SELECTION SCREEN -->
+  <div id="class12-screen" class="screen">
+    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <div class="portal-label">12th Class Streams</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-science" onclick="showScreen('class12science-screen')" style="grid-column:1/-1">
+        <div class="ec-badge">🔬</div>
+        <div class="ec-name">Science</div>
+        <div class="ec-desc">Physics · Chemistry</div>
+      </div>
+      <div class="exam-card ec-accounts" onclick="showScreen('class12commerce-screen')" style="grid-column:1/-1">
+        <div class="ec-badge">💼</div>
+        <div class="ec-name">Commerce</div>
+        <div class="ec-desc">Accounts · OCM · Economics</div>
+      </div>
+      <div class="exam-card ec-history" onclick="showScreen('class12arts-screen')" style="grid-column:1/-1">
+        <div class="ec-badge">🎨</div>
+        <div class="ec-name">Arts</div>
+        <div class="ec-desc">Coming soon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12TH SCIENCE SUBJECT SCREEN -->
+  <div id="class12science-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('class12-screen')">← Back</button>
+    <div class="portal-label">12th Science Subjects</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-science" onclick="startExam('PHYSICS_12')" style="grid-column:1/-1">
+        <div class="ec-badge">⚛️</div>
+        <div class="ec-name">Physics</div>
+        <div class="ec-desc">Electrostatics · Current Electricity · Magnetism · Optics</div>
+      </div>
+      <div class="exam-card ec-science" onclick="startExam('CHEMISTRY_12')" style="grid-column:1/-1">
+        <div class="ec-badge">🧪</div>
+        <div class="ec-name">Chemistry</div>
+        <div class="ec-desc">Amines · Biomolecules · Polymers · Coordination Compounds</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 12TH COMMERCE SUBJECT SCREEN -->
   <div id="class12commerce-screen" class="screen">
-    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <button class="back-btn" onclick="showScreen('class12-screen')">← Back</button>
     <div class="portal-label">12th Commerce Subjects</div>
     <div class="exam-grid">
       <div class="exam-card ec-accounts" onclick="startExam('ACCOUNTS_12')" style="grid-column:1/-1">
         <div class="ec-badge">📒</div>
         <div class="ec-name">Accounts</div>
         <div class="ec-desc">Company Accounts · Shares · Partnership</div>
+      </div>
+      <div class="exam-card ec-accounts" onclick="startExam('OCM_12')" style="grid-column:1/-1">
+        <div class="ec-badge">🏢</div>
+        <div class="ec-name">OCM</div>
+        <div class="ec-desc">Organisation of Commerce and Management</div>
+      </div>
+      <div class="exam-card ec-accounts" onclick="startExam('ECONOMICS_12')" style="grid-column:1/-1">
+        <div class="ec-badge">📊</div>
+        <div class="ec-name">Economics</div>
+        <div class="ec-desc">Micro · Macro · Indian Economic Development</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12TH ARTS SUBJECT SCREEN -->
+  <div id="class12arts-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('class12-screen')">← Back</button>
+    <div class="portal-label">12th Arts Subjects</div>
+    <div class="exam-grid">
+      <div class="exam-card" style="grid-column:1/-1;cursor:default">
+        <div class="ec-badge">🎨</div>
+        <div class="ec-name">Coming Soon</div>
+        <div class="ec-desc">Arts subjects will be added soon</div>
       </div>
     </div>
   </div>
@@ -513,6 +577,10 @@ body{
 <script src="maths_data_10.js"></script>
 <script src="history_data_10.js"></script>
 <script src="commerce12_accounts.js"></script>
+<script src="commerce12_ocm.js"></script>
+<script src="commerce12_economics.js"></script>
+<script src="science12_physics.js"></script>
+<script src="science12_chemistry.js"></script>
 
 <script>
 // ── STATE ──
@@ -535,7 +603,11 @@ var MARKING = {
   SCIENCE_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   MATHS_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   HISTORY_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  ACCOUNTS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
+  ACCOUNTS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  OCM_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ECONOMICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  PHYSICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  CHEMISTRY_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -550,7 +622,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class10-screen','class12commerce-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class10-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -584,6 +656,10 @@ function startExam(exam) {
     else if(exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
     else if(exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
     else if(exam==='ACCOUNTS_12') raw=(typeof COMMERCE12_ACCOUNTS_DATA!=='undefined')?COMMERCE12_ACCOUNTS_DATA:null;
+    else if(exam==='OCM_12') raw=(typeof COMMERCE12_OCM_DATA!=='undefined')?COMMERCE12_OCM_DATA:null;
+    else if(exam==='ECONOMICS_12') raw=(typeof COMMERCE12_ECONOMICS_DATA!=='undefined')?COMMERCE12_ECONOMICS_DATA:null;
+    else if(exam==='PHYSICS_12') raw=(typeof SCIENCE12_PHYSICS_DATA!=='undefined')?SCIENCE12_PHYSICS_DATA:null;
+    else if(exam==='CHEMISTRY_12') raw=(typeof SCIENCE12_CHEMISTRY_DATA!=='undefined')?SCIENCE12_CHEMISTRY_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -610,7 +686,7 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -803,6 +879,10 @@ var DAILY_SCHEDULE = [
   { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#00e5a0' },
 
   { exam: 'ACCOUNTS_12', label: '12th Accounts', startH: 20, startM: 0, endH: 21, endM: 0, color: '#63b3ed' },
+  { exam: 'OCM_12', label: '12th OCM', startH: 19, startM: 0, endH: 20, endM: 0, color: '#63b3ed' },
+  { exam: 'ECONOMICS_12', label: '12th Economics', startH: 21, startM: 0, endH: 22, endM: 0, color: '#63b3ed' },
+  { exam: 'CHEMISTRY_12', label: '12th Chemistry', startH: 19, startM: 30, endH: 20, endM: 30, color: '#00e5a0' },
+  { exam: 'PHYSICS_12', label: '12th Physics', startH: 20, startM: 30, endH: 21, endM: 30, color: '#00e5a0' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -969,6 +1049,10 @@ function startDailyExam(slot) {
     else if(slot.exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
     else if(slot.exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
     else if(slot.exam==='ACCOUNTS_12') raw=(typeof COMMERCE12_ACCOUNTS_DATA!=='undefined')?COMMERCE12_ACCOUNTS_DATA:null;
+    else if(slot.exam==='OCM_12') raw=(typeof COMMERCE12_OCM_DATA!=='undefined')?COMMERCE12_OCM_DATA:null;
+    else if(slot.exam==='ECONOMICS_12') raw=(typeof COMMERCE12_ECONOMICS_DATA!=='undefined')?COMMERCE12_ECONOMICS_DATA:null;
+    else if(slot.exam==='PHYSICS_12') raw=(typeof SCIENCE12_PHYSICS_DATA!=='undefined')?SCIENCE12_PHYSICS_DATA:null;
+    else if(slot.exam==='CHEMISTRY_12') raw=(typeof SCIENCE12_CHEMISTRY_DATA!=='undefined')?SCIENCE12_CHEMISTRY_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
