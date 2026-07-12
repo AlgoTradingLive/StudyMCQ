@@ -114,9 +114,9 @@ body{
 .ec-class10 .ec-badge{background:rgba(255,105,180,.16);color:#ff69b4}
 .ec-class10:hover,.ec-class10:active{background:rgba(255,105,180,.1);border-color:#ff69b4;box-shadow:0 8px 20px rgba(255,105,180,.2)}
 .ec-class10 .ec-name{color:#ff69b4}
-.ec-class12 .ec-badge{background:rgba(20,184,166,.16);color:#14b8a6}
-.ec-class12:hover,.ec-class12:active{background:rgba(20,184,166,.1);border-color:#14b8a6;box-shadow:0 8px 20px rgba(20,184,166,.2)}
-.ec-class12 .ec-name{color:#14b8a6}
+.ec-class12 .ec-badge{background:rgba(6,182,212,.16);color:#06b6d4}
+.ec-class12:hover,.ec-class12:active{background:rgba(6,182,212,.1);border-color:#06b6d4;box-shadow:0 8px 20px rgba(6,182,212,.2)}
+.ec-class12 .ec-name{color:#06b6d4}
 .ec-accounts .ec-badge{background:rgba(99,179,237,.16);color:#63b3ed}
 .ec-accounts:hover,.ec-accounts:active{background:rgba(99,179,237,.1);border-color:#63b3ed;box-shadow:0 8px 20px rgba(99,179,237,.2)}
 .ec-accounts .ec-name{color:#63b3ed}
@@ -358,17 +358,17 @@ body{
     <button class="back-btn" onclick="goToHome()">← Back</button>
     <div class="portal-label">10th Class Subjects</div>
     <div class="exam-grid">
-      <div class="exam-card ec-science" onclick="startExam('SCIENCE_10')" style="grid-column:1/-1">
+      <div class="exam-card ec-class10" onclick="startExam('SCIENCE_10')" style="grid-column:1/-1">
         <div class="ec-badge">🔬</div>
         <div class="ec-name">Science</div>
         <div class="ec-desc">Physics · Chemistry · Biology</div>
       </div>
-      <div class="exam-card ec-maths" onclick="startExam('MATHS_10')" style="grid-column:1/-1">
+      <div class="exam-card ec-class10" onclick="startExam('MATHS_10')" style="grid-column:1/-1">
         <div class="ec-badge">📐</div>
         <div class="ec-name">Maths</div>
         <div class="ec-desc">Algebra · Geometry · A.P. · Polynomials</div>
       </div>
-      <div class="exam-card ec-history" onclick="startExam('HISTORY_10')" style="grid-column:1/-1">
+      <div class="exam-card ec-class10" onclick="startExam('HISTORY_10')" style="grid-column:1/-1">
         <div class="ec-badge">🏛️</div>
         <div class="ec-name">Social Science</div>
         <div class="ec-desc">History · Geography · Political Science</div>
@@ -381,17 +381,17 @@ body{
     <button class="back-btn" onclick="goToHome()">← Back</button>
     <div class="portal-label">12th Class Streams</div>
     <div class="exam-grid">
-      <div class="exam-card ec-science" onclick="showScreen('class12science-screen')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="showScreen('class12science-screen')" style="grid-column:1/-1">
         <div class="ec-badge">🔬</div>
         <div class="ec-name">Science</div>
         <div class="ec-desc">Physics · Chemistry</div>
       </div>
-      <div class="exam-card ec-accounts" onclick="showScreen('class12commerce-screen')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="showScreen('class12commerce-screen')" style="grid-column:1/-1">
         <div class="ec-badge">💼</div>
         <div class="ec-name">Commerce</div>
         <div class="ec-desc">Accounts · OCM · Economics</div>
       </div>
-      <div class="exam-card ec-history" onclick="showScreen('class12arts-screen')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="showScreen('class12arts-screen')" style="grid-column:1/-1">
         <div class="ec-badge">🎨</div>
         <div class="ec-name">Arts</div>
         <div class="ec-desc">Coming soon</div>
@@ -404,12 +404,12 @@ body{
     <button class="back-btn" onclick="showScreen('class12-screen')">← Back</button>
     <div class="portal-label">12th Science Subjects</div>
     <div class="exam-grid">
-      <div class="exam-card ec-science" onclick="startExam('PHYSICS_12')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="startExam('PHYSICS_12')" style="grid-column:1/-1">
         <div class="ec-badge">⚛️</div>
         <div class="ec-name">Physics</div>
         <div class="ec-desc">Electrostatics · Current Electricity · Magnetism · Optics</div>
       </div>
-      <div class="exam-card ec-science" onclick="startExam('CHEMISTRY_12')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="startExam('CHEMISTRY_12')" style="grid-column:1/-1">
         <div class="ec-badge">🧪</div>
         <div class="ec-name">Chemistry</div>
         <div class="ec-desc">Amines · Biomolecules · Polymers · Coordination Compounds</div>
@@ -422,17 +422,17 @@ body{
     <button class="back-btn" onclick="showScreen('class12-screen')">← Back</button>
     <div class="portal-label">12th Commerce Subjects</div>
     <div class="exam-grid">
-      <div class="exam-card ec-accounts" onclick="startExam('ACCOUNTS_12')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="startExam('ACCOUNTS_12')" style="grid-column:1/-1">
         <div class="ec-badge">📒</div>
         <div class="ec-name">Accounts</div>
         <div class="ec-desc">Company Accounts · Shares · Partnership</div>
       </div>
-      <div class="exam-card ec-accounts" onclick="startExam('OCM_12')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="startExam('OCM_12')" style="grid-column:1/-1">
         <div class="ec-badge">🏢</div>
         <div class="ec-name">OCM</div>
         <div class="ec-desc">Organisation of Commerce and Management</div>
       </div>
-      <div class="exam-card ec-accounts" onclick="startExam('ECONOMICS_12')" style="grid-column:1/-1">
+      <div class="exam-card ec-class12" onclick="startExam('ECONOMICS_12')" style="grid-column:1/-1">
         <div class="ec-badge">📊</div>
         <div class="ec-name">Economics</div>
         <div class="ec-desc">Micro · Macro · Indian Economic Development</div>
@@ -874,15 +874,15 @@ var DAILY_SCHEDULE = [
 
   { exam: 'NISM', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
 
-  { exam: 'MATHS_10',   label: '10th Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#38b6ff' },
-  { exam: 'HISTORY_10', label: '10th History',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ffc400' },
-  { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#00e5a0' },
+  { exam: 'MATHS_10',   label: '10th Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#ff69b4' },
+  { exam: 'HISTORY_10', label: '10th History',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ff69b4' },
+  { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#ff69b4' },
 
-  { exam: 'ACCOUNTS_12', label: '12th Accounts', startH: 20, startM: 0, endH: 21, endM: 0, color: '#63b3ed' },
-  { exam: 'OCM_12', label: '12th OCM', startH: 19, startM: 0, endH: 20, endM: 0, color: '#63b3ed' },
-  { exam: 'ECONOMICS_12', label: '12th Economics', startH: 21, startM: 0, endH: 22, endM: 0, color: '#63b3ed' },
-  { exam: 'CHEMISTRY_12', label: '12th Chemistry', startH: 19, startM: 30, endH: 20, endM: 30, color: '#00e5a0' },
-  { exam: 'PHYSICS_12', label: '12th Physics', startH: 20, startM: 30, endH: 21, endM: 30, color: '#00e5a0' },
+  { exam: 'ACCOUNTS_12', label: '12th Accounts', startH: 20, startM: 0, endH: 21, endM: 0, color: '#06b6d4' },
+  { exam: 'OCM_12', label: '12th OCM', startH: 19, startM: 0, endH: 20, endM: 0, color: '#06b6d4' },
+  { exam: 'ECONOMICS_12', label: '12th Economics', startH: 21, startM: 0, endH: 22, endM: 0, color: '#06b6d4' },
+  { exam: 'CHEMISTRY_12', label: '12th Chemistry', startH: 19, startM: 30, endH: 20, endM: 30, color: '#06b6d4' },
+  { exam: 'PHYSICS_12', label: '12th Physics', startH: 20, startM: 30, endH: 21, endM: 30, color: '#06b6d4' },
 ];
 
 var DAILY_QUESTIONS = 50;
