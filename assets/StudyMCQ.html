@@ -222,7 +222,7 @@ body{
 .coins-bar{display:flex;align-items:center;gap:6px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;margin-bottom:16px}
 .coins-icon{font-size:18px}
 .coins-label{font-size:12px;color:var(--text-dim)}
-.coins-value{font-size:17px;font-weight:800;color:#f5f7fb;margin-left:auto}
+.coins-value{font-size:22px;font-weight:900;color:#ffcc33;margin-left:auto;font-family:'Courier New',monospace;letter-spacing:1px;text-shadow:0 0 12px rgba(255,204,51,.5)}
 
 /* RESULT COINS */
 .coins-earned{text-align:center;margin:12px 0;padding:12px;background:rgba(56,182,255,.1);border:1px solid rgba(56,182,255,.3);border-radius:12px}
@@ -243,9 +243,9 @@ body{
 
   <!-- TOP CONTROLS -->
   <div class="top-controls">
-    <div class="brand">
+    <div class="brand" style="display:none">
       <div class="brand-mark">S</div>
-      <div class="brand-text">
+      <div class="brand-text" style="display:none">
         <div class="brand-name">StudyMCQ</div>
         <div class="brand-tag">Your Success, Our Mission</div>
       </div>
@@ -280,13 +280,13 @@ body{
         <span class="coins-icon">🪙</span>
         <span class="coins-label">My Coins</span>
         <span class="coins-value" id="total-coins">0</span>
-        <span style="margin-left:auto;font-size:11px;color:var(--text-dim)">/ 15,000</span>
+        <span style="margin-left:auto;font-size:13px;font-weight:800;color:#ffcc33;font-family:'Courier New',monospace" id="coins-total-label">/ 15,000</span>
       </div>
       <div style="background:rgba(255,255,255,.08);border-radius:6px;height:8px;overflow:hidden">
         <div id="coins-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));border-radius:6px;width:0%;transition:width 0.5s"></div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:11px;color:var(--text-dim)" id="coins-remaining-text">15,000 coins left</span>
+        <span style="font-size:11px;color:#ffcc33;font-weight:700" id="coins-remaining-text">15,000 coins left</span>
         <button id="redeem-btn" onclick="showRedeemForm()" style="display:none;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;padding:4px 12px;cursor:pointer">🎁 Redeem ₹150</button>
       </div>
     </div>
@@ -891,11 +891,28 @@ var DAILY_SCHEDULE = [
   { exam: 'ECONOMICS_12', label: '12th Economics', startH: 21, startM: 0, endH: 22, endM: 0, color: '#06b6d4' },
   { exam: 'CHEMISTRY_12', label: '12th Chemistry', startH: 19, startM: 30, endH: 20, endM: 30, color: '#06b6d4' },
   { exam: 'PHYSICS_12', label: '12th Physics', startH: 20, startM: 30, endH: 21, endM: 30, color: '#06b6d4' },
-  { exam: 'BIOLOGY_12', label: '12th Biology', startH: 17, startM: 0, endH: 18, endM: 0, color: '#06b6d4' },
-  { exam: 'MATHS_12', label: '12th Maths', startH: 16, startM: 0, endH: 17, endM: 0, color: '#06b6d4' },
+  { exam: 'BIOLOGY_12', label: '12th Biology', startH: 6, startM: 30, endH: 7, endM: 30, color: '#06b6d4' },
+  { exam: 'MATHS_12', label: '12th Maths', startH: 9, startM: 30, endH: 10, endM: 30, color: '#06b6d4' },
 ];
 
 var DAILY_QUESTIONS = 50;
+
+// Compute the mirrored (other half of day) time for each exam so every exam
+// runs twice a day at the SAME clock hour — once AM, once PM.
+DAILY_SCHEDULE.forEach(function(s) {
+  var dur = (s.endH * 60 + s.endM) - (s.startH * 60 + s.startM);
+  s.otherH = (s.startH + 12) % 24;
+  s.otherM = s.startM;
+  var otherEndTotal = s.otherH * 60 + s.otherM + dur;
+  s.otherEndH = Math.floor(otherEndTotal / 60) % 24;
+  s.otherEndM = otherEndTotal % 60;
+});
+
+function formatAmPm(h, m) {
+  var period = h < 12 ? 'AM' : 'PM';
+  var hh = h % 12; if(hh === 0) hh = 12;
+  return hh + ':' + pad(m) + ' ' + period;
+}
 var isDailyExam = false;
 var dailyExamData = null;
 var coinsEarnedThisSession = 0;
@@ -971,15 +988,19 @@ function markDailyDone(exam) {
 
 function getStatus(slot) {
   var now = new Date();
-  var h = now.getHours();
-  var m = now.getMinutes();
-  var cur = h * 60 + m;
-  var start = slot.startH * 60 + slot.startM;
-  var end = slot.endH * 60 + slot.endM;
+  var cur = now.getHours() * 60 + now.getMinutes();
 
   if(isDailyDone(slot.exam)) return 'done';
-  if(cur < start) return 'locked';
-  if(cur >= start && cur < end) return 'live';
+
+  var w1s = slot.startH * 60 + slot.startM, w1e = slot.endH * 60 + slot.endM;
+  var w2s = slot.otherH * 60 + slot.otherM, w2e = slot.otherEndH * 60 + slot.otherEndM;
+  var first  = (w1s < w2s) ? {s: w1s, e: w1e} : {s: w2s, e: w2e};
+  var second = (w1s < w2s) ? {s: w2s, e: w2e} : {s: w1s, e: w1e};
+
+  if(cur >= first.s  && cur < first.e)  return 'live';
+  if(cur >= second.s && cur < second.e) return 'live';
+  if(cur < first.s) return 'locked';
+  if(cur >= first.e && cur < second.s) return 'locked';
   return 'expired';
 }
 
@@ -1016,13 +1037,19 @@ function renderDailyCards() {
     else if(status === 'expired') { statusLabel = '⏰ Expired'; statusClass = 'status-expired'; }
     else if(status === 'done') { statusLabel = '✅ Done'; statusClass = 'status-done'; }
 
+    var amH = (slot.startH < 12) ? slot.startH : slot.otherH;
+    var amM = (slot.startH < 12) ? slot.startM : slot.otherM;
+    var pmH = (slot.startH < 12) ? slot.otherH : slot.startH;
+    var pmM = (slot.startH < 12) ? slot.otherM : slot.startM;
+
     card.innerHTML = '<div class="daily-left">' +
       '<div class="daily-subject" style="color:' + slot.color + '">' + (slot.label || slot.exam) + ' Daily</div>' +
       '<div class="daily-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + ' · ' + DAILY_QUESTIONS + ' Qs</div>' +
+      '<div class="daily-coins">🔁 Twice daily: ' + formatAmPm(amH, amM) + ' & ' + formatAmPm(pmH, pmM) + '</div>' +
       '</div>' +
       '<div class="daily-right">' +
       '<div class="daily-status ' + statusClass + '">' + statusLabel + '</div>' +
-      '<div class="daily-coins">🪙 1 coin/correct · Get2xCoins@60% · Get3xCoins@80%</div>' +
+      '<div class="daily-coins">🪙 Score 80%+ to get 3x coins, otherwise 0 coins</div>' +
       '</div>';
 
     if(status === 'live') {
@@ -1032,8 +1059,15 @@ function renderDailyCards() {
     } else if(status === 'expired') {
       card.onclick = function() { toast('⏰ This exam has expired for today!'); };
     } else {
-      card.onclick = function() { 
-        toast('🔒 Opens at ' + pad(slot.startH) + ':' + pad(slot.startM));
+      card.onclick = function() {
+        var now = new Date();
+        var cur = now.getHours() * 60 + now.getMinutes();
+        var w1s = slot.startH * 60 + slot.startM;
+        var w2s = slot.otherH * 60 + slot.otherM;
+        var first = Math.min(w1s, w2s), second = Math.max(w1s, w2s);
+        var nextS = (cur < first) ? first : second;
+        var nh = Math.floor(nextS / 60), nm = nextS % 60;
+        toast('🔒 Opens at ' + formatAmPm(nh, nm));
       };
     }
 
@@ -1144,9 +1178,8 @@ showResult = function() {
   }
   correctCount = Math.max(0, correctCount);
 
-  var multiplier = 1;
+  var multiplier = 0;
   if(pct >= 80) multiplier = 3;
-  else if(pct >= 60) multiplier = 2;
 
   var coins = correctCount * multiplier;
   coinsEarnedThisSession = coins;
@@ -1159,7 +1192,7 @@ showResult = function() {
   var box = document.getElementById('coins-earned-box');
   var num = document.getElementById('coins-earned-num');
   box.style.display = 'block';
-  num.textContent = '+' + coins + ' 🪙' + (multiplier > 1 ? ' (' + multiplier + 'x bonus!)' : '');
+  num.textContent = multiplier > 0 ? ('+' + coins + ' 🪙 (3x bonus!)') : '0 🪙 (Score 80%+ to earn coins)';
 
   isDailyExam = false;
 };
