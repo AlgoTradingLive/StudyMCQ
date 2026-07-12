@@ -882,17 +882,17 @@ var DAILY_SCHEDULE = [
 
   { exam: 'NISM', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
 
-  { exam: 'MATHS_10',   label: '10th Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#ff69b4' },
-  { exam: 'HISTORY_10', label: '10th History',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ff69b4' },
-  { exam: 'SCIENCE_10', label: '10th Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#ff69b4' },
+  { exam: 'MATHS_10',   label: 'Class 10 Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#ff69b4' },
+  { exam: 'HISTORY_10', label: 'Class 10 History-Geography',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ff69b4' },
+  { exam: 'SCIENCE_10', label: 'Class 10 Science',         startH: 21, startM: 30, endH: 22, endM: 30, color: '#ff69b4' },
 
-  { exam: 'ACCOUNTS_12', label: '12th Accounts', startH: 20, startM: 0, endH: 21, endM: 0, color: '#06b6d4' },
-  { exam: 'OCM_12', label: '12th OCM', startH: 19, startM: 0, endH: 20, endM: 0, color: '#06b6d4' },
-  { exam: 'ECONOMICS_12', label: '12th Economics', startH: 21, startM: 0, endH: 22, endM: 0, color: '#06b6d4' },
-  { exam: 'CHEMISTRY_12', label: '12th Chemistry', startH: 19, startM: 30, endH: 20, endM: 30, color: '#06b6d4' },
-  { exam: 'PHYSICS_12', label: '12th Physics', startH: 20, startM: 30, endH: 21, endM: 30, color: '#06b6d4' },
-  { exam: 'BIOLOGY_12', label: '12th Biology', startH: 6, startM: 30, endH: 7, endM: 30, color: '#06b6d4' },
-  { exam: 'MATHS_12', label: '12th Maths', startH: 9, startM: 30, endH: 10, endM: 30, color: '#06b6d4' },
+  { exam: 'ACCOUNTS_12', label: 'Class 12 Accounts · Commerce', startH: 20, startM: 0, endH: 21, endM: 0, color: '#06b6d4' },
+  { exam: 'OCM_12', label: 'Class 12 OCM · Commerce', startH: 19, startM: 0, endH: 20, endM: 0, color: '#06b6d4' },
+  { exam: 'ECONOMICS_12', label: 'Class 12 Economics · Commerce', startH: 21, startM: 0, endH: 22, endM: 0, color: '#06b6d4' },
+  { exam: 'CHEMISTRY_12', label: 'Class 12 Chemistry · Science', startH: 19, startM: 30, endH: 20, endM: 30, color: '#06b6d4' },
+  { exam: 'PHYSICS_12', label: 'Class 12 Physics · Science', startH: 20, startM: 30, endH: 21, endM: 30, color: '#06b6d4' },
+  { exam: 'BIOLOGY_12', label: 'Class 12 Biology · Science', startH: 6, startM: 30, endH: 7, endM: 30, color: '#06b6d4' },
+  { exam: 'MATHS_12', label: 'Class 12 Maths · Science', startH: 9, startM: 30, endH: 10, endM: 30, color: '#06b6d4' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -1042,15 +1042,12 @@ function renderDailyCards() {
     var pmH = (slot.startH < 12) ? slot.otherH : slot.startH;
     var pmM = (slot.startH < 12) ? slot.otherM : slot.startM;
 
-    card.innerHTML = '<div class="daily-left">' +
-      '<div class="daily-subject" style="color:' + slot.color + '">' + (slot.label || slot.exam) + ' Daily</div>' +
+    card.innerHTML =
+      '<div class="daily-status ' + statusClass + '" style="margin-bottom:8px">' + statusLabel + '</div>' +
+      '<div class="daily-subject" style="color:' + slot.color + ';margin-top:0">' + (slot.label || slot.exam) + ' Daily</div>' +
       '<div class="daily-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + ' · ' + DAILY_QUESTIONS + ' Qs</div>' +
       '<div class="daily-coins">🔁 Twice daily: ' + formatAmPm(amH, amM) + ' & ' + formatAmPm(pmH, pmM) + '</div>' +
-      '</div>' +
-      '<div class="daily-right">' +
-      '<div class="daily-status ' + statusClass + '">' + statusLabel + '</div>' +
-      '<div class="daily-coins">🪙 Score 80%+ to get 3x coins, otherwise 0 coins</div>' +
-      '</div>';
+      '<div class="daily-coins">🪙 Score 80%+ to get 3x coins, otherwise 0 coins</div>';
 
     if(status === 'live') {
       card.onclick = function() { startDailyExam(slot); };
