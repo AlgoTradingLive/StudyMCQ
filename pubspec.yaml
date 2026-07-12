@@ -30,5 +30,7 @@ flutter:
     - assets/commerce12_economics.js
     - assets/commerce12_ocm.js
     - assets/history_data_10.js
+    - assets/science12_biology.js
+    - assets/science12_maths.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
