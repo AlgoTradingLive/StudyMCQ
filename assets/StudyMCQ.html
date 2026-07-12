@@ -414,6 +414,16 @@ body{
         <div class="ec-name">Chemistry</div>
         <div class="ec-desc">Amines · Biomolecules · Polymers · Coordination Compounds</div>
       </div>
+      <div class="exam-card ec-class12" onclick="startExam('BIOLOGY_12')" style="grid-column:1/-1">
+        <div class="ec-badge">🧬</div>
+        <div class="ec-name">Biology</div>
+        <div class="ec-desc">Reproduction · Genetics · Biotechnology · Ecology</div>
+      </div>
+      <div class="exam-card ec-class12" onclick="startExam('MATHS_12')" style="grid-column:1/-1">
+        <div class="ec-badge">📐</div>
+        <div class="ec-name">Maths</div>
+        <div class="ec-desc">Calculus · Matrices · Vectors · Probability</div>
+      </div>
     </div>
   </div>
 
@@ -581,6 +591,8 @@ body{
 <script src="commerce12_economics.js"></script>
 <script src="science12_physics.js"></script>
 <script src="science12_chemistry.js"></script>
+<script src="science12_biology.js"></script>
+<script src="science12_maths.js"></script>
 
 <script>
 // ── STATE ──
@@ -607,7 +619,9 @@ var MARKING = {
   OCM_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ECONOMICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   PHYSICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  CHEMISTRY_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
+  CHEMISTRY_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  BIOLOGY_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  MATHS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -660,6 +674,8 @@ function startExam(exam) {
     else if(exam==='ECONOMICS_12') raw=(typeof COMMERCE12_ECONOMICS_DATA!=='undefined')?COMMERCE12_ECONOMICS_DATA:null;
     else if(exam==='PHYSICS_12') raw=(typeof SCIENCE12_PHYSICS_DATA!=='undefined')?SCIENCE12_PHYSICS_DATA:null;
     else if(exam==='CHEMISTRY_12') raw=(typeof SCIENCE12_CHEMISTRY_DATA!=='undefined')?SCIENCE12_CHEMISTRY_DATA:null;
+    else if(exam==='BIOLOGY_12') raw=(typeof BIOLOGY12_DATA!=='undefined')?BIOLOGY12_DATA:null;
+    else if(exam==='MATHS_12') raw=(typeof SCIENCE12_MATHS_DATA!=='undefined')?SCIENCE12_MATHS_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -686,7 +702,7 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -883,6 +899,8 @@ var DAILY_SCHEDULE = [
   { exam: 'ECONOMICS_12', label: '12th Economics', startH: 21, startM: 0, endH: 22, endM: 0, color: '#06b6d4' },
   { exam: 'CHEMISTRY_12', label: '12th Chemistry', startH: 19, startM: 30, endH: 20, endM: 30, color: '#06b6d4' },
   { exam: 'PHYSICS_12', label: '12th Physics', startH: 20, startM: 30, endH: 21, endM: 30, color: '#06b6d4' },
+  { exam: 'BIOLOGY_12', label: '12th Biology', startH: 17, startM: 0, endH: 18, endM: 0, color: '#06b6d4' },
+  { exam: 'MATHS_12', label: '12th Maths', startH: 16, startM: 0, endH: 17, endM: 0, color: '#06b6d4' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -1053,6 +1071,8 @@ function startDailyExam(slot) {
     else if(slot.exam==='ECONOMICS_12') raw=(typeof COMMERCE12_ECONOMICS_DATA!=='undefined')?COMMERCE12_ECONOMICS_DATA:null;
     else if(slot.exam==='PHYSICS_12') raw=(typeof SCIENCE12_PHYSICS_DATA!=='undefined')?SCIENCE12_PHYSICS_DATA:null;
     else if(slot.exam==='CHEMISTRY_12') raw=(typeof SCIENCE12_CHEMISTRY_DATA!=='undefined')?SCIENCE12_CHEMISTRY_DATA:null;
+    else if(slot.exam==='BIOLOGY_12') raw=(typeof BIOLOGY12_DATA!=='undefined')?BIOLOGY12_DATA:null;
+    else if(slot.exam==='MATHS_12') raw=(typeof SCIENCE12_MATHS_DATA!=='undefined')?SCIENCE12_MATHS_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
