@@ -220,13 +220,20 @@ body{
 .star-card .sc-time{font-size:10.5px;color:var(--text-dim)}
 .star-card .sc-coins{font-size:9.5px;color:#c8ab52;margin-top:4px}
 
-.star-empty-card{width:100%;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.15);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;margin-bottom:14px}
+.star-empty-card{width:100%;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.18);border-radius:14px;padding:22px 16px;text-align:center;cursor:pointer;margin-bottom:14px;transition:all .2s}
+.star-empty-card:active{transform:scale(.98);background:rgba(255,255,255,.05)}
 .star-empty-card .sec-icon{font-size:26px;margin-bottom:6px}
 .star-empty-card .sec-text{font-size:13px;font-weight:700;color:#e2e8f0}
-.star-empty-card .sec-sub{font-size:11px;color:var(--text-dim);margin-top:3px}
+.star-empty-card .sec-sub{font-size:11px;color:var(--text-dim);margin-top:3px;margin-bottom:14px}
+.sec-cta{display:inline-block;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple-2));color:#fff;font-size:11.5px;font-weight:700;padding:8px 20px;border-radius:20px;box-shadow:0 4px 14px rgba(91,61,240,.35)}
 
-.manage-star-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;padding:11px;border-radius:12px;cursor:pointer;font-size:12.5px;font-weight:700}
-.manage-star-btn:active{transform:scale(.97)}
+.manage-star-btn{display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid var(--card-border);color:#fff;padding:12px 14px;border-radius:14px;cursor:pointer;transition:all .2s}
+.manage-star-btn:active{transform:scale(.98);background:rgba(255,255,255,.06)}
+.msb-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple-2));display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 4px 14px rgba(91,61,240,.35)}
+.msb-text{flex:1;text-align:left}
+.msb-title{font-size:13.5px;font-weight:800;color:#f5f7fb}
+.msb-sub{font-size:10.5px;color:var(--text-dim);margin-top:2px}
+.msb-arrow{font-size:20px;color:var(--text-dim);flex-shrink:0}
 
 /* MANAGE STARS MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:999;align-items:flex-end;justify-content:center}
@@ -242,6 +249,18 @@ body{
 .manage-item-name{font-size:13px;font-weight:700;flex:1}
 .manage-item-time{font-size:10.5px;color:var(--text-dim)}
 .manage-star-icon{font-size:19px;flex-shrink:0;width:22px;text-align:center}
+
+/* RATE US POPUP */
+.rate-overlay{align-items:center}
+.rate-panel{background:#0a0a0d;border:1px solid rgba(255,255,255,.1);border-radius:22px;width:100%;max-width:360px;padding:28px 22px;text-align:center}
+.rate-emoji{font-size:42px;margin-bottom:12px}
+.rate-title{font-size:16px;font-weight:800;color:#f5f7fb;margin-bottom:6px}
+.rate-sub{font-size:12.5px;color:var(--text-dim);margin-bottom:22px}
+.rate-btns{display:flex;gap:10px}
+.rate-btn{flex:1;padding:13px 10px;border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.rate-btn:active{transform:scale(.96)}
+.rate-btn-no{background:rgba(255,255,255,.06);color:#e2e8f0;border:1px solid rgba(255,255,255,.12)}
+.rate-btn-yes{background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple-2));color:#fff;box-shadow:0 4px 14px rgba(91,61,240,.4)}
 
 /* COINS DISPLAY */
 .coins-bar{display:flex;align-items:center;gap:6px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;margin-bottom:16px}
@@ -321,6 +340,7 @@ body{
         <div class="sec-icon">⭐</div>
         <div class="sec-text">Pick Your Daily Exams</div>
         <div class="sec-sub">Star the exams you want to see here</div>
+        <div class="sec-cta">+ Select Exams</div>
       </div>
 
       <div id="live-row-wrap" style="display:none">
@@ -333,7 +353,14 @@ body{
         <div id="upcoming-cards-row" class="star-row-scroll"></div>
       </div>
 
-      <div class="manage-star-btn" onclick="openManageStars()">⭐ Manage My Exams</div>
+      <div class="manage-star-btn" onclick="openManageStars()">
+        <div class="msb-icon">⭐</div>
+        <div class="msb-text">
+          <div class="msb-title">Manage My Exams</div>
+          <div class="msb-sub">Add or remove exams to track</div>
+        </div>
+        <div class="msb-arrow">›</div>
+      </div>
     </div>
 
     <div id="manage-stars-overlay" class="modal-overlay">
@@ -343,6 +370,18 @@ body{
           <button class="modal-close" onclick="closeManageStars()">✕</button>
         </div>
         <div id="manage-stars-list"></div>
+      </div>
+    </div>
+
+    <div id="rate-overlay" class="modal-overlay rate-overlay">
+      <div class="rate-panel">
+        <div class="rate-emoji">⭐</div>
+        <div class="rate-title">Enjoying StudyMCQ?</div>
+        <div class="rate-sub">Your feedback helps us grow</div>
+        <div class="rate-btns">
+          <button class="rate-btn rate-btn-no" onclick="rateNo()">👎 Not Really</button>
+          <button class="rate-btn rate-btn-yes" onclick="rateYes()">👍 I Love It!</button>
+        </div>
       </div>
     </div>
 
@@ -1164,6 +1203,11 @@ function buildStarCard(slot, status) {
   else if(status === 'expired') { statusLabel = '⏰ Expired'; statusClass = 'status-expired'; }
   else if(status === 'done') { statusLabel = '✅ Done'; statusClass = 'status-done'; }
 
+  var amH = (slot.startH < 12) ? slot.startH : slot.otherH;
+  var amM = (slot.startH < 12) ? slot.startM : slot.otherM;
+  var pmH = (slot.startH < 12) ? slot.otherH : slot.startH;
+  var pmM = (slot.startH < 12) ? slot.otherM : slot.startM;
+
   var card = document.createElement('div');
   card.className = 'star-card' + (status === 'live' ? ' active-now' : '') + (status === 'locked' ? ' locked' : '') + (status === 'expired' ? ' expired' : '');
   card.style.borderColor = slot.color;
@@ -1172,7 +1216,7 @@ function buildStarCard(slot, status) {
   card.innerHTML =
     '<div class="sc-status ' + statusClass + '">' + statusLabel + '</div>' +
     '<div class="sc-subject" style="color:' + slot.color + '">' + (slot.label || slot.exam) + '</div>' +
-    '<div class="sc-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + '</div>' +
+    '<div class="sc-time">🔁 ' + formatAmPm(amH, amM) + ' & ' + formatAmPm(pmH, pmM) + '</div>' +
     '<div class="sc-coins">📝 ' + DAILY_QUESTIONS + ' Qs</div>';
 
   if(status === 'live') {
@@ -1247,6 +1291,39 @@ function closeManageStars() {
   document.getElementById('manage-stars-overlay').classList.remove('active');
 }
 
+// ---- RATE US POPUP ----
+var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.studymcq.study_mcq';
+
+function openRatePopup() {
+  document.getElementById('rate-overlay').classList.add('active');
+}
+function closeRatePopupOverlay() {
+  document.getElementById('rate-overlay').classList.remove('active');
+}
+function rateYes() {
+  _lsSet('hasRated', '1');
+  closeRatePopupOverlay();
+  try { window.open(PLAY_STORE_URL, '_blank'); } catch(e) {}
+  toast('🙏 Thanks for rating us!');
+}
+function rateNo() {
+  closeRatePopupOverlay();
+  toast('Thanks for the feedback! 🙌');
+}
+function maybeShowRatePopup(total) {
+  if(_lsGet('hasRated') === '1') return;
+  var lastPrompt = parseInt(_lsGet('rateLastPromptAt') || '0');
+  if(total >= 3 && (lastPrompt === 0 || total - lastPrompt >= 10)) {
+    _lsSet('rateLastPromptAt', total);
+    setTimeout(openRatePopup, 1200);
+  }
+}
+function trackExamCompletion() {
+  var total = parseInt(_lsGet('examsCompletedTotal') || '0') + 1;
+  _lsSet('examsCompletedTotal', total);
+  maybeShowRatePopup(total);
+}
+
 function renderManageStarsList() {
   var container = document.getElementById('manage-stars-list');
   if(!container) return;
@@ -1258,16 +1335,28 @@ function renderManageStarsList() {
     title.textContent = cat.label;
     container.appendChild(title);
 
-    cat.exams.forEach(function(exam) {
+    var sortedExams = cat.exams.slice().sort(function(a, b) {
+      var sa = findSlot(a), sb = findSlot(b);
+      if(!sa || !sb) return 0;
+      var ta = Math.min(sa.startH * 60 + sa.startM, sa.otherH * 60 + sa.otherM);
+      var tb = Math.min(sb.startH * 60 + sb.startM, sb.otherH * 60 + sb.otherM);
+      return ta - tb;
+    });
+
+    sortedExams.forEach(function(exam) {
       var slot = findSlot(exam);
       if(!slot) return;
       var row = document.createElement('div');
       row.className = 'manage-item';
       var starred = isStarred(exam);
+      var amH = (slot.startH < 12) ? slot.startH : slot.otherH;
+      var amM = (slot.startH < 12) ? slot.startM : slot.otherM;
+      var pmH = (slot.startH < 12) ? slot.otherH : slot.startH;
+      var pmM = (slot.startH < 12) ? slot.otherM : slot.startM;
       row.innerHTML =
         '<span class="manage-star-icon">' + (starred ? '⭐' : '☆') + '</span>' +
         '<span class="manage-item-name">' + (slot.label || slot.exam) + '</span>' +
-        '<span class="manage-item-time">' + formatAmPm(slot.startH, slot.startM) + '</span>';
+        '<span class="manage-item-time">' + formatAmPm(amH, amM) + ' & ' + formatAmPm(pmH, pmM) + '</span>';
       row.onclick = function() { toggleStar(exam); };
       container.appendChild(row);
     });
@@ -1355,6 +1444,7 @@ showResult = function() {
     if(window.AdMobBridge) window.AdMobBridge.postMessage('showInterstitial');
   } catch(e) {}
   _originalShowResult();
+  trackExamCompletion();
 
   if(!isDailyExam) {
     document.getElementById('coins-earned-box').style.display = 'none';
