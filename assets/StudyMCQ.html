@@ -199,24 +199,49 @@ body{
 
 /* TOAST */
 
-/* DAILY EXAM */
-.daily-section{margin-top:4px;margin-bottom:8px}
-.daily-title{color:#f5f7fb;font-size:14px;font-weight:800;letter-spacing:.2px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
-#daily-cards-container{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.daily-card{background:#0c0c0f;border:1px solid var(--card-border);border-top:4px solid var(--accent-blue);border-radius:14px;padding:14px 14px 12px;cursor:pointer;transition:all .2s}
-.daily-card.active-now{border-color:#8b5cf6;border-top-color:#8b5cf6;box-shadow:0 0 4px rgba(139,92,246,.8),0 0 18px rgba(139,92,246,.55),0 0 34px rgba(139,92,246,.3)}
-.daily-card.locked{opacity:.6;cursor:not-allowed}
-.daily-card.expired{opacity:.45;cursor:not-allowed}
-.daily-left{display:flex;flex-direction:column;gap:4px}
-.daily-subject{font-size:15px;font-weight:800;margin-top:8px}
-.daily-time{font-size:12px;color:var(--text-dim)}
-.daily-right{margin-bottom:2px}
-.daily-status{font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:5px}
+/* DAILY EXAM STATUS BADGES (shared) */
 .status-live{background:rgba(34,197,94,.12);color:#39ff6a;border:1px solid #39ff6a;box-shadow:0 0 6px rgba(57,255,106,.7),0 0 14px rgba(57,255,106,.4);text-shadow:0 0 6px rgba(57,255,106,.8)}
 .status-locked{background:rgba(255,255,255,.05);color:#777;border:1px solid rgba(255,255,255,.15)}
 .status-expired{background:rgba(255,7,58,.1);color:#ff4d6a;border:1px solid rgba(255,77,106,.4)}
 .status-done{background:rgba(76,139,255,.15);color:var(--accent-blue);border:1px solid rgba(76,139,255,.3)}
-.daily-coins{font-size:10.5px;color:#c8ab52;margin-top:4px}
+
+/* STARRED EXAMS - HORIZONTAL ROWS */
+.star-section{margin-top:4px;margin-bottom:18px}
+.star-row-title{color:#f5f7fb;font-size:13px;font-weight:800;letter-spacing:.2px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.star-row-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none;-ms-overflow-style:none}
+.star-row-scroll::-webkit-scrollbar{display:none}
+.star-card{flex:0 0 148px;background:#0c0c0f;border:1px solid var(--card-border);border-top:4px solid var(--accent-blue);border-radius:14px;padding:12px 12px 10px;cursor:pointer;transition:all .2s}
+.star-card.active-now{border-color:#8b5cf6;border-top-color:#8b5cf6;box-shadow:0 0 4px rgba(139,92,246,.8),0 0 16px rgba(139,92,246,.5)}
+.star-card.locked{opacity:.65}
+.star-card.expired{opacity:.45}
+.star-card:active{transform:scale(.96)}
+.star-card .sc-status{font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;margin-bottom:8px}
+.star-card .sc-subject{font-size:13px;font-weight:800;line-height:1.25;margin-bottom:6px;min-height:33px}
+.star-card .sc-time{font-size:10.5px;color:var(--text-dim)}
+.star-card .sc-coins{font-size:9.5px;color:#c8ab52;margin-top:4px}
+
+.star-empty-card{width:100%;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.15);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;margin-bottom:14px}
+.star-empty-card .sec-icon{font-size:26px;margin-bottom:6px}
+.star-empty-card .sec-text{font-size:13px;font-weight:700;color:#e2e8f0}
+.star-empty-card .sec-sub{font-size:11px;color:var(--text-dim);margin-top:3px}
+
+.manage-star-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#fff;padding:11px;border-radius:12px;cursor:pointer;font-size:12.5px;font-weight:700}
+.manage-star-btn:active{transform:scale(.97)}
+
+/* MANAGE STARS MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:999;align-items:flex-end;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-panel{background:#0a0a0d;border:1px solid rgba(255,255,255,.1);border-radius:22px 22px 0 0;width:100%;max-width:750px;max-height:82vh;overflow-y:auto;padding:18px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:sticky;top:0;background:#0a0a0d}
+.modal-header span{font-size:15px;font-weight:800}
+.modal-close{background:rgba(255,255,255,.08);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer}
+.manage-cat-title{font-size:11.5px;font-weight:800;color:var(--text-dim);letter-spacing:.5px;text-transform:uppercase;margin:16px 0 8px}
+.manage-cat-title:first-child{margin-top:0}
+.manage-item{display:flex;align-items:center;gap:10px;padding:11px 6px;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
+.manage-item:active{background:rgba(255,255,255,.03)}
+.manage-item-name{font-size:13px;font-weight:700;flex:1}
+.manage-item-time{font-size:10.5px;color:var(--text-dim)}
+.manage-star-icon{font-size:19px;flex-shrink:0;width:22px;text-align:center}
 
 /* COINS DISPLAY */
 .coins-bar{display:flex;align-items:center;gap:6px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;margin-bottom:16px}
@@ -291,11 +316,35 @@ body{
       </div>
     </div>
 
-    <div class="daily-section">
-      <div class="daily-title"><span class="sh-icon">⏰</span> Today's Daily Exams</div>
-      <div id="daily-cards-container"></div>
+    <div class="star-section">
+      <div id="star-empty-prompt" class="star-empty-card" onclick="openManageStars()" style="display:none">
+        <div class="sec-icon">⭐</div>
+        <div class="sec-text">Pick Your Daily Exams</div>
+        <div class="sec-sub">Star the exams you want to see here</div>
+      </div>
+
+      <div id="live-row-wrap" style="display:none">
+        <div class="star-row-title">🔴 Live Now</div>
+        <div id="live-cards-row" class="star-row-scroll"></div>
+      </div>
+
+      <div id="upcoming-row-wrap" style="display:none">
+        <div class="star-row-title">🔒 Upcoming</div>
+        <div id="upcoming-cards-row" class="star-row-scroll"></div>
+      </div>
+
+      <div class="manage-star-btn" onclick="openManageStars()">⭐ Manage My Exams</div>
     </div>
 
+    <div id="manage-stars-overlay" class="modal-overlay">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <span>⭐ Manage My Exams</span>
+          <button class="modal-close" onclick="closeManageStars()">✕</button>
+        </div>
+        <div id="manage-stars-list"></div>
+      </div>
+    </div>
 
     <div class="section-header"><span class="sh-icon">🧭</span> Explore Mock Tests</div>
     <div class="exam-grid">
@@ -671,6 +720,7 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
   document.getElementById('home-nav-btn').style.display = (id==='home-screen')?'none':'block';
+  if(id === 'home-screen' && typeof renderStarredRows === 'function') renderStarredRows();
 }
 
 function goToHome(){showScreen('home-screen');}
@@ -1064,61 +1114,163 @@ function hexToRgba(hex, alpha) {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
 }
 
-function renderDailyCards() {
-  var container = document.getElementById('daily-cards-container');
+// ---- STARRED EXAMS (⭐) ----
+var STAR_KEY = 'starredExams';
+
+function getStarred() {
+  try { return JSON.parse(_lsGet(STAR_KEY) || '[]'); } catch(e) { return []; }
+}
+function setStarred(arr) { _lsSet(STAR_KEY, JSON.stringify(arr)); }
+function isStarred(exam) { return getStarred().indexOf(exam) !== -1; }
+
+function toggleStar(exam) {
+  var arr = getStarred();
+  var idx = arr.indexOf(exam);
+  if(idx === -1) arr.push(exam); else arr.splice(idx, 1);
+  setStarred(arr);
+  renderStarredRows();
+  renderManageStarsList();
+}
+
+var EXAM_CATEGORIES = [
+  { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM'] },
+  { label: 'Class 10', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'] },
+  { label: '12th - Science', exams: ['CHEMISTRY_12','PHYSICS_12','BIOLOGY_12','MATHS_12'] },
+  { label: '12th - Commerce', exams: ['ACCOUNTS_12','OCM_12','ECONOMICS_12'] },
+  { label: '12th - Arts', exams: ['ARTS12_HISTORY','ARTS12_POLSCI','ARTS12_ECONOMICS','ARTS12_GEOGRAPHY','ARTS12_PSYCHOLOGY','ARTS12_SOCIOLOGY'] }
+];
+
+function findSlot(exam) {
+  for(var i = 0; i < DAILY_SCHEDULE.length; i++) {
+    if(DAILY_SCHEDULE[i].exam === exam) return DAILY_SCHEDULE[i];
+  }
+  return null;
+}
+
+// Minutes from now until this slot's next start (today or wrapped to tomorrow)
+function minutesUntilNextStart(slot) {
+  var now = new Date();
+  var cur = now.getHours() * 60 + now.getMinutes();
+  var starts = [slot.startH * 60 + slot.startM, slot.otherH * 60 + slot.otherM].sort(function(a, b) { return a - b; });
+  var future = starts.filter(function(s) { return s > cur; });
+  if(future.length) return future[0] - cur;
+  return (starts[0] + 1440) - cur;
+}
+
+function buildStarCard(slot, status) {
+  var statusLabel = '', statusClass = '';
+  if(status === 'live') { statusLabel = '🔴 LIVE'; statusClass = 'status-live'; }
+  else if(status === 'locked') { statusLabel = '🔒 Upcoming'; statusClass = 'status-locked'; }
+  else if(status === 'expired') { statusLabel = '⏰ Expired'; statusClass = 'status-expired'; }
+  else if(status === 'done') { statusLabel = '✅ Done'; statusClass = 'status-done'; }
+
+  var card = document.createElement('div');
+  card.className = 'star-card' + (status === 'live' ? ' active-now' : '') + (status === 'locked' ? ' locked' : '') + (status === 'expired' ? ' expired' : '');
+  card.style.borderColor = slot.color;
+  card.style.borderTopColor = slot.color;
+
+  card.innerHTML =
+    '<div class="sc-status ' + statusClass + '">' + statusLabel + '</div>' +
+    '<div class="sc-subject" style="color:' + slot.color + '">' + (slot.label || slot.exam) + '</div>' +
+    '<div class="sc-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + '</div>' +
+    '<div class="sc-coins">📝 ' + DAILY_QUESTIONS + ' Qs</div>';
+
+  if(status === 'live') {
+    card.onclick = function() { startDailyExam(slot); };
+  } else if(status === 'done') {
+    card.onclick = function() { toast('✅ Already completed today!'); };
+  } else if(status === 'expired') {
+    card.onclick = function() { toast('⏰ This exam has expired for today!'); };
+  } else {
+    card.onclick = function() {
+      var mins = minutesUntilNextStart(slot);
+      var now = new Date();
+      var totalM = now.getHours() * 60 + now.getMinutes() + mins;
+      var nh = Math.floor(totalM / 60) % 24, nm = totalM % 60;
+      toast('🔒 Opens at ' + formatAmPm(nh, nm));
+    };
+  }
+  return card;
+}
+
+function renderStarredRows() {
+  var liveRow = document.getElementById('live-cards-row');
+  var upcomingRow = document.getElementById('upcoming-cards-row');
+  var liveWrap = document.getElementById('live-row-wrap');
+  var upcomingWrap = document.getElementById('upcoming-row-wrap');
+  var emptyPrompt = document.getElementById('star-empty-prompt');
+  if(!liveRow || !upcomingRow) return;
+
+  liveRow.innerHTML = '';
+  upcomingRow.innerHTML = '';
+
+  var starred = getStarred();
+  if(starred.length === 0) {
+    if(emptyPrompt) emptyPrompt.style.display = 'block';
+    liveWrap.style.display = 'none';
+    upcomingWrap.style.display = 'none';
+    return;
+  }
+  if(emptyPrompt) emptyPrompt.style.display = 'none';
+
+  var liveList = [], otherList = [];
+  starred.forEach(function(exam) {
+    var slot = findSlot(exam);
+    if(!slot) return;
+    var status = getStatus(slot);
+    if(status === 'live') liveList.push(slot);
+    else otherList.push({ slot: slot, mins: minutesUntilNextStart(slot), status: status });
+  });
+
+  otherList.sort(function(a, b) { return a.mins - b.mins; });
+
+  if(liveList.length) {
+    liveWrap.style.display = 'block';
+    liveList.forEach(function(slot) { liveRow.appendChild(buildStarCard(slot, 'live')); });
+  } else {
+    liveWrap.style.display = 'none';
+  }
+
+  if(otherList.length) {
+    upcomingWrap.style.display = 'block';
+    otherList.forEach(function(item) { upcomingRow.appendChild(buildStarCard(item.slot, item.status)); });
+  } else {
+    upcomingWrap.style.display = 'none';
+  }
+}
+
+function openManageStars() {
+  renderManageStarsList();
+  document.getElementById('manage-stars-overlay').classList.add('active');
+}
+function closeManageStars() {
+  document.getElementById('manage-stars-overlay').classList.remove('active');
+}
+
+function renderManageStarsList() {
+  var container = document.getElementById('manage-stars-list');
   if(!container) return;
   container.innerHTML = '';
 
-  DAILY_SCHEDULE.forEach(function(slot) {
-    var status = getStatus(slot);
-    var card = document.createElement('div');
-    card.className = 'daily-card' + (status === 'live' ? ' active-now' : '') + (status === 'locked' ? ' locked' : '') + (status === 'expired' ? ' expired' : '');
-    card.style.borderColor = slot.color;
-    card.style.borderTopColor = slot.color;
-    var glowA = (status === 'live') ? [0.9,0.6,0.35] : (status === 'locked' || status === 'expired') ? [0.35,0.15,0] : [0.55,0.28,0.12];
-    card.style.boxShadow = '0 0 4px ' + hexToRgba(slot.color, glowA[0]) +
-      ', 0 0 16px ' + hexToRgba(slot.color, glowA[1]) +
-      (glowA[2] ? ', 0 0 30px ' + hexToRgba(slot.color, glowA[2]) : '');
+  EXAM_CATEGORIES.forEach(function(cat) {
+    var title = document.createElement('div');
+    title.className = 'manage-cat-title';
+    title.textContent = cat.label;
+    container.appendChild(title);
 
-    var statusLabel = '';
-    var statusClass = '';
-    if(status === 'live') { statusLabel = '🔴 LIVE'; statusClass = 'status-live'; }
-    else if(status === 'locked') { statusLabel = '🔒 Upcoming'; statusClass = 'status-locked'; }
-    else if(status === 'expired') { statusLabel = '⏰ Expired'; statusClass = 'status-expired'; }
-    else if(status === 'done') { statusLabel = '✅ Done'; statusClass = 'status-done'; }
-
-    var amH = (slot.startH < 12) ? slot.startH : slot.otherH;
-    var amM = (slot.startH < 12) ? slot.startM : slot.otherM;
-    var pmH = (slot.startH < 12) ? slot.otherH : slot.startH;
-    var pmM = (slot.startH < 12) ? slot.otherM : slot.startM;
-
-    card.innerHTML =
-      '<div class="daily-status ' + statusClass + '" style="margin-bottom:8px">' + statusLabel + '</div>' +
-      '<div class="daily-subject" style="color:' + slot.color + ';margin-top:0">' + (slot.label || slot.exam) + ' Daily</div>' +
-      '<div class="daily-time">' + pad(slot.startH) + ':' + pad(slot.startM) + ' – ' + pad(slot.endH) + ':' + pad(slot.endM) + ' · ' + DAILY_QUESTIONS + ' Qs</div>' +
-      '<div class="daily-coins">🔁 Twice daily: ' + formatAmPm(amH, amM) + ' & ' + formatAmPm(pmH, pmM) + '</div>' +
-      '<div class="daily-coins">🪙 Score 80%+ to get 3x coins, otherwise 0 coins</div>';
-
-    if(status === 'live') {
-      card.onclick = function() { startDailyExam(slot); };
-    } else if(status === 'done') {
-      card.onclick = function() { toast('✅ Already completed today!'); };
-    } else if(status === 'expired') {
-      card.onclick = function() { toast('⏰ This exam has expired for today!'); };
-    } else {
-      card.onclick = function() {
-        var now = new Date();
-        var cur = now.getHours() * 60 + now.getMinutes();
-        var w1s = slot.startH * 60 + slot.startM;
-        var w2s = slot.otherH * 60 + slot.otherM;
-        var first = Math.min(w1s, w2s), second = Math.max(w1s, w2s);
-        var nextS = (cur < first) ? first : second;
-        var nh = Math.floor(nextS / 60), nm = nextS % 60;
-        toast('🔒 Opens at ' + formatAmPm(nh, nm));
-      };
-    }
-
-    container.appendChild(card);
+    cat.exams.forEach(function(exam) {
+      var slot = findSlot(exam);
+      if(!slot) return;
+      var row = document.createElement('div');
+      row.className = 'manage-item';
+      var starred = isStarred(exam);
+      row.innerHTML =
+        '<span class="manage-star-icon">' + (starred ? '⭐' : '☆') + '</span>' +
+        '<span class="manage-item-name">' + (slot.label || slot.exam) + '</span>' +
+        '<span class="manage-item-time">' + formatAmPm(slot.startH, slot.startM) + '</span>';
+      row.onclick = function() { toggleStar(exam); };
+      container.appendChild(row);
+    });
   });
 }
 
@@ -1252,9 +1404,9 @@ showResult = function() {
 
 // Init
 updateCoinsDisplay();
-renderDailyCards();
+renderStarredRows();
 // Refresh every minute
-setInterval(renderDailyCards, 60000);
+setInterval(renderStarredRows, 60000);
 
 // ── UTILS ──
 function shuffle(arr) {
