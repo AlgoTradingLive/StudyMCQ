@@ -32,6 +32,8 @@ flutter:
     - assets/history_data_10.js
     - assets/science12_biology.js
     - assets/arts12_history.js
+    - assets/arts12_sociology.js
+    - assets/arts12_psychology.js
     - assets/arts12_geography.js
     - assets/arts12_polsci.js
     - assets/arts12_economics.js
