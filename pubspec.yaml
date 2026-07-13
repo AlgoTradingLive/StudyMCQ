@@ -1,7 +1,7 @@
 name: study_mcq
 description: Study MCQ App
 publish_to: 'none'
-version: 1.0.0+7
+version: 1.0.0+8
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -31,6 +31,10 @@ flutter:
     - assets/commerce12_ocm.js
     - assets/history_data_10.js
     - assets/science12_biology.js
+    - assets/arts12_history.js
+    - assets/arts12_geography.js
+    - assets/arts12_polsci.js
+    - assets/arts12_economics.js
     - assets/science12_maths.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
