@@ -386,7 +386,7 @@ body{
       <div class="exam-card ec-class12" onclick="showScreen('class12arts-screen')" style="grid-column:1/-1">
         <div class="ec-badge">🎨</div>
         <div class="ec-name">Arts</div>
-        <div class="ec-desc">Coming soon</div>
+        <div class="ec-desc">History · Political Science · Economics · Geography</div>
       </div>
     </div>
   </div>
@@ -447,10 +447,25 @@ body{
     <button class="back-btn" onclick="showScreen('class12-screen')">← Back</button>
     <div class="portal-label">12th Arts Subjects</div>
     <div class="exam-grid">
-      <div class="exam-card" style="grid-column:1/-1;cursor:default">
-        <div class="ec-badge">🎨</div>
-        <div class="ec-name">Coming Soon</div>
-        <div class="ec-desc">Arts subjects will be added soon</div>
+      <div class="exam-card ec-class12" onclick="startExam('ARTS12_HISTORY')" style="grid-column:1/-1">
+        <div class="ec-badge">📜</div>
+        <div class="ec-name">History</div>
+        <div class="ec-desc">Ancient India · Freedom Struggle · Modern World</div>
+      </div>
+      <div class="exam-card ec-class12" onclick="startExam('ARTS12_POLSCI')" style="grid-column:1/-1">
+        <div class="ec-badge">🏛️</div>
+        <div class="ec-name">Political Science</div>
+        <div class="ec-desc">Cold War · International Relations · Indian Politics</div>
+      </div>
+      <div class="exam-card ec-class12" onclick="startExam('ARTS12_ECONOMICS')" style="grid-column:1/-1">
+        <div class="ec-badge">📊</div>
+        <div class="ec-name">Economics</div>
+        <div class="ec-desc">Indian Economy · Development · Public Finance</div>
+      </div>
+      <div class="exam-card ec-class12" onclick="startExam('ARTS12_GEOGRAPHY')" style="grid-column:1/-1">
+        <div class="ec-badge">🌍</div>
+        <div class="ec-name">Geography</div>
+        <div class="ec-desc">Population · Climate · Resources · Land Use</div>
       </div>
     </div>
   </div>
@@ -585,6 +600,10 @@ body{
 <script src="science12_chemistry.js"></script>
 <script src="science12_biology.js"></script>
 <script src="science12_maths.js"></script>
+<script src="arts12_history.js"></script>
+<script src="arts12_polsci.js"></script>
+<script src="arts12_economics.js"></script>
+<script src="arts12_geography.js"></script>
 
 <script>
 // ── STATE ──
@@ -613,7 +632,11 @@ var MARKING = {
   PHYSICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   CHEMISTRY_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   BIOLOGY_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  MATHS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
+  MATHS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ARTS12_HISTORY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ARTS12_POLSCI:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ARTS12_ECONOMICS:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ARTS12_GEOGRAPHY:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -668,6 +691,10 @@ function startExam(exam) {
     else if(exam==='CHEMISTRY_12') raw=(typeof SCIENCE12_CHEMISTRY_DATA!=='undefined')?SCIENCE12_CHEMISTRY_DATA:null;
     else if(exam==='BIOLOGY_12') raw=(typeof BIOLOGY12_DATA!=='undefined')?BIOLOGY12_DATA:null;
     else if(exam==='MATHS_12') raw=(typeof SCIENCE12_MATHS_DATA!=='undefined')?SCIENCE12_MATHS_DATA:null;
+    else if(exam==='ARTS12_HISTORY') raw=(typeof ARTS12_HISTORY_DATA!=='undefined')?ARTS12_HISTORY_DATA:null;
+    else if(exam==='ARTS12_POLSCI') raw=(typeof ARTS12_POLSCI_DATA!=='undefined')?ARTS12_POLSCI_DATA:null;
+    else if(exam==='ARTS12_ECONOMICS') raw=(typeof ARTS12_ECONOMICS_DATA!=='undefined')?ARTS12_ECONOMICS_DATA:null;
+    else if(exam==='ARTS12_GEOGRAPHY') raw=(typeof ARTS12_GEOGRAPHY_DATA!=='undefined')?ARTS12_GEOGRAPHY_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -694,7 +721,7 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -893,6 +920,11 @@ var DAILY_SCHEDULE = [
   { exam: 'PHYSICS_12', label: 'Class 12 Physics · Science', startH: 20, startM: 30, endH: 21, endM: 30, color: '#06b6d4' },
   { exam: 'BIOLOGY_12', label: 'Class 12 Biology · Science', startH: 6, startM: 30, endH: 7, endM: 30, color: '#06b6d4' },
   { exam: 'MATHS_12', label: 'Class 12 Maths · Science', startH: 9, startM: 30, endH: 10, endM: 30, color: '#06b6d4' },
+
+  { exam: 'ARTS12_HISTORY', label: 'Class 12 History · Arts', startH: 11, startM: 0, endH: 12, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_POLSCI', label: 'Class 12 Political Science · Arts', startH: 13, startM: 0, endH: 14, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_ECONOMICS', label: 'Class 12 Economics · Arts', startH: 17, startM: 0, endH: 18, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_GEOGRAPHY', label: 'Class 12 Geography · Arts', startH: 22, startM: 30, endH: 23, endM: 30, color: '#06b6d4' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -1096,6 +1128,10 @@ function startDailyExam(slot) {
     else if(slot.exam==='CHEMISTRY_12') raw=(typeof SCIENCE12_CHEMISTRY_DATA!=='undefined')?SCIENCE12_CHEMISTRY_DATA:null;
     else if(slot.exam==='BIOLOGY_12') raw=(typeof BIOLOGY12_DATA!=='undefined')?BIOLOGY12_DATA:null;
     else if(slot.exam==='MATHS_12') raw=(typeof SCIENCE12_MATHS_DATA!=='undefined')?SCIENCE12_MATHS_DATA:null;
+    else if(slot.exam==='ARTS12_HISTORY') raw=(typeof ARTS12_HISTORY_DATA!=='undefined')?ARTS12_HISTORY_DATA:null;
+    else if(slot.exam==='ARTS12_POLSCI') raw=(typeof ARTS12_POLSCI_DATA!=='undefined')?ARTS12_POLSCI_DATA:null;
+    else if(slot.exam==='ARTS12_ECONOMICS') raw=(typeof ARTS12_ECONOMICS_DATA!=='undefined')?ARTS12_ECONOMICS_DATA:null;
+    else if(slot.exam==='ARTS12_GEOGRAPHY') raw=(typeof ARTS12_GEOGRAPHY_DATA!=='undefined')?ARTS12_GEOGRAPHY_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
