@@ -681,29 +681,7 @@ body{
 
 <div class="toast" id="toast"></div>
 
-<!-- DATA FILES -->
-<script src="neet_data.js"></script>
-<script src="jee_data.js"></script>
-<script src="upsc_data.js"></script>
-<script src="ibps_data.js"></script>
-<script src="nism_data.js"></script>
-<script src="railwayrrb_data.js"></script>
-<script src="science_data_10.js"></script>
-<script src="maths_data_10.js"></script>
-<script src="history_data_10.js"></script>
-<script src="commerce12_accounts.js"></script>
-<script src="commerce12_ocm.js"></script>
-<script src="commerce12_economics.js"></script>
-<script src="science12_physics.js"></script>
-<script src="science12_chemistry.js"></script>
-<script src="science12_biology.js"></script>
-<script src="science12_maths.js"></script>
-<script src="arts12_history.js"></script>
-<script src="arts12_polsci.js"></script>
-<script src="arts12_economics.js"></script>
-<script src="arts12_geography.js"></script>
-<script src="arts12_psychology.js"></script>
-<script src="arts12_sociology.js"></script>
+<!-- DATA FILES are now lazy-loaded on demand (see loadExamScript) for faster app startup -->
 
 <script>
 // ── STATE ──
@@ -771,11 +749,60 @@ function exitQuiz(){
 }
 
 // ── START EXAM ──
+// ── LAZY-LOAD EXAM DATA (loaded only when an exam is actually opened) ──
+var EXAM_SCRIPT_MAP = {
+  NEET: 'neet_data.js',
+  JEE: 'jee_data.js',
+  UPSC: 'upsc_data.js',
+  IBPS: 'ibps_data.js',
+  NISM: 'nism_data.js',
+  RAILWAY: 'railwayrrb_data.js',
+  SCIENCE_10: 'science_data_10.js',
+  MATHS_10: 'maths_data_10.js',
+  HISTORY_10: 'history_data_10.js',
+  ACCOUNTS_12: 'commerce12_accounts.js',
+  OCM_12: 'commerce12_ocm.js',
+  ECONOMICS_12: 'commerce12_economics.js',
+  PHYSICS_12: 'science12_physics.js',
+  CHEMISTRY_12: 'science12_chemistry.js',
+  BIOLOGY_12: 'science12_biology.js',
+  MATHS_12: 'science12_maths.js',
+  ARTS12_HISTORY: 'arts12_history.js',
+  ARTS12_POLSCI: 'arts12_polsci.js',
+  ARTS12_ECONOMICS: 'arts12_economics.js',
+  ARTS12_GEOGRAPHY: 'arts12_geography.js',
+  ARTS12_PSYCHOLOGY: 'arts12_psychology.js',
+  ARTS12_SOCIOLOGY: 'arts12_sociology.js'
+};
+var loadedExamScripts = {};
+
+function loadExamScript(exam, onReady) {
+  var src = EXAM_SCRIPT_MAP[exam];
+  if(!src) { onReady(); return; } // unknown exam - fall through to existing "not available" handling
+  if(loadedExamScripts[exam]) { onReady(); return; } // already loaded, no re-download
+
+  toast('⏳ Loading ' + exam + ' questions...');
+  var s = document.createElement('script');
+  s.src = src;
+  s.onload = function() {
+    loadedExamScripts[exam] = true;
+    onReady();
+  };
+  s.onerror = function() {
+    toast('⚠️ Could not load ' + exam + ' data. Check your connection & try again.');
+  };
+  document.body.appendChild(s);
+}
+
 function startExam(exam) {
   var _activeEl = document.querySelector('.screen.active');
   if(_activeEl && _activeEl.id !== 'quiz-screen' && _activeEl.id !== 'result-screen') {
     examOrigin = _activeEl.id;
   }
+  loadExamScript(exam, function() { _runExam(exam); });
+}
+
+function _runExam(exam) {
   var raw = null;
   try {
     if(exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:(typeof neetData!=='undefined')?neetData:null;
@@ -1364,6 +1391,10 @@ function renderManageStarsList() {
 }
 
 function startDailyExam(slot) {
+  loadExamScript(slot.exam, function() { _runDailyExam(slot); });
+}
+
+function _runDailyExam(slot) {
   isDailyExam = true;
   dailyExamData = slot;
   coinsEarnedThisSession = 0;
