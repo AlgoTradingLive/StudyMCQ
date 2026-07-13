@@ -467,6 +467,16 @@ body{
         <div class="ec-name">Geography</div>
         <div class="ec-desc">Population · Climate · Resources · Land Use</div>
       </div>
+      <div class="exam-card ec-class12" onclick="startExam('ARTS12_PSYCHOLOGY')" style="grid-column:1/-1">
+        <div class="ec-badge">🧠</div>
+        <div class="ec-name">Psychology</div>
+        <div class="ec-desc">Disorders · Therapy · Self &amp; Personality · Social Cognition</div>
+      </div>
+      <div class="exam-card ec-class12" onclick="startExam('ARTS12_SOCIOLOGY')" style="grid-column:1/-1">
+        <div class="ec-badge">🧑‍🤝‍🧑</div>
+        <div class="ec-name">Sociology</div>
+        <div class="ec-desc">Social Change · Institutions · Movements · Globalisation</div>
+      </div>
     </div>
   </div>
 
@@ -604,6 +614,8 @@ body{
 <script src="arts12_polsci.js"></script>
 <script src="arts12_economics.js"></script>
 <script src="arts12_geography.js"></script>
+<script src="arts12_psychology.js"></script>
+<script src="arts12_sociology.js"></script>
 
 <script>
 // ── STATE ──
@@ -636,7 +648,9 @@ var MARKING = {
   ARTS12_HISTORY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ARTS12_POLSCI:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ARTS12_ECONOMICS:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
-  ARTS12_GEOGRAPHY:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
+  ARTS12_GEOGRAPHY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ARTS12_PSYCHOLOGY:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ARTS12_SOCIOLOGY:{correct:1, wrong:-0.25, label:'+1 | -0.25'}
 };
 
 // ── LANGUAGE ──
@@ -695,6 +709,8 @@ function startExam(exam) {
     else if(exam==='ARTS12_POLSCI') raw=(typeof ARTS12_POLSCI_DATA!=='undefined')?ARTS12_POLSCI_DATA:null;
     else if(exam==='ARTS12_ECONOMICS') raw=(typeof ARTS12_ECONOMICS_DATA!=='undefined')?ARTS12_ECONOMICS_DATA:null;
     else if(exam==='ARTS12_GEOGRAPHY') raw=(typeof ARTS12_GEOGRAPHY_DATA!=='undefined')?ARTS12_GEOGRAPHY_DATA:null;
+    else if(exam==='ARTS12_PSYCHOLOGY') raw=(typeof ARTS12_PSYCHOLOGY_DATA!=='undefined')?ARTS12_PSYCHOLOGY_DATA:null;
+    else if(exam==='ARTS12_SOCIOLOGY') raw=(typeof ARTS12_SOCIOLOGY_DATA!=='undefined')?ARTS12_SOCIOLOGY_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) {
@@ -721,7 +737,7 @@ function startExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -921,10 +937,12 @@ var DAILY_SCHEDULE = [
   { exam: 'BIOLOGY_12', label: 'Class 12 Biology · Science', startH: 6, startM: 30, endH: 7, endM: 30, color: '#06b6d4' },
   { exam: 'MATHS_12', label: 'Class 12 Maths · Science', startH: 9, startM: 30, endH: 10, endM: 30, color: '#06b6d4' },
 
-  { exam: 'ARTS12_HISTORY', label: 'Class 12 History · Arts', startH: 11, startM: 0, endH: 12, endM: 0, color: '#06b6d4' },
-  { exam: 'ARTS12_POLSCI', label: 'Class 12 Political Science · Arts', startH: 13, startM: 0, endH: 14, endM: 0, color: '#06b6d4' },
-  { exam: 'ARTS12_ECONOMICS', label: 'Class 12 Economics · Arts', startH: 17, startM: 0, endH: 18, endM: 0, color: '#06b6d4' },
-  { exam: 'ARTS12_GEOGRAPHY', label: 'Class 12 Geography · Arts', startH: 22, startM: 30, endH: 23, endM: 30, color: '#06b6d4' },
+  { exam: 'ARTS12_HISTORY', label: 'Class 12 History · Arts', startH: 6, startM: 0, endH: 7, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_POLSCI', label: 'Class 12 Political Science · Arts', startH: 7, startM: 0, endH: 8, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_ECONOMICS', label: 'Class 12 Economics · Arts', startH: 8, startM: 0, endH: 9, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_GEOGRAPHY', label: 'Class 12 Geography · Arts', startH: 9, startM: 0, endH: 10, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_PSYCHOLOGY', label: 'Class 12 Psychology · Arts', startH: 10, startM: 0, endH: 11, endM: 0, color: '#06b6d4' },
+  { exam: 'ARTS12_SOCIOLOGY', label: 'Class 12 Sociology · Arts', startH: 11, startM: 0, endH: 12, endM: 0, color: '#06b6d4' },
 ];
 
 var DAILY_QUESTIONS = 50;
@@ -1132,6 +1150,8 @@ function startDailyExam(slot) {
     else if(slot.exam==='ARTS12_POLSCI') raw=(typeof ARTS12_POLSCI_DATA!=='undefined')?ARTS12_POLSCI_DATA:null;
     else if(slot.exam==='ARTS12_ECONOMICS') raw=(typeof ARTS12_ECONOMICS_DATA!=='undefined')?ARTS12_ECONOMICS_DATA:null;
     else if(slot.exam==='ARTS12_GEOGRAPHY') raw=(typeof ARTS12_GEOGRAPHY_DATA!=='undefined')?ARTS12_GEOGRAPHY_DATA:null;
+    else if(slot.exam==='ARTS12_PSYCHOLOGY') raw=(typeof ARTS12_PSYCHOLOGY_DATA!=='undefined')?ARTS12_PSYCHOLOGY_DATA:null;
+    else if(slot.exam==='ARTS12_SOCIOLOGY') raw=(typeof ARTS12_SOCIOLOGY_DATA!=='undefined')?ARTS12_SOCIOLOGY_DATA:null;
   } catch(e){raw=null;}
 
   if(!raw) { toast('⚠️ Data not available!'); return; }
