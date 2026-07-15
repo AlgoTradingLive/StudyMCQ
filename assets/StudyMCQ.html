@@ -242,6 +242,8 @@ body{
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:999;align-items:flex-end;justify-content:center}
 .modal-overlay.active{display:flex}
 .modal-panel{background:#0a0a0d;border:1px solid rgba(255,255,255,.1);border-radius:22px 22px 0 0;width:100%;max-width:750px;max-height:82vh;overflow-y:auto;padding:18px}
+#manage-stars-overlay{align-items:center}
+#manage-stars-overlay .modal-panel{border-radius:22px;max-height:72vh;margin-bottom:70px}
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:sticky;top:0;background:#0a0a0d}
 .modal-header span{font-size:15px;font-weight:800}
 .modal-close{background:rgba(255,255,255,.08);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer}
@@ -423,12 +425,12 @@ body{
       </div>
       <div class="exam-card ec-class10" onclick="showScreen('class10-screen')">
         <div class="ec-badge">🎓</div>
-        <div class="ec-name">10th Class</div>
+        <div class="ec-name">10th Class (CBSE BOARD)</div>
         <div class="ec-desc">Science · More Subjects Coming soon</div>
       </div>
       <div class="exam-card ec-sscboard" onclick="showScreen('sscboard-screen')">
         <div class="ec-badge">📘</div>
-        <div class="ec-name">SSC 10th Board</div>
+        <div class="ec-name">10th Class (SSC BOARD)</div>
         <div class="ec-desc">भूगोल · इतिहास · विज्ञान · गणित (मराठी)</div>
       </div>
       <div class="exam-card ec-class12" onclick="showScreen('class12-screen')">
@@ -1263,6 +1265,7 @@ function toggleStar(exam) {
 var EXAM_CATEGORIES = [
   { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM'] },
   { label: 'Class 10', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'] },
+  { label: 'SSC 10th Board (मराठी)', exams: ['SCIENCE10_MR','MATHS10_MR','HISTORY10_MR','GEO10_MR'] },
   { label: '12th - Science', exams: ['CHEMISTRY_12','PHYSICS_12','BIOLOGY_12','MATHS_12'] },
   { label: '12th - Commerce', exams: ['ACCOUNTS_12','OCM_12','ECONOMICS_12'] },
   { label: '12th - Arts', exams: ['ARTS12_HISTORY','ARTS12_POLSCI','ARTS12_ECONOMICS','ARTS12_GEOGRAPHY','ARTS12_PSYCHOLOGY','ARTS12_SOCIOLOGY'] }
