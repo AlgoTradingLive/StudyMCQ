@@ -38,5 +38,9 @@ flutter:
     - assets/arts12_polsci.js
     - assets/arts12_economics.js
     - assets/science12_maths.js
+    - assets/geo10_marathi.js
+    - assets/History10_Marathi.js
+    - assets/science10_marathi.js
+    - assets/ssc10_maths.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
