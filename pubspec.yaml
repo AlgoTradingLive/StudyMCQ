@@ -42,5 +42,10 @@ flutter:
     - assets/History10_Marathi.js
     - assets/science10_marathi.js
     - assets/ssc10_maths.js
+    - assets/science_9th.js
+    - assets/geography_9th.js
+    - assets/history_9th.js
+    - assets/mathsgeometry_9th.js
+    - assets/english_9th.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
