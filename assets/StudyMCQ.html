@@ -497,7 +497,7 @@ body{
   <!-- 10TH CLASS SUBJECT SCREEN -->
   <div id="class10-screen" class="screen">
     <button class="back-btn" onclick="goToHome()">← Back</button>
-    <div class="portal-label">10th Class Subjects</div>
+    <div class="portal-label">10th Class Subjects (CBSE BOARD)</div>
     <div class="exam-grid">
       <div class="exam-card ec-class10" onclick="startExam('SCIENCE_10')" style="grid-column:1/-1">
         <div class="ec-badge">🔬</div>
@@ -935,7 +935,7 @@ function _runExam(exam) {
     else if(exam==='MATHS10_MR') raw=(typeof SSC10_MATHS_DATA!=='undefined')?SSC10_MATHS_DATA:null;
     else if(exam==='GEO9_MR') raw=(typeof GEOGRAPHY_9TH_DATA!=='undefined')?GEOGRAPHY_9TH_DATA:null;
     else if(exam==='HISTORY9_MR') raw=(typeof HISTORY_9TH_DATA!=='undefined')?HISTORY_9TH_DATA:null;
-    else if(exam==='MATHS9_MR') raw=(typeof MATHS_9TH_DATA!=='undefined')?MATHS_9TH_DATA:null;
+    else if(exam==='MATHS9_MR') raw=(typeof GEOMETRY_9TH_DATA!=='undefined')?GEOMETRY_9TH_DATA:(typeof MATHS_9TH_DATA!=='undefined')?MATHS_9TH_DATA:null;
     else if(exam==='SCIENCE9_MR') raw=(typeof CLASS9_SCIENCE_DATA!=='undefined')?CLASS9_SCIENCE_DATA:null;
     else if(exam==='ENGLISH9_MR') raw=(typeof ENGLISH9_MCQ_DATA!=='undefined')?ENGLISH9_MCQ_DATA:null;
     else if(exam==='MARATHI9_MR') raw=(typeof MARATHI_9TH_DATA!=='undefined')?MARATHI_9TH_DATA:null;
@@ -1539,7 +1539,7 @@ function renderManageStarsList() {
 
     var starAllBtn = document.createElement('span');
     starAllBtn.className = 'manage-cat-star-all' + (allStarred ? ' all-active' : '');
-    starAllBtn.innerHTML = (allStarred ? '⭐' : '☆') + ' <span class="manage-cat-star-all-text">' + (allStarred ? 'सर्व निवडले' : 'सर्व निवडा') + '</span>';
+    starAllBtn.innerHTML = (allStarred ? '⭐' : '☆') + ' <span class="manage-cat-star-all-text">' + (allStarred ? 'All Selected' : 'Select All') + '</span>';
     starAllBtn.onclick = function(e) {
       e.stopPropagation();
       toggleStarCategory(cat.exams);
