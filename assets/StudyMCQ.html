@@ -251,8 +251,12 @@ body{
 .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:sticky;top:0;background:#0a0a0d}
 .modal-header span{font-size:15px;font-weight:800}
 .modal-close{background:rgba(255,255,255,.08);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer}
-.manage-cat-title{font-size:11.5px;font-weight:800;color:var(--text-dim);letter-spacing:.5px;text-transform:uppercase;margin:16px 0 8px}
+.manage-cat-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:800;color:var(--text-dim);letter-spacing:.5px;text-transform:uppercase;margin:16px 0 8px;background:rgba(255,255,255,.06);padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.08)}
 .manage-cat-title:first-child{margin-top:0}
+.manage-cat-label{flex:1;min-width:0}
+.manage-cat-star-all{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--text-dim);background:rgba(255,255,255,.06);padding:5px 10px;border-radius:20px;cursor:pointer;flex-shrink:0;white-space:nowrap}
+.manage-cat-star-all:active{background:rgba(255,255,255,.12)}
+.manage-cat-star-all.all-active{color:#FFD700;background:rgba(255,215,0,.12)}
 .manage-item{display:flex;align-items:center;gap:10px;padding:11px 6px;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
 .manage-item:active{background:rgba(255,255,255,.03)}
 .manage-item-name{font-size:13px;font-weight:700;flex:1}
@@ -481,6 +485,11 @@ body{
         <div class="ec-badge">🔬</div>
         <div class="ec-name">विज्ञान (Science)</div>
         <div class="ec-desc">भौतिकशास्त्र · रसायनशास्त्र · जीवशास्त्र</div>
+      </div>
+      <div class="exam-card ec-class9" onclick="startExam('MARATHI9_MR')" style="grid-column:1/-1">
+        <div class="ec-badge">📖</div>
+        <div class="ec-name">मराठी (Marathi)</div>
+        <div class="ec-desc">गद्य · पद्य · व्याकरण · अलंकार</div>
       </div>
     </div>
   </div>
@@ -794,6 +803,7 @@ var MARKING = {
   MATHS9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   SCIENCE9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ENGLISH9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  MARATHI9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ACCOUNTS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   OCM_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ECONOMICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
@@ -864,6 +874,7 @@ var EXAM_SCRIPT_MAP = {
   MATHS9_MR: 'mathsgeometry_9th.js',
   SCIENCE9_MR: 'science_9th.js',
   ENGLISH9_MR: 'english_9th.js',
+  MARATHI9_MR: 'marathi_9th.js',
   ACCOUNTS_12: 'commerce12_accounts.js',
   OCM_12: 'commerce12_ocm.js',
   ECONOMICS_12: 'commerce12_economics.js',
@@ -927,6 +938,7 @@ function _runExam(exam) {
     else if(exam==='MATHS9_MR') raw=(typeof MATHS_9TH_DATA!=='undefined')?MATHS_9TH_DATA:null;
     else if(exam==='SCIENCE9_MR') raw=(typeof CLASS9_SCIENCE_DATA!=='undefined')?CLASS9_SCIENCE_DATA:null;
     else if(exam==='ENGLISH9_MR') raw=(typeof ENGLISH9_MCQ_DATA!=='undefined')?ENGLISH9_MCQ_DATA:null;
+    else if(exam==='MARATHI9_MR') raw=(typeof MARATHI_9TH_DATA!=='undefined')?MARATHI_9TH_DATA:null;
     else if(exam==='ACCOUNTS_12') raw=(typeof COMMERCE12_ACCOUNTS_DATA!=='undefined')?COMMERCE12_ACCOUNTS_DATA:null;
     else if(exam==='OCM_12') raw=(typeof COMMERCE12_OCM_DATA!=='undefined')?COMMERCE12_OCM_DATA:null;
     else if(exam==='ECONOMICS_12') raw=(typeof COMMERCE12_ECONOMICS_DATA!=='undefined')?COMMERCE12_ECONOMICS_DATA:null;
@@ -966,7 +978,7 @@ function _runExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', GEO10_MR: 'SSC भूगोल', HISTORY10_MR: 'SSC इतिहास', SCIENCE10_MR: 'SSC विज्ञान', MATHS10_MR: 'SSC गणित', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', GEO10_MR: 'SSC भूगोल', HISTORY10_MR: 'SSC इतिहास', SCIENCE10_MR: 'SSC विज्ञान', MATHS10_MR: 'SSC गणित', GEO9_MR: '9th भूगोल', HISTORY9_MR: '9th इतिहास-राज्यशास्त्र', MATHS9_MR: '9th गणित', SCIENCE9_MR: '9th विज्ञान', ENGLISH9_MR: '9th English', MARATHI9_MR: '9th मराठी', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -1155,7 +1167,7 @@ var DAILY_SCHEDULE = [
   { exam: 'IBPS', startH: 20, startM: 0,  endH: 21, endM: 0,  color: '#FFD700' },
   { exam: 'RAILWAY', startH: 22, startM: 0,  endH: 23, endM: 0,  color: '#ff9f1c' },
 
-  { exam: 'NISM', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
+  { exam: 'NISM', label: 'Stock Market (NISM)', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
 
   { exam: 'MATHS_10',   label: 'Class 10 Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#ff69b4' },
   { exam: 'HISTORY_10', label: 'Class 10 History-Geography',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ff69b4' },
@@ -1165,6 +1177,13 @@ var DAILY_SCHEDULE = [
   { exam: 'MATHS10_MR',   label: 'SSC गणित (Marathi)',      startH: 7, startM: 0,  endH: 8,  endM: 0,  color: '#3b82f6' },
   { exam: 'HISTORY10_MR', label: 'SSC इतिहास (Marathi)',    startH: 8, startM: 0,  endH: 9,  endM: 0,  color: '#3b82f6' },
   { exam: 'GEO10_MR',     label: 'SSC भूगोल (Marathi)',     startH: 9, startM: 0,  endH: 10, endM: 0,  color: '#3b82f6' },
+
+  { exam: 'ENGLISH9_MR', label: '9th English',           startH: 6,  startM: 0,  endH: 7,  endM: 0,  color: '#e63946' },
+  { exam: 'GEO9_MR',     label: '9th भूगोल (Marathi)',    startH: 7,  startM: 0,  endH: 8,  endM: 0,  color: '#e63946' },
+  { exam: 'HISTORY9_MR', label: '9th इतिहास-राज्यशास्त्र (Marathi)', startH: 8,  startM: 0,  endH: 9,  endM: 0,  color: '#e63946' },
+  { exam: 'MATHS9_MR',   label: '9th गणित (Marathi)',     startH: 9,  startM: 0,  endH: 10, endM: 0,  color: '#e63946' },
+  { exam: 'SCIENCE9_MR', label: '9th विज्ञान (Marathi)',  startH: 10, startM: 0,  endH: 11, endM: 0,  color: '#e63946' },
+  { exam: 'MARATHI9_MR', label: '9th मराठी',              startH: 11, startM: 0,  endH: 12, endM: 0,  color: '#e63946' },
 
   { exam: 'ACCOUNTS_12', label: 'Class 12 Accounts · Commerce', startH: 20, startM: 0, endH: 21, endM: 0, color: '#06b6d4' },
   { exam: 'OCM_12', label: 'Class 12 OCM · Commerce', startH: 19, startM: 0, endH: 20, endM: 0, color: '#06b6d4' },
@@ -1319,10 +1338,40 @@ function toggleStar(exam) {
   renderManageStarsList();
 }
 
+function toggleStarCategory(exams) {
+  var arr = getStarred();
+  var allStarred = exams.every(function(e) { return arr.indexOf(e) !== -1; });
+  if(allStarred) {
+    // unstar all in this category
+    arr = arr.filter(function(e) { return exams.indexOf(e) === -1; });
+  } else {
+    // star all in this category (avoid duplicates)
+    exams.forEach(function(e) { if(arr.indexOf(e) === -1) arr.push(e); });
+  }
+  setStarred(arr);
+  renderStarredRows();
+  renderManageStarsList();
+}
+
+// First-time users see one live example (Stock Market / NISM) pre-starred so they
+// understand what a "daily exam" card looks like, before picking their own subjects.
+var DEFAULT_STAR_EXAM = 'NISM';
+var DEFAULT_STAR_FLAG_KEY = 'defaultStarApplied';
+function applyDefaultStarIfNeeded() {
+  if(_lsGet(DEFAULT_STAR_FLAG_KEY) === '1') return; // already handled once, respect user's choice from then on
+  _lsSet(DEFAULT_STAR_FLAG_KEY, '1');
+  var arr = getStarred();
+  if(arr.indexOf(DEFAULT_STAR_EXAM) === -1) {
+    arr.push(DEFAULT_STAR_EXAM);
+    setStarred(arr);
+  }
+}
+
 var EXAM_CATEGORIES = [
   { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM'] },
   { label: 'Class 10', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'] },
   { label: 'SSC 10th Board (मराठी)', exams: ['SCIENCE10_MR','MATHS10_MR','HISTORY10_MR','GEO10_MR'] },
+  { label: '9th Class (मराठी)', exams: ['ENGLISH9_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','MARATHI9_MR'] },
   { label: '12th - Science', exams: ['CHEMISTRY_12','PHYSICS_12','BIOLOGY_12','MATHS_12'] },
   { label: '12th - Commerce', exams: ['ACCOUNTS_12','OCM_12','ECONOMICS_12'] },
   { label: '12th - Arts', exams: ['ARTS12_HISTORY','ARTS12_POLSCI','ARTS12_ECONOMICS','ARTS12_GEOGRAPHY','ARTS12_PSYCHOLOGY','ARTS12_SOCIOLOGY'] }
@@ -1481,7 +1530,23 @@ function renderManageStarsList() {
   EXAM_CATEGORIES.forEach(function(cat) {
     var title = document.createElement('div');
     title.className = 'manage-cat-title';
-    title.textContent = cat.label;
+
+    var allStarred = cat.exams.length > 0 && cat.exams.every(function(e) { return isStarred(e); });
+
+    var labelSpan = document.createElement('span');
+    labelSpan.className = 'manage-cat-label';
+    labelSpan.textContent = cat.label;
+
+    var starAllBtn = document.createElement('span');
+    starAllBtn.className = 'manage-cat-star-all' + (allStarred ? ' all-active' : '');
+    starAllBtn.innerHTML = (allStarred ? '⭐' : '☆') + ' <span class="manage-cat-star-all-text">' + (allStarred ? 'सर्व निवडले' : 'सर्व निवडा') + '</span>';
+    starAllBtn.onclick = function(e) {
+      e.stopPropagation();
+      toggleStarCategory(cat.exams);
+    };
+
+    title.appendChild(labelSpan);
+    title.appendChild(starAllBtn);
     container.appendChild(title);
 
     var sortedExams = cat.exams.slice().sort(function(a, b) {
@@ -1650,6 +1715,7 @@ showResult = function() {
 };
 
 // Init
+applyDefaultStarIfNeeded();
 updateCoinsDisplay();
 renderStarredRows();
 // Refresh every minute
