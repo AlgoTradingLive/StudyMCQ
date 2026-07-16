@@ -125,6 +125,10 @@ body{
 .ec-history:hover,.ec-history:active{background:rgba(255,196,0,.1);border-color:#ffc400;box-shadow:0 8px 20px rgba(255,196,0,.2)}
 .ec-history .ec-name{color:#ffc400}
 
+.ec-class9 .ec-badge{background:rgba(230,57,70,.16);color:#e63946}
+.ec-class9:hover,.ec-class9:active{background:rgba(230,57,70,.1);border-color:#e63946;box-shadow:0 8px 20px rgba(230,57,70,.2)}
+.ec-class9 .ec-name{color:#e63946}
+
 .privacy-link{display:block;text-align:center;color:rgba(56,182,255,.6);font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;padding:8px;text-decoration:none}
 .privacy-link:active{color:#38b6ff}
 
@@ -423,6 +427,11 @@ body{
         <div class="ec-name">RRB Railway</div>
         <div class="ec-desc">Reasoning · Maths · General Science · Current Affairs</div>
       </div>
+      <div class="exam-card ec-class9" onclick="showScreen('class9-screen')">
+        <div class="ec-badge">📕</div>
+        <div class="ec-name">9th Class (SSC BOARD)</div>
+        <div class="ec-desc">इंग्रजी · भूगोल · इतिहास · गणित · विज्ञान</div>
+      </div>
       <div class="exam-card ec-class10" onclick="showScreen('class10-screen')">
         <div class="ec-badge">🎓</div>
         <div class="ec-name">10th Class (CBSE BOARD)</div>
@@ -441,6 +450,39 @@ body{
     </div>
 
     <a class="privacy-link" onclick="showPrivacy()">Privacy Policy</a>
+  </div>
+
+  <!-- 9TH CLASS (SSC BOARD MARATHI) SUBJECT SCREEN -->
+  <div id="class9-screen" class="screen">
+    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <div class="portal-label">9th Class Subjects</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-class9" onclick="startExam('ENGLISH9_MR')" style="grid-column:1/-1">
+        <div class="ec-badge">🔤</div>
+        <div class="ec-name">English</div>
+        <div class="ec-desc">Poetry · Prose · Grammar · Reading Skills</div>
+      </div>
+      <div class="exam-card ec-class9" onclick="startExam('GEO9_MR')" style="grid-column:1/-1">
+        <div class="ec-badge">🗺️</div>
+        <div class="ec-name">भूगोल (Geography)</div>
+        <div class="ec-desc">विदारण · खनन · वहन · संचयन · व्यापार · नागरीकरण</div>
+      </div>
+      <div class="exam-card ec-class9" onclick="startExam('HISTORY9_MR')" style="grid-column:1/-1">
+        <div class="ec-badge">🏛️</div>
+        <div class="ec-name">इतिहास-राज्यशास्त्र (History-Pol.Sci)</div>
+        <div class="ec-desc">स्वातंत्र्योत्तर भारत · लोकशाही · आंतरराष्ट्रीय संबंध</div>
+      </div>
+      <div class="exam-card ec-class9" onclick="startExam('MATHS9_MR')" style="grid-column:1/-1">
+        <div class="ec-badge">📐</div>
+        <div class="ec-name">गणित (Maths)</div>
+        <div class="ec-desc">चौकोन · वर्तुळ · भूमिती · मापन · बैजिक भूमिती</div>
+      </div>
+      <div class="exam-card ec-class9" onclick="startExam('SCIENCE9_MR')" style="grid-column:1/-1">
+        <div class="ec-badge">🔬</div>
+        <div class="ec-name">विज्ञान (Science)</div>
+        <div class="ec-desc">भौतिकशास्त्र · रसायनशास्त्र · जीवशास्त्र</div>
+      </div>
+    </div>
   </div>
 
   <!-- 10TH CLASS SUBJECT SCREEN -->
@@ -731,7 +773,7 @@ var currentIndex = 0;
 var score = 0;
 var answered = false;
 var markingScheme = {correct:1, wrong:0, label:'+1 | 0'};
-var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR'];
+var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR']; // last entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
 
 var MARKING = {
   UPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
@@ -747,6 +789,11 @@ var MARKING = {
   HISTORY10_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   SCIENCE10_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   MATHS10_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  GEO9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  HISTORY9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  MATHS9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  SCIENCE9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  ENGLISH9_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ACCOUNTS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   OCM_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   ECONOMICS_12:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
@@ -774,7 +821,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','class9-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -812,6 +859,11 @@ var EXAM_SCRIPT_MAP = {
   HISTORY10_MR: 'History10_Marathi.js',
   SCIENCE10_MR: 'science10_marathi.js',
   MATHS10_MR: 'ssc10_maths.js',
+  GEO9_MR: 'geography_9th.js',
+  HISTORY9_MR: 'history_9th.js',
+  MATHS9_MR: 'mathsgeometry_9th.js',
+  SCIENCE9_MR: 'science_9th.js',
+  ENGLISH9_MR: 'english_9th.js',
   ACCOUNTS_12: 'commerce12_accounts.js',
   OCM_12: 'commerce12_ocm.js',
   ECONOMICS_12: 'commerce12_economics.js',
@@ -870,6 +922,11 @@ function _runExam(exam) {
     else if(exam==='HISTORY10_MR') raw=(typeof SSC10_HISTORY_DATA!=='undefined')?SSC10_HISTORY_DATA:null;
     else if(exam==='SCIENCE10_MR') raw=(typeof SCIENCE10_MARATHI_DATA!=='undefined')?SCIENCE10_MARATHI_DATA:null;
     else if(exam==='MATHS10_MR') raw=(typeof SSC10_MATHS_DATA!=='undefined')?SSC10_MATHS_DATA:null;
+    else if(exam==='GEO9_MR') raw=(typeof GEOGRAPHY_9TH_DATA!=='undefined')?GEOGRAPHY_9TH_DATA:null;
+    else if(exam==='HISTORY9_MR') raw=(typeof HISTORY_9TH_DATA!=='undefined')?HISTORY_9TH_DATA:null;
+    else if(exam==='MATHS9_MR') raw=(typeof MATHS_9TH_DATA!=='undefined')?MATHS_9TH_DATA:null;
+    else if(exam==='SCIENCE9_MR') raw=(typeof CLASS9_SCIENCE_DATA!=='undefined')?CLASS9_SCIENCE_DATA:null;
+    else if(exam==='ENGLISH9_MR') raw=(typeof ENGLISH9_MCQ_DATA!=='undefined')?ENGLISH9_MCQ_DATA:null;
     else if(exam==='ACCOUNTS_12') raw=(typeof COMMERCE12_ACCOUNTS_DATA!=='undefined')?COMMERCE12_ACCOUNTS_DATA:null;
     else if(exam==='OCM_12') raw=(typeof COMMERCE12_OCM_DATA!=='undefined')?COMMERCE12_OCM_DATA:null;
     else if(exam==='ECONOMICS_12') raw=(typeof COMMERCE12_ECONOMICS_DATA!=='undefined')?COMMERCE12_ECONOMICS_DATA:null;
