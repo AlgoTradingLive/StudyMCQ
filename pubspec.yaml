@@ -48,5 +48,8 @@ flutter:
     - assets/mathsgeometry_9th.js
     - assets/english_9th.js
     - assets/marathi_9th.js
+    - assets/geography_8th.js
+    - assets/geometric_8th.js
+    - assets/history_8th.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
