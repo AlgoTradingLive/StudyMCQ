@@ -51,5 +51,7 @@ flutter:
     - assets/geography_8th.js
     - assets/geometric_8th.js
     - assets/history_8th.js
+    - assets/algebra_8th.js
+    - assets/science_8th.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
