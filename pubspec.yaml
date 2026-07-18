@@ -55,5 +55,8 @@ flutter:
     - assets/science_8th.js
     - assets/marathi_8th.js
     - assets/english_8th.js
+    - assets/maths_7th.js
+    - assets/history_7th.js
+    - assets/english_7th.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
