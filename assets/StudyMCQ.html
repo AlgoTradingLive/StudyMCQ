@@ -442,7 +442,7 @@ body{
       <div class="exam-card ec-class7" onclick="showScreen('class7-screen')">
         <div class="ec-badge">📙</div>
         <div class="ec-name">7th Class (SSC BOARD)</div>
-        <div class="ec-desc">English · इतिहास · गणित</div>
+        <div class="ec-desc">English · इतिहास · गणित · भूगोल · मराठी</div>
       </div>
       <div class="exam-card ec-class8" onclick="showScreen('class8-screen')">
         <div class="ec-badge">📗</div>
@@ -493,6 +493,16 @@ body{
         <div class="ec-badge">🧮</div>
         <div class="ec-name">गणित (Maths)</div>
         <div class="ec-desc">सांख्यिकी · सरासरी · वारंवारता वितरण</div>
+      </div>
+      <div class="exam-card ec-class7" onclick="startExam('GEOGRAPHY_7TH')" style="grid-column:1/-1">
+        <div class="ec-badge">🗺️</div>
+        <div class="ec-name">भूगोल (Geography)</div>
+        <div class="ec-desc">ऋतुनिर्मिती · नकाशा · समोच्च रेषा · भूरूपे</div>
+      </div>
+      <div class="exam-card ec-class7" onclick="startExam('MARATHI_7TH')" style="grid-column:1/-1">
+        <div class="ec-badge">📖</div>
+        <div class="ec-name">मराठी (Marathi)</div>
+        <div class="ec-desc">पाठ · कविता · गीते</div>
       </div>
     </div>
   </div>
@@ -866,7 +876,7 @@ var currentIndex = 0;
 var score = 0;
 var answered = false;
 var markingScheme = {correct:1, wrong:0, label:'+1 | 0'};
-var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
+var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
 
 var MARKING = {
   UPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
@@ -885,6 +895,8 @@ var MARKING = {
   ENGLISH_7TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   HISTORY_7TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   MATHS_7TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  GEOGRAPHY_7TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  MARATHI_7TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   GEO_8TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   GEOMETRY_8TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   HISTORY_8TH:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
@@ -966,6 +978,8 @@ var EXAM_SCRIPT_MAP = {
   ENGLISH_7TH: 'english_7th.js',
   HISTORY_7TH: 'history_7th.js',
   MATHS_7TH: 'maths_7th.js',
+  GEOGRAPHY_7TH: 'geography_7th.js',
+  MARATHI_7TH: 'marathi_7th.js',
   GEO_8TH: 'geography_8th.js',
   GEOMETRY_8TH: 'geometric_8th.js',
   HISTORY_8TH: 'history_8th.js',
@@ -1040,6 +1054,8 @@ function _runExam(exam) {
     else if(exam==='ENGLISH_7TH') raw=(typeof ENGLISH_7TH_DATA!=='undefined')?ENGLISH_7TH_DATA:null;
     else if(exam==='HISTORY_7TH') raw=(typeof HISTORY_7TH_DATA!=='undefined')?HISTORY_7TH_DATA:null;
     else if(exam==='MATHS_7TH') raw=(typeof MATHS_7TH_DATA!=='undefined')?MATHS_7TH_DATA:null;
+    else if(exam==='GEOGRAPHY_7TH') raw=(typeof GEOGRAPHY_7TH_DATA!=='undefined')?GEOGRAPHY_7TH_DATA:null;
+    else if(exam==='MARATHI_7TH') raw=(typeof MARATHI_7th_DATA!=='undefined')?MARATHI_7th_DATA:null;
     else if(exam==='GEO_8TH') raw=(typeof GEOGRAPHY_8th_DATA!=='undefined')?GEOGRAPHY_8th_DATA:null;
     else if(exam==='GEOMETRY_8TH') raw=(typeof GEOMETRY_8TH_DATA!=='undefined')?GEOMETRY_8TH_DATA:null;
     else if(exam==='HISTORY_8TH') raw=(typeof HISTORY_8TH_DATA!=='undefined')?HISTORY_8TH_DATA:null;
@@ -1092,7 +1108,7 @@ function _runExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', GEO10_MR: 'SSC भूगोल', HISTORY10_MR: 'SSC इतिहास', SCIENCE10_MR: 'SSC विज्ञान', MATHS10_MR: 'SSC गणित', ENGLISH_7TH: '7th English', HISTORY_7TH: '7th इतिहास', MATHS_7TH: '7th गणित', GEO_8TH: '8th भूगोल', GEOMETRY_8TH: '8th भूमिती', HISTORY_8TH: '8th इतिहास', ALGEBRA_8TH: '8th बीजगणित', SCIENCE_8TH: '8th विज्ञान', MARATHI_8TH: '8th मराठी', ENGLISH_8TH: '8th English', GEO9_MR: '9th भूगोल', HISTORY9_MR: '9th इतिहास-राज्यशास्त्र', MATHS9_MR: '9th गणित', SCIENCE9_MR: '9th विज्ञान', ENGLISH9_MR: '9th English', MARATHI9_MR: '9th मराठी', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', GEO10_MR: 'SSC भूगोल', HISTORY10_MR: 'SSC इतिहास', SCIENCE10_MR: 'SSC विज्ञान', MATHS10_MR: 'SSC गणित', ENGLISH_7TH: '7th English', HISTORY_7TH: '7th इतिहास', MATHS_7TH: '7th गणित', GEOGRAPHY_7TH: '7th भूगोल', MARATHI_7TH: '7th मराठी', GEO_8TH: '8th भूगोल', GEOMETRY_8TH: '8th भूमिती', HISTORY_8TH: '8th इतिहास', ALGEBRA_8TH: '8th बीजगणित', SCIENCE_8TH: '8th विज्ञान', MARATHI_8TH: '8th मराठी', ENGLISH_8TH: '8th English', GEO9_MR: '9th भूगोल', HISTORY9_MR: '9th इतिहास-राज्यशास्त्र', MATHS9_MR: '9th गणित', SCIENCE9_MR: '9th विज्ञान', ENGLISH9_MR: '9th English', MARATHI9_MR: '9th मराठी', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -1295,6 +1311,8 @@ var DAILY_SCHEDULE = [
   { exam: 'ENGLISH_7TH', label: '7th English',            startH: 6, startM: 0,  endH: 7, endM: 0,  color: '#6366f1' },
   { exam: 'HISTORY_7TH', label: '7th इतिहास (Marathi)',   startH: 7, startM: 0,  endH: 8, endM: 0,  color: '#6366f1' },
   { exam: 'MATHS_7TH',   label: '7th गणित (Marathi)',     startH: 8, startM: 0,  endH: 9, endM: 0,  color: '#6366f1' },
+  { exam: 'GEOGRAPHY_7TH', label: '7th भूगोल (Marathi)',  startH: 9, startM: 0,  endH: 10, endM: 0, color: '#6366f1' },
+  { exam: 'MARATHI_7TH',   label: '7th मराठी (Marathi)',  startH: 10, startM: 0, endH: 11, endM: 0, color: '#6366f1' },
 
   { exam: 'GEO_8TH',       label: '8th भूगोल (Marathi)',   startH: 6, startM: 0,  endH: 7, endM: 0,  color: '#10b981' },
   { exam: 'GEOMETRY_8TH',  label: '8th भूमिती (Marathi)',  startH: 7, startM: 0,  endH: 8, endM: 0,  color: '#10b981' },
@@ -1497,7 +1515,7 @@ var EXAM_CATEGORIES = [
   { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM'] },
   { label: 'Class 10 (CBSE BOARD)', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'] },
   { label: 'SSC 10th (SSC BOARD मराठी)', exams: ['SCIENCE10_MR','MATHS10_MR','HISTORY10_MR','GEO10_MR'] },
-  { label: '7th Class (SSC BOARD)', exams: ['ENGLISH_7TH','HISTORY_7TH','MATHS_7TH'] },
+  { label: '7th Class (SSC BOARD)', exams: ['ENGLISH_7TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH'] },
   { label: '8th Class (मराठी)', exams: ['GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','ENGLISH_8TH'] },
   { label: '9th Class (मराठी)', exams: ['ENGLISH9_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','MARATHI9_MR'] },
   { label: '12th - Science', exams: ['CHEMISTRY_12','PHYSICS_12','BIOLOGY_12','MATHS_12'] },
@@ -1733,6 +1751,8 @@ function _runDailyExam(slot) {
     else if(slot.exam==='ENGLISH_7TH') raw=(typeof ENGLISH_7TH_DATA!=='undefined')?ENGLISH_7TH_DATA:null;
     else if(slot.exam==='HISTORY_7TH') raw=(typeof HISTORY_7TH_DATA!=='undefined')?HISTORY_7TH_DATA:null;
     else if(slot.exam==='MATHS_7TH') raw=(typeof MATHS_7TH_DATA!=='undefined')?MATHS_7TH_DATA:null;
+    else if(slot.exam==='GEOGRAPHY_7TH') raw=(typeof GEOGRAPHY_7TH_DATA!=='undefined')?GEOGRAPHY_7TH_DATA:null;
+    else if(slot.exam==='MARATHI_7TH') raw=(typeof MARATHI_7th_DATA!=='undefined')?MARATHI_7th_DATA:null;
     else if(slot.exam==='GEO_8TH') raw=(typeof GEOGRAPHY_8th_DATA!=='undefined')?GEOGRAPHY_8th_DATA:null;
     else if(slot.exam==='GEOMETRY_8TH') raw=(typeof GEOMETRY_8TH_DATA!=='undefined')?GEOMETRY_8TH_DATA:null;
     else if(slot.exam==='HISTORY_8TH') raw=(typeof HISTORY_8TH_DATA!=='undefined')?HISTORY_8TH_DATA:null;
