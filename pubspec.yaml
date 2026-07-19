@@ -58,5 +58,7 @@ flutter:
     - assets/maths_7th.js
     - assets/history_7th.js
     - assets/english_7th.js
+    - assets/geography_7th.js
+    - assets/marathi_7th.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
