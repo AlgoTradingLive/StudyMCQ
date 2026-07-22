@@ -46,8 +46,11 @@ class _WebViewPageState extends State<WebViewPage> {
   InterstitialAd? _interstitialAd;
   bool _isInterstitialAdReady = false;
 
-  // Splash removal safety net
+  // Splash removal safety net (native splash — quick)
   bool _splashRemoved = false;
+
+  // Flutter-side loading overlay — stays until WebView content is actually ready
+  bool _isPageLoading = true;
 
   @override
   void initState() {
@@ -56,9 +59,9 @@ class _WebViewPageState extends State<WebViewPage> {
     _loadInterstitialAd();
     _initWebView();
 
-    // Safety net: जर onPageFinished काही कारणाने trigger झालं नाही,
-    // तरी ३ सेकंदांनंतर splash आपोआप हटेल.
-    Future.delayed(const Duration(seconds: 3), _removeSplash);
+    // Native splash हे लगेच हटवा (Flutter frame ready झाल्यावर) —
+    // कारण आता खालचा loading overlay तो gap भरून काढेल.
+    Future.delayed(const Duration(milliseconds: 300), _removeSplash);
   }
 
   void _removeSplash() {
@@ -70,12 +73,17 @@ class _WebViewPageState extends State<WebViewPage> {
 
   void _initWebView() {
     _controller = WebViewController()
+      ..setBackgroundColor(const Color(0xFFFFFFFF))
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) {
-            // StudyMCQ.html पूर्ण लोड झाल्यावर native splash हटवा.
             _removeSplash();
+            // थोडा extra वेळ द्या जेणेकरून पहिला paint/render पूर्ण होईल,
+            // मग overlay हटवा — यामुळे कोणताही flash/काळी स्क्रीन दिसणार नाही.
+            Future.delayed(const Duration(milliseconds: 400), () {
+              if (mounted) setState(() => _isPageLoading = false);
+            });
           },
         ),
       )
@@ -151,12 +159,36 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            // WebView - full space
+            // WebView - full space, with loading overlay on top
             Expanded(
-              child: WebViewWidget(controller: _controller),
+              child: Stack(
+                children: [
+                  WebViewWidget(controller: _controller),
+                  if (_isPageLoading)
+                    Container(
+                      color: Colors.white,
+                      alignment: Alignment.center,
+                      child: const Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 16),
+                          Text(
+                            'Loading...',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
             // Banner ad at bottom
             if (_isBannerAdReady && _bannerAd != null)
