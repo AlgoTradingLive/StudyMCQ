@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -6,6 +7,19 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Android 16 (API 36) पासून edge-to-edge जबरदस्तीने लागू होतो —
+  // हे explicitly सेट केल्याने layout/rendering वेळेत होतं आणि
+  // black-screen delay कमी होतो.
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 
   await MobileAds.instance.initialize();
   runApp(const MyApp());
