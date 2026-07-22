@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await MobileAds.instance.initialize();
   runApp(const MyApp());
 }
@@ -43,17 +46,39 @@ class _WebViewPageState extends State<WebViewPage> {
   InterstitialAd? _interstitialAd;
   bool _isInterstitialAdReady = false;
 
+  // Splash removal safety net
+  bool _splashRemoved = false;
+
   @override
   void initState() {
     super.initState();
     _loadBannerAd();
     _loadInterstitialAd();
     _initWebView();
+
+    // Safety net: जर onPageFinished काही कारणाने trigger झालं नाही,
+    // तरी ३ सेकंदांनंतर splash आपोआप हटेल.
+    Future.delayed(const Duration(seconds: 3), _removeSplash);
+  }
+
+  void _removeSplash() {
+    if (!_splashRemoved) {
+      _splashRemoved = true;
+      FlutterNativeSplash.remove();
+    }
   }
 
   void _initWebView() {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (String url) {
+            // StudyMCQ.html पूर्ण लोड झाल्यावर native splash हटवा.
+            _removeSplash();
+          },
+        ),
+      )
       ..addJavaScriptChannel(
         'AdMobBridge',
         onMessageReceived: (JavaScriptMessage message) {
