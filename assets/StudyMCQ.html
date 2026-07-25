@@ -102,6 +102,9 @@ body{
 .ec-railway .ec-badge{background:rgba(255,159,28,.16);color:#ff9f1c}
 .ec-railway:hover,.ec-railway:active{background:rgba(255,159,28,.1);border-color:#ff9f1c;box-shadow:0 8px 20px rgba(255,159,28,.2)}
 .ec-railway .ec-name{color:#ff9f1c}
+.ec-mpsc .ec-badge{background:rgba(34,197,94,.16);color:#22c55e}
+.ec-mpsc:hover,.ec-mpsc:active{background:rgba(34,197,94,.1);border-color:#22c55e;box-shadow:0 8px 20px rgba(34,197,94,.2)}
+.ec-mpsc .ec-name{color:#22c55e}
 
 .ec-class10 .ec-badge{background:rgba(255,105,180,.16);color:#ff69b4}
 .ec-class10:hover,.ec-class10:active{background:rgba(255,105,180,.1);border-color:#ff69b4;box-shadow:0 8px 20px rgba(255,105,180,.2)}
@@ -487,6 +490,11 @@ body{
         <div class="ec-badge">🚂</div>
         <div class="ec-name">RRB Railway</div>
         <div class="ec-desc">Reasoning · Maths · General Science · Current Affairs</div>
+      </div>
+      <div class="exam-card ec-mpsc" onclick="startExam('MPSC')">
+        <div class="ec-badge">🏢</div>
+        <div class="ec-name">MPSC परीक्षा</div>
+        <div class="ec-desc">इतिहास · राज्यशास्त्र · चालू घडामोडी</div>
       </div>
       <div class="exam-card ec-sscboard" onclick="showScreen('sscboard-hub-screen')">
         <div class="ec-badge">📚</div>
@@ -1022,10 +1030,11 @@ var currentIndex = 0;
 var score = 0;
 var answered = false;
 var markingScheme = {correct:1, wrong:0, label:'+1 | 0'};
-var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','MARATHI10_MR','ENGLISH10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH','SCIENCE_7TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
+var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','MARATHI10_MR','ENGLISH10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH','SCIENCE_7TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH','MPSC']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
 
 var MARKING = {
   UPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
+  MPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
   JEE:{correct:4, wrong:-1, label:'+4 | -1'},
   NEET:{correct:4, wrong:-1, label:'+4 | -1'},
   IBPS:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
@@ -1120,6 +1129,7 @@ var EXAM_SCRIPT_MAP = {
   NEET: 'neet_data.js',
   JEE: 'jee_data.js',
   UPSC: 'upsc_data.js',
+  MPSC: 'mpsc.js',
   IBPS: 'ibps_data.js',
   NISM: 'nism_data.js',
   RAILWAY: 'railwayrrb_data.js',
@@ -1204,6 +1214,7 @@ function _runExam(exam) {
     if(exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:(typeof neetData!=='undefined')?neetData:null;
     else if(exam==='JEE') raw=(typeof JEE_DATA!=='undefined')?JEE_DATA:(typeof jeeData!=='undefined')?jeeData:null;
     else if(exam==='UPSC') raw=(typeof UPSC_DATA!=='undefined')?UPSC_DATA:(typeof upscData!=='undefined')?upscData:null;
+    else if(exam==='MPSC') raw=(typeof MPSC_DATA!=='undefined')?MPSC_DATA:null;
     else if(exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
     else if(exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
     else if(exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
@@ -1482,6 +1493,7 @@ var DAILY_SCHEDULE = [
   { exam: 'RAILWAY', startH: 22, startM: 0,  endH: 23, endM: 0,  color: '#ff9f1c' },
 
   { exam: 'NISM', label: 'Stock Market (NISM)', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
+  { exam: 'MPSC', label: 'MPSC परीक्षा', startH: 6, startM: 0, endH: 7, endM: 0, color: '#22c55e' },
 
   { exam: 'MATHS_10',   label: 'Class 10 Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#ff69b4' },
   { exam: 'HISTORY_10', label: 'Class 10 History-Geography',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ff69b4' },
@@ -1705,7 +1717,7 @@ function applyDefaultStarIfNeeded() {
 }
 
 var EXAM_CATEGORIES = [
-  { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM'] },
+  { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM','MPSC'] },
   { label: 'Class 10 (CBSE BOARD)', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'], collapse: true },
   { label: 'SSC 10th (SSC BOARD मराठी)', exams: ['SCIENCE10_MR','MATHS10_MR','HISTORY10_MR','GEO10_MR','MARATHI10_MR','ENGLISH10_MR'], collapse: true },
   { label: '6th Class (SSC BOARD)', exams: ['ENGLISH_6TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH'], collapse: true },
@@ -2206,6 +2218,7 @@ function _runDailyExam(slot) {
     if(slot.exam==='JEE') raw=(typeof JEE_DATA!=='undefined')?JEE_DATA:null;
     else if(slot.exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:null;
     else if(slot.exam==='UPSC') raw=(typeof UPSC_DATA!=='undefined')?UPSC_DATA:null;
+    else if(slot.exam==='MPSC') raw=(typeof MPSC_DATA!=='undefined')?MPSC_DATA:null;
     else if(slot.exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
     else if(slot.exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
     else if(slot.exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
