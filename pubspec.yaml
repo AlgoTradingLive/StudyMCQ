@@ -1,7 +1,7 @@
 name: study_mcq
 description: Study MCQ App
 publish_to: 'none'
-version: 1.0.0+13
+version: 1.0.0+14
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -20,6 +20,7 @@ flutter:
   assets:
     - assets/StudyMCQ.html
     - assets/ibps_data.js
+    - assets/mpsc.js
     - assets/jee_data.js
     - assets/neet_data.js
     - assets/nism_data.js
