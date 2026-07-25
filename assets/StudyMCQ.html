@@ -304,6 +304,42 @@ body{
 .timer-bar-wrap{background:rgba(255,255,255,0.1);border-radius:10px;height:8px;margin:10px 0 15px 0;overflow:hidden;}
 .timer-bar{height:8px;border-radius:10px;background:linear-gradient(90deg,#00ff88,#ffea00);transition:width 1s linear;}
 .timer-text{text-align:right;font-size:12px;color:#38b6ff;margin-bottom:4px;}
+
+/* HISTORY SCREEN */
+.history-title{font-size:18px;font-weight:800;color:#f5f7fb;margin-bottom:4px}
+.history-sub{font-size:12px;color:var(--text-dim);margin-bottom:16px}
+.name-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px;margin-bottom:18px}
+.name-card-label{font-size:12px;color:var(--text-dim);margin-bottom:8px;font-weight:700}
+.name-card-row{display:flex;gap:8px}
+.name-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;padding:10px 12px;font-size:14px}
+.name-input::placeholder{color:#6a7189}
+.name-save-btn{background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple-2));border:none;color:#fff;font-weight:700;font-size:13px;border-radius:10px;padding:0 16px;cursor:pointer}
+
+.hist-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.hist-sum-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:12px 8px;text-align:center}
+.hist-sum-num{font-size:18px;font-weight:900;color:#38b6ff}
+.hist-sum-lbl{font-size:10px;color:var(--text-dim);margin-top:2px;letter-spacing:.3px}
+
+.hist-row{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.hist-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.hist-row-exam{font-size:14px;font-weight:800;color:#f5f7fb}
+.hist-row-date{font-size:11px;color:var(--text-dim);margin-top:2px}
+.hist-row-pct{font-size:16px;font-weight:900;flex-shrink:0}
+.hist-row-pct.good{color:#34d399}
+.hist-row-pct.mid{color:#ffcc33}
+.hist-row-pct.low{color:#f43f5e}
+.hist-row-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hist-row-marks{font-size:12px;color:#cbd5e1}
+.hist-cert-btn{background:linear-gradient(135deg,#d4af37,#f4d160);border:none;color:#1a1200;font-weight:800;font-size:12px;border-radius:10px;padding:7px 14px;cursor:pointer;white-space:nowrap}
+.hist-empty{text-align:center;padding:40px 20px;color:var(--text-dim);font-size:13px}
+.hist-empty-icon{font-size:40px;margin-bottom:10px}
+
+/* CERTIFICATE SCREEN */
+.cert-wrap{display:flex;justify-content:center;margin-bottom:18px}
+.cert-wrap img{width:100%;max-width:700px;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.6);display:block}
+.cert-btns{display:flex;gap:10px;margin-bottom:10px}
+.cert-btn-primary{flex:1;background:linear-gradient(135deg,#d4af37,#f4d160);border:none;color:#1a1200;font-weight:800;font-size:14px;border-radius:12px;padding:13px;cursor:pointer}
+.cert-btn-sec{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff;font-weight:700;font-size:14px;border-radius:12px;padding:13px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -320,6 +356,7 @@ body{
       </div>
     </div>
     <button class="btn-control" id="home-nav-btn" onclick="goToHome()" style="display:none">Home</button>
+    <button class="btn-control" id="history-nav-btn" onclick="openHistory()">📜 History</button>
     <div style="flex-grow:1"></div>
     <div class="lang-switch" id="lang-switch-box">
       <button class="lang-btn active" id="lang-en" onclick="setLanguage('en')">English</button>
@@ -383,6 +420,15 @@ body{
         <div class="msb-text">
           <div class="msb-title">Manage My Daily Exams</div>
           <div class="msb-sub">Add or remove daily exams to track</div>
+        </div>
+        <div class="msb-arrow">›</div>
+      </div>
+
+      <div class="manage-star-btn" onclick="openHistory()" style="margin-top:10px">
+        <div class="msb-icon">📜</div>
+        <div class="msb-text">
+          <div class="msb-title">My Exam History & Certificates</div>
+          <div class="msb-sub">View past scores and download certificates</div>
         </div>
         <div class="msb-arrow">›</div>
       </div>
@@ -929,6 +975,37 @@ body{
     </div>
   </div>
 
+  <!-- HISTORY SCREEN -->
+  <div id="history-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('home-screen')">← Back</button>
+    <div class="history-title">📜 My Exam History</div>
+    <div class="history-sub">Every exam you've given — score, marks, date & certificate</div>
+
+    <div class="name-card">
+      <div class="name-card-label">🎓 Your Name (printed on certificate)</div>
+      <div class="name-card-row">
+        <input class="name-input" id="cert-name-input" type="text" placeholder="Enter your full name" maxlength="60">
+        <button class="name-save-btn" onclick="saveCertName()">Save</button>
+      </div>
+    </div>
+
+    <div class="hist-summary" id="hist-summary"></div>
+
+    <div id="history-list-container"></div>
+  </div>
+
+  <!-- CERTIFICATE SCREEN -->
+  <div id="certificate-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('history-screen')">← Back</button>
+    <div class="cert-wrap">
+      <img id="cert-img" alt="Certificate">
+    </div>
+    <div class="cert-btns">
+      <button class="cert-btn-primary" onclick="downloadCertificate()">⬇️ Download</button>
+      <button class="cert-btn-sec" id="cert-share-btn" onclick="shareCertificate()" style="display:none">📤 Share</button>
+    </div>
+  </div>
+
 </div>
 </div>
 
@@ -1015,7 +1092,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','sscboard-hub-screen','class6-screen','class7-screen','class8-screen','class9-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','sscboard-hub-screen','class6-screen','class7-screen','class8-screen','class9-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen','history-screen','certificate-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -1024,7 +1101,8 @@ function showScreen(id) {
   var langBox = document.getElementById('lang-switch-box');
   if(langBox) {
     var isMarathiQuiz = (id==='quiz-screen' || id==='result-screen') && MARATHI_ONLY_EXAMS.indexOf(currentExam) !== -1;
-    langBox.style.display = isMarathiQuiz ? 'none' : 'flex';
+    var hideLangBox = isMarathiQuiz || id==='history-screen' || id==='certificate-screen';
+    langBox.style.display = hideLangBox ? 'none' : 'flex';
   }
   if(id === 'home-screen' && typeof renderStarredRows === 'function') renderStarredRows();
 }
@@ -1379,6 +1457,19 @@ function showResult() {
 
   document.getElementById('res-em').textContent = em;
   document.getElementById('res-title').textContent = title;
+
+  saveExamHistory({
+    exam: currentExam,
+    label: document.getElementById('stat-name').textContent || currentExam,
+    date: new Date().toISOString(),
+    score: score,
+    maxScore: maxScore,
+    pct: pct,
+    total: total,
+    correct: correct,
+    wrong: total - correct
+  });
+
   setTimeout(function(){ showScreen('result-screen'); }, 300);
 }
 
@@ -1770,6 +1861,274 @@ function trackExamCompletion() {
   var total = parseInt(_lsGet('examsCompletedTotal') || '0') + 1;
   _lsSet('examsCompletedTotal', total);
   maybeShowRatePopup(total);
+}
+
+// ── EXAM HISTORY & CERTIFICATES ──
+var HISTORY_KEY = 'examHistoryLog';
+var HISTORY_MAX = 300;
+var _certDataUrl = null;
+var _certFileName = 'certificate.png';
+
+function getExamHistory() {
+  try {
+    var raw = _lsGet(HISTORY_KEY);
+    var arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch(e) { return []; }
+}
+
+function saveExamHistory(record) {
+  try {
+    var arr = getExamHistory();
+    record.id = 'h' + Date.now() + Math.floor(Math.random()*1000);
+    arr.unshift(record);
+    if(arr.length > HISTORY_MAX) arr = arr.slice(0, HISTORY_MAX);
+    _lsSet(HISTORY_KEY, JSON.stringify(arr));
+  } catch(e) {}
+}
+
+function getCertName() { return _lsGet('studentName') || ''; }
+
+function saveCertName() {
+  var input = document.getElementById('cert-name-input');
+  var val = (input.value || '').trim();
+  if(!val) { toast('⚠️ Please enter your name'); input.focus(); return; }
+  _lsSet('studentName', val);
+  toast('✅ Name saved!');
+}
+
+function openHistory() {
+  var nameInput = document.getElementById('cert-name-input');
+  if(nameInput) nameInput.value = getCertName();
+  renderHistoryList();
+  showScreen('history-screen');
+}
+
+function formatHistDate(iso) {
+  try {
+    var d = new Date(iso);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var h = d.getHours(), m = d.getMinutes();
+    var period = h < 12 ? 'AM' : 'PM';
+    var hh = h % 12; if(hh === 0) hh = 12;
+    return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ', ' + hh + ':' + (m<10?'0'+m:m) + ' ' + period;
+  } catch(e) { return ''; }
+}
+
+function renderHistoryList() {
+  var hist = getExamHistory();
+  var container = document.getElementById('history-list-container');
+  var summaryBox = document.getElementById('hist-summary');
+  container.innerHTML = '';
+
+  if(hist.length === 0) {
+    summaryBox.style.display = 'none';
+    container.innerHTML = '<div class="hist-empty"><div class="hist-empty-icon">📭</div>No exams given yet.<br>Attempt an exam to see it here!</div>';
+    return;
+  }
+
+  summaryBox.style.display = 'grid';
+  var avgPct = Math.round(hist.reduce(function(s,r){ return s + (r.pct||0); }, 0) / hist.length);
+  var best = hist.reduce(function(m,r){ return (r.pct||0) > m ? r.pct : m; }, 0);
+  summaryBox.innerHTML =
+    '<div class="hist-sum-card"><div class="hist-sum-num">' + hist.length + '</div><div class="hist-sum-lbl">EXAMS GIVEN</div></div>' +
+    '<div class="hist-sum-card"><div class="hist-sum-num">' + avgPct + '%</div><div class="hist-sum-lbl">AVG SCORE</div></div>' +
+    '<div class="hist-sum-card"><div class="hist-sum-num">' + best + '%</div><div class="hist-sum-lbl">BEST SCORE</div></div>';
+
+  hist.forEach(function(r) {
+    var pctClass = r.pct >= 75 ? 'good' : (r.pct >= 40 ? 'mid' : 'low');
+    var row = document.createElement('div');
+    row.className = 'hist-row';
+    row.innerHTML =
+      '<div class="hist-row-top">' +
+        '<div><div class="hist-row-exam">' + r.label + '</div><div class="hist-row-date">🗓 ' + formatHistDate(r.date) + '</div></div>' +
+        '<div class="hist-row-pct ' + pctClass + '">' + r.pct + '%</div>' +
+      '</div>' +
+      '<div class="hist-row-bottom">' +
+        '<div class="hist-row-marks">Marks: ' + (r.score.toFixed ? r.score.toFixed(2).replace(/\.00$/,'') : r.score) + ' / ' + r.maxScore + ' &nbsp;·&nbsp; ' + r.correct + ' correct, ' + r.wrong + ' wrong</div>' +
+        '<button class="hist-cert-btn" onclick="viewCertificate(\'' + r.id + '\')">🎓 Certificate</button>' +
+      '</div>';
+    container.appendChild(row);
+  });
+}
+
+function viewCertificate(id) {
+  var hist = getExamHistory();
+  var record = null;
+  for(var i=0;i<hist.length;i++){ if(hist[i].id === id) { record = hist[i]; break; } }
+  if(!record) { toast('⚠️ Record not found'); return; }
+
+  var name = getCertName();
+  if(!name) {
+    toast('⚠️ Please enter & save your name first');
+    var input = document.getElementById('cert-name-input');
+    if(input) input.focus();
+    return;
+  }
+
+  var dataUrl = generateCertificateDataUrl(record, name);
+  _certDataUrl = dataUrl;
+  _certFileName = 'StudyMCQ_Certificate_' + record.exam + '_' + Date.now() + '.png';
+
+  document.getElementById('cert-img').src = dataUrl;
+  document.getElementById('cert-share-btn').style.display = (navigator.share ? 'block' : 'none');
+  showScreen('certificate-screen');
+}
+
+function generateCertificateDataUrl(record, name) {
+  var canvas = document.createElement('canvas');
+  var W = 1400, H = 990;
+  canvas.width = W; canvas.height = H;
+  var ctx = canvas.getContext('2d');
+
+  // Background
+  var bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0, '#fdf8ec');
+  bg.addColorStop(1, '#f6ecd6');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
+
+  // Outer gold border
+  ctx.strokeStyle = '#c9a24b';
+  ctx.lineWidth = 14;
+  ctx.strokeRect(28,28,W-56,H-56);
+  ctx.strokeStyle = '#8a6d2f';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(48,48,W-96,H-96);
+
+  // Corner flourishes
+  function corner(x,y,sx,sy){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(sx,sy);
+    ctx.strokeStyle = '#c9a24b';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(0,60); ctx.lineTo(0,10); ctx.quadraticCurveTo(0,0,10,0); ctx.lineTo(60,0);
+    ctx.stroke();
+    ctx.beginPath(); ctx.arc(24,24,6,0,Math.PI*2); ctx.fillStyle='#c9a24b'; ctx.fill();
+    ctx.restore();
+  }
+  corner(70,70,1,1);
+  corner(W-70,70,-1,1);
+  corner(70,H-70,1,-1);
+  corner(W-70,H-70,-1,-1);
+
+  // Seal / badge
+  var pct = record.pct;
+  var badgeColor = pct >= 75 ? '#1e7d4f' : (pct >= 40 ? '#a5720e' : '#8a2f2f');
+  ctx.beginPath();
+  ctx.arc(W/2, 150, 54, 0, Math.PI*2);
+  var sealGrad = ctx.createLinearGradient(W/2-54,96,W/2+54,204);
+  sealGrad.addColorStop(0,'#d4af37'); sealGrad.addColorStop(1,'#f4d160');
+  ctx.fillStyle = sealGrad;
+  ctx.fill();
+  ctx.strokeStyle = '#8a6d2f'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = '#3a2c0a';
+  ctx.font = '900 30px Georgia';
+  ctx.textAlign = 'center';
+  ctx.fillText('🏅', W/2, 162);
+
+  // Header
+  ctx.fillStyle = '#3a2c0a';
+  ctx.font = '900 30px Georgia';
+  ctx.textAlign = 'center';
+  ctx.fillText('StudyMCQ Portal', W/2, 250);
+
+  ctx.font = '900 46px Georgia';
+  ctx.fillStyle = '#1a1200';
+  ctx.fillText(pct >= 40 ? 'CERTIFICATE OF ACHIEVEMENT' : 'CERTIFICATE OF PARTICIPATION', W/2, 320);
+
+  ctx.font = 'italic 22px Georgia';
+  ctx.fillStyle = '#5a4a2a';
+  ctx.fillText('This certificate is proudly presented to', W/2, 390);
+
+  // Name
+  ctx.font = 'italic 900 58px Georgia';
+  ctx.fillStyle = '#152a52';
+  ctx.fillText(name, W/2, 465);
+  ctx.strokeStyle = '#c9a24b';
+  ctx.lineWidth = 2;
+  var nameWidth = ctx.measureText(name).width;
+  ctx.beginPath();
+  ctx.moveTo(W/2 - nameWidth/2 - 20, 485);
+  ctx.lineTo(W/2 + nameWidth/2 + 20, 485);
+  ctx.stroke();
+
+  // Description
+  ctx.font = '22px Georgia';
+  ctx.fillStyle = '#3a2c0a';
+  ctx.fillText('for successfully completing the', W/2, 535);
+
+  ctx.font = '900 30px Georgia';
+  ctx.fillStyle = '#152a52';
+  ctx.fillText(record.label, W/2, 575);
+
+  ctx.font = '22px Georgia';
+  ctx.fillStyle = '#3a2c0a';
+  var scoreTxt = 'with a score of ' + (record.score.toFixed ? record.score.toFixed(2).replace(/\.00$/,'') : record.score) + ' / ' + record.maxScore + '  (' + pct + '%)';
+  ctx.fillText(scoreTxt, W/2, 615);
+
+  // Divider
+  ctx.strokeStyle = '#c9a24b';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(W/2-260,650); ctx.lineTo(W/2+260,650);
+  ctx.stroke();
+
+  // Bottom row: Date | Cert ID | Signature
+  ctx.textAlign = 'left';
+  ctx.font = '700 16px Georgia';
+  ctx.fillStyle = '#3a2c0a';
+  ctx.fillText('Date', 140, 800);
+  ctx.font = '18px Georgia';
+  ctx.fillText(formatHistDate(record.date), 140, 826);
+  ctx.strokeStyle = '#8a6d2f'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(140,760); ctx.lineTo(360,760); ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.font = '700 16px Georgia';
+  ctx.fillText('Certificate ID', W/2, 800);
+  ctx.font = '18px Georgia';
+  ctx.fillText('SM-' + record.id.toUpperCase(), W/2, 826);
+  ctx.beginPath(); ctx.moveTo(W/2-140,760); ctx.lineTo(W/2+140,760); ctx.stroke();
+
+  ctx.textAlign = 'right';
+  ctx.font = 'italic 900 26px Georgia';
+  ctx.fillStyle = '#152a52';
+  ctx.fillText('StudyMCQ', W-140, 800);
+  ctx.font = '15px Georgia';
+  ctx.fillStyle = '#3a2c0a';
+  ctx.fillText('Authorized Portal', W-140, 826);
+  ctx.beginPath(); ctx.moveTo(W-360,760); ctx.lineTo(W-140,760); ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.font = '12px Georgia';
+  ctx.fillStyle = '#8a7a52';
+  ctx.fillText('Generated by StudyMCQ · Your Success, Our Mission', W/2, H-60);
+
+  return canvas.toDataURL('image/png');
+}
+
+function downloadCertificate() {
+  if(!_certDataUrl) { toast('⚠️ Certificate not ready'); return; }
+  var a = document.createElement('a');
+  a.href = _certDataUrl;
+  a.download = _certFileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('⬇️ Certificate downloaded!');
+}
+
+function shareCertificate() {
+  if(!_certDataUrl) { toast('⚠️ Certificate not ready'); return; }
+  if(!navigator.share) { downloadCertificate(); return; }
+  fetch(_certDataUrl).then(function(res){ return res.blob(); }).then(function(blob){
+    var file = new File([blob], _certFileName, {type:'image/png'});
+    if(navigator.canShare && !navigator.canShare({files:[file]})) { downloadCertificate(); return; }
+    navigator.share({ files: [file], title: 'My StudyMCQ Certificate', text: 'Check out my certificate from StudyMCQ!' }).catch(function(){});
+  }).catch(function(){ downloadCertificate(); });
 }
 
 function renderManageStarsList() {
