@@ -105,6 +105,15 @@ body{
 .ec-mpsc .ec-badge{background:rgba(34,197,94,.16);color:#22c55e}
 .ec-mpsc:hover,.ec-mpsc:active{background:rgba(34,197,94,.1);border-color:#22c55e;box-shadow:0 8px 20px rgba(34,197,94,.2)}
 .ec-mpsc .ec-name{color:#22c55e}
+.ec-maharashtra .ec-badge{background:rgba(255,107,53,.16);color:#ff6b35}
+.ec-maharashtra:hover,.ec-maharashtra:active{background:rgba(255,107,53,.1);border-color:#ff6b35;box-shadow:0 8px 20px rgba(255,107,53,.2)}
+.ec-maharashtra .ec-name{color:#ff6b35}
+.ec-talathi .ec-badge{background:rgba(56,182,255,.16);color:#38b6ff}
+.ec-talathi:hover,.ec-talathi:active{background:rgba(56,182,255,.1);border-color:#38b6ff;box-shadow:0 8px 20px rgba(56,182,255,.2)}
+.ec-talathi .ec-name{color:#38b6ff}
+.ec-police .ec-badge{background:rgba(244,63,94,.16);color:#f43f5e}
+.ec-police:hover,.ec-police:active{background:rgba(244,63,94,.1);border-color:#f43f5e;box-shadow:0 8px 20px rgba(244,63,94,.2)}
+.ec-police .ec-name{color:#f43f5e}
 
 .ec-class10 .ec-badge{background:rgba(255,105,180,.16);color:#ff69b4}
 .ec-class10:hover,.ec-class10:active{background:rgba(255,105,180,.1);border-color:#ff69b4;box-shadow:0 8px 20px rgba(255,105,180,.2)}
@@ -491,10 +500,10 @@ body{
         <div class="ec-name">RRB Railway</div>
         <div class="ec-desc">Reasoning · Maths · General Science · Current Affairs</div>
       </div>
-      <div class="exam-card ec-mpsc" onclick="startExam('MPSC')">
-        <div class="ec-badge">🏢</div>
-        <div class="ec-name">MPSC परीक्षा</div>
-        <div class="ec-desc">इतिहास · राज्यशास्त्र · चालू घडामोडी</div>
+      <div class="exam-card ec-maharashtra" onclick="showScreen('maharashtra-hub-screen')">
+        <div class="ec-badge">🏛️</div>
+        <div class="ec-name">महाराष्ट्र राज्य</div>
+        <div class="ec-desc">MPSC - तलाठी - पोलीस भरती</div>
       </div>
       <div class="exam-card ec-sscboard" onclick="showScreen('sscboard-hub-screen')">
         <div class="ec-badge">📚</div>
@@ -514,6 +523,29 @@ body{
     </div>
 
     <a class="privacy-link" onclick="showPrivacy()">Privacy Policy</a>
+  </div>
+
+  <!-- MAHARASHTRA STATE HUB SCREEN — MPSC / Talathi / Police Bharti -->
+  <div id="maharashtra-hub-screen" class="screen">
+    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <div class="portal-label">महाराष्ट्र राज्य - परीक्षा निवडा</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-mpsc" onclick="startExam('MPSC')">
+        <div class="ec-badge">🏢</div>
+        <div class="ec-name">MPSC परीक्षा</div>
+        <div class="ec-desc">इतिहास · राज्यशास्त्र · चालू घडामोडी</div>
+      </div>
+      <div class="exam-card ec-talathi" onclick="startExam('TALATHI')">
+        <div class="ec-badge">📋</div>
+        <div class="ec-name">तलाठी भरती</div>
+        <div class="ec-desc">मराठी व्याकरण · गणित · बुद्धिमत्ता चाचणी · चालू घडामोडी</div>
+      </div>
+      <div class="exam-card ec-police" onclick="startExam('POLICE_BHARTI')">
+        <div class="ec-badge">👮</div>
+        <div class="ec-name">पोलीस भरती</div>
+        <div class="ec-desc">महाराष्ट्राचा भूगोल · इतिहास · बुद्धिमत्ता चाचणी</div>
+      </div>
+    </div>
   </div>
 
   <!-- SSC BOARD (MARATHI) HUB SCREEN — groups 6th-10th classes -->
@@ -1030,11 +1062,13 @@ var currentIndex = 0;
 var score = 0;
 var answered = false;
 var markingScheme = {correct:1, wrong:0, label:'+1 | 0'};
-var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','MARATHI10_MR','ENGLISH10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH','SCIENCE_7TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH','MPSC']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
+var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','MARATHI10_MR','ENGLISH10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH','SCIENCE_7TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH','MPSC','TALATHI','POLICE_BHARTI']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
 
 var MARKING = {
   UPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
   MPSC:{correct:2, wrong:-0.66, label:'+2 | -0.66'},
+  TALATHI:{correct:1, wrong:0, label:'+1 | No negative'},
+  POLICE_BHARTI:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   JEE:{correct:4, wrong:-1, label:'+4 | -1'},
   NEET:{correct:4, wrong:-1, label:'+4 | -1'},
   IBPS:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
@@ -1100,7 +1134,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','sscboard-hub-screen','class6-screen','class7-screen','class8-screen','class9-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen','history-screen','certificate-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','sscboard-hub-screen','maharashtra-hub-screen','class6-screen','class7-screen','class8-screen','class9-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen','history-screen','certificate-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -1130,6 +1164,8 @@ var EXAM_SCRIPT_MAP = {
   JEE: 'jee_data.js',
   UPSC: 'upsc_data.js',
   MPSC: 'mpsc.js',
+  TALATHI: 'talathi_marathi.js',
+  POLICE_BHARTI: 'police_bharti.js',
   IBPS: 'ibps_data.js',
   NISM: 'nism_data.js',
   RAILWAY: 'railwayrrb_data.js',
@@ -1215,6 +1251,8 @@ function _runExam(exam) {
     else if(exam==='JEE') raw=(typeof JEE_DATA!=='undefined')?JEE_DATA:(typeof jeeData!=='undefined')?jeeData:null;
     else if(exam==='UPSC') raw=(typeof UPSC_DATA!=='undefined')?UPSC_DATA:(typeof upscData!=='undefined')?upscData:null;
     else if(exam==='MPSC') raw=(typeof MPSC_DATA!=='undefined')?MPSC_DATA:null;
+    else if(exam==='TALATHI') raw=(typeof talathiMCQ!=='undefined')?talathiMCQ.map(function(q){return {question:q.question, options:q.options, correct:q.answerIndex, subject:q.chapterTitle};}):null;
+    else if(exam==='POLICE_BHARTI') raw=(typeof POLICE_BHARTI_DATA!=='undefined')?POLICE_BHARTI_DATA:null;
     else if(exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
     else if(exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
     else if(exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
@@ -1494,6 +1532,8 @@ var DAILY_SCHEDULE = [
 
   { exam: 'NISM', label: 'Stock Market (NISM)', startH: 15, startM: 0,  endH: 16, endM: 0,  color: '#a855f7' },
   { exam: 'MPSC', label: 'MPSC परीक्षा', startH: 6, startM: 0, endH: 7, endM: 0, color: '#22c55e' },
+  { exam: 'TALATHI', label: 'तलाठी भरती', startH: 6, startM: 0, endH: 7, endM: 0, color: '#38b6ff' },
+  { exam: 'POLICE_BHARTI', label: 'पोलीस भरती', startH: 7, startM: 0, endH: 8, endM: 0, color: '#f43f5e' },
 
   { exam: 'MATHS_10',   label: 'Class 10 Maths',          startH: 19, startM: 0,  endH: 20, endM: 0,  color: '#ff69b4' },
   { exam: 'HISTORY_10', label: 'Class 10 History-Geography',  startH: 20, startM: 15, endH: 21, endM: 15, color: '#ff69b4' },
@@ -1717,7 +1757,7 @@ function applyDefaultStarIfNeeded() {
 }
 
 var EXAM_CATEGORIES = [
-  { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM','MPSC'] },
+  { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM','MPSC','TALATHI','POLICE_BHARTI'] },
   { label: 'Class 10 (CBSE BOARD)', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'], collapse: true },
   { label: 'SSC 10th (SSC BOARD मराठी)', exams: ['SCIENCE10_MR','MATHS10_MR','HISTORY10_MR','GEO10_MR','MARATHI10_MR','ENGLISH10_MR'], collapse: true },
   { label: '6th Class (SSC BOARD)', exams: ['ENGLISH_6TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH'], collapse: true },
@@ -2219,6 +2259,8 @@ function _runDailyExam(slot) {
     else if(slot.exam==='NEET') raw=(typeof NEET_DATA!=='undefined')?NEET_DATA:null;
     else if(slot.exam==='UPSC') raw=(typeof UPSC_DATA!=='undefined')?UPSC_DATA:null;
     else if(slot.exam==='MPSC') raw=(typeof MPSC_DATA!=='undefined')?MPSC_DATA:null;
+    else if(slot.exam==='TALATHI') raw=(typeof talathiMCQ!=='undefined')?talathiMCQ.map(function(q){return {question:q.question, options:q.options, correct:q.answerIndex, subject:q.chapterTitle};}):null;
+    else if(slot.exam==='POLICE_BHARTI') raw=(typeof POLICE_BHARTI_DATA!=='undefined')?POLICE_BHARTI_DATA:null;
     else if(slot.exam==='IBPS') raw=(typeof IBPS_DATA!=='undefined')?IBPS_DATA:null;
     else if(slot.exam==='RAILWAY') raw=(typeof RAILWAY_DATA!=='undefined')?RAILWAY_DATA:(typeof window.RAILWAY_DATA!=='undefined')?window.RAILWAY_DATA:null;
     else if(slot.exam==='NISM') raw=(typeof NISM_DATA!=='undefined')?NISM_DATA:null;
