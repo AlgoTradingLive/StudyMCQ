@@ -69,5 +69,7 @@ flutter:
     - assets/history_6th.js
     - assets/geography_6th.js
     - assets/science_6th.js
+    - assets/marathi_10th.js
+    - assets/english_10th.js
     - assets/StudyBanner.png
     - assets/StudyLogo.png
