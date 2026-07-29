@@ -510,10 +510,10 @@ body{
         <div class="ec-name">SSC BOARD (मराठी)</div>
         <div class="ec-desc">6th ते 10th इयत्ता · All Subjects</div>
       </div>
-      <div class="exam-card ec-class10" onclick="showScreen('class10-screen')">
+      <div class="exam-card ec-class10" onclick="showScreen('cbseboard-hub-screen')">
         <div class="ec-badge">🎓</div>
-        <div class="ec-name">10th Class (CBSE BOARD)</div>
-        <div class="ec-desc">Science · More Subjects Coming soon</div>
+        <div class="ec-name">CBSE बोर्ड</div>
+        <div class="ec-desc">6TH - 10TH</div>
       </div>
       <div class="exam-card ec-class12" onclick="showScreen('class12-screen')">
         <div class="ec-badge">🎓</div>
@@ -544,6 +544,24 @@ body{
         <div class="ec-badge">👮</div>
         <div class="ec-name">पोलीस भरती</div>
         <div class="ec-desc">महाराष्ट्राचा भूगोल · इतिहास · बुद्धिमत्ता चाचणी</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CBSE BOARD HUB SCREEN — groups 9th-10th classes -->
+  <div id="cbseboard-hub-screen" class="screen">
+    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <div class="portal-label">CBSE Board - इयत्ता निवडा</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-class10" onclick="showScreen('class9-cbse-screen')">
+        <div class="ec-badge">📕</div>
+        <div class="ec-name">9th Class</div>
+        <div class="ec-desc">Maths · Social Science</div>
+      </div>
+      <div class="exam-card ec-class10" onclick="showScreen('class10-screen')">
+        <div class="ec-badge">📘</div>
+        <div class="ec-name">10th Class</div>
+        <div class="ec-desc">Science · Maths · Social Science</div>
       </div>
     </div>
   </div>
@@ -733,9 +751,27 @@ body{
     </div>
   </div>
 
+  <!-- 9TH CLASS (CBSE BOARD) SUBJECT SCREEN -->
+  <div id="class9-cbse-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('cbseboard-hub-screen')">← Back</button>
+    <div class="portal-label">9th Class Subjects (CBSE BOARD)</div>
+    <div class="exam-grid">
+      <div class="exam-card ec-class10" onclick="startExam('MATHS_9_CBSE')" style="grid-column:1/-1">
+        <div class="ec-badge">📐</div>
+        <div class="ec-name">Maths</div>
+        <div class="ec-desc">Number Systems · Polynomials · Geometry · Statistics</div>
+      </div>
+      <div class="exam-card ec-class10" onclick="startExam('HISTORY_9_CBSE')" style="grid-column:1/-1">
+        <div class="ec-badge">🏛️</div>
+        <div class="ec-name">Social Science</div>
+        <div class="ec-desc">French Revolution · Russian Revolution · Nazism · Forestry · Pastoralists</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 10TH CLASS SUBJECT SCREEN -->
   <div id="class10-screen" class="screen">
-    <button class="back-btn" onclick="goToHome()">← Back</button>
+    <button class="back-btn" onclick="showScreen('cbseboard-hub-screen')">← Back</button>
     <div class="portal-label">10th Class Subjects (CBSE BOARD)</div>
     <div class="exam-grid">
       <div class="exam-card ec-class10" onclick="startExam('SCIENCE_10')" style="grid-column:1/-1">
@@ -1077,6 +1113,8 @@ var MARKING = {
   SCIENCE_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   MATHS_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   HISTORY_10:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  MATHS_9_CBSE:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
+  HISTORY_9_CBSE:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   GEO10_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   HISTORY10_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
   SCIENCE10_MR:{correct:1, wrong:-0.25, label:'+1 | -0.25'},
@@ -1134,7 +1172,7 @@ function setLanguage(lang) {
 
 // ── SCREENS ──
 function showScreen(id) {
-  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','sscboard-hub-screen','maharashtra-hub-screen','class6-screen','class7-screen','class8-screen','class9-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen','history-screen','certificate-screen'].forEach(function(s){
+  ['home-screen','privacy-screen','quiz-screen','result-screen','redeem-screen','sscboard-hub-screen','cbseboard-hub-screen','maharashtra-hub-screen','class6-screen','class7-screen','class8-screen','class9-screen','class9-cbse-screen','class10-screen','sscboard-screen','class12-screen','class12science-screen','class12commerce-screen','class12arts-screen','history-screen','certificate-screen'].forEach(function(s){
     document.getElementById(s).classList.remove('active');
   });
   document.getElementById(id).classList.add('active');
@@ -1172,6 +1210,8 @@ var EXAM_SCRIPT_MAP = {
   SCIENCE_10: 'science_data_10.js',
   MATHS_10: 'maths_data_10.js',
   HISTORY_10: 'history_data_10.js',
+  MATHS_9_CBSE: 'cbse9_maths.js',
+  HISTORY_9_CBSE: 'cbse9_history.js',
   GEO10_MR: 'geo10_marathi.js',
   HISTORY10_MR: 'History10_Marathi.js',
   SCIENCE10_MR: 'science10_marathi.js',
@@ -1259,6 +1299,8 @@ function _runExam(exam) {
     else if(exam==='SCIENCE_10') raw=(typeof SCIENCE_DATA_10!=='undefined')?SCIENCE_DATA_10:null;
     else if(exam==='MATHS_10') raw=(typeof MATHS_DATA_10_BATCH_1!=='undefined')?MATHS_DATA_10_BATCH_1:null;
     else if(exam==='HISTORY_10') raw=(typeof HISTORY_DATA_10_BATCH!=='undefined')?HISTORY_DATA_10_BATCH:null;
+    else if(exam==='MATHS_9_CBSE') raw=(typeof CBSE9_MATHS_DATA!=='undefined')?CBSE9_MATHS_DATA:null;
+    else if(exam==='HISTORY_9_CBSE') raw=(typeof CBSE9_HISTORY_DATA!=='undefined')?CBSE9_HISTORY_DATA:null;
     else if(exam==='GEO10_MR') raw=(typeof GEO10_DATA!=='undefined')?GEO10_DATA:null;
     else if(exam==='HISTORY10_MR') raw=(typeof SSC10_HISTORY_DATA!=='undefined')?SSC10_HISTORY_DATA:null;
     else if(exam==='SCIENCE10_MR') raw=(typeof SCIENCE10_MARATHI_DATA!=='undefined')?SCIENCE10_MARATHI_DATA:null;
@@ -1328,7 +1370,7 @@ function _runExam(exam) {
   currentExam = exam;
   markingScheme = MARKING[exam] || {correct:1, wrong:0, label:'+1 | 0'};
 
-  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', GEO10_MR: 'SSC भूगोल', HISTORY10_MR: 'SSC इतिहास', SCIENCE10_MR: 'SSC विज्ञान', MATHS10_MR: 'SSC गणित', MARATHI10_MR: 'SSC मराठी', ENGLISH10_MR: 'SSC English', ENGLISH_6TH: '6th English', HISTORY_6TH: '6th इतिहास', MATHS_6TH: '6th गणित', GEOGRAPHY_6TH: '6th भूगोल', SCIENCE_6TH: '6th विज्ञान', ENGLISH_7TH: '7th English', HISTORY_7TH: '7th इतिहास', MATHS_7TH: '7th गणित', GEOGRAPHY_7TH: '7th भूगोल', MARATHI_7TH: '7th मराठी', SCIENCE_7TH: '7th विज्ञान', GEO_8TH: '8th भूगोल', GEOMETRY_8TH: '8th भूमिती', HISTORY_8TH: '8th इतिहास', ALGEBRA_8TH: '8th बीजगणित', SCIENCE_8TH: '8th विज्ञान', MARATHI_8TH: '8th मराठी', ENGLISH_8TH: '8th English', GEO9_MR: '9th भूगोल', HISTORY9_MR: '9th इतिहास-राज्यशास्त्र', MATHS9_MR: '9th गणित', SCIENCE9_MR: '9th विज्ञान', ENGLISH9_MR: '9th English', MARATHI9_MR: '9th मराठी', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
+  var EXAM_DISPLAY_NAME = { SCIENCE_10: '10th Science', MATHS_10: '10th Maths', HISTORY_10: '10th Social Science', MATHS_9_CBSE: '9th Maths (CBSE)', HISTORY_9_CBSE: '9th Social Science (CBSE)', GEO10_MR: 'SSC भूगोल', HISTORY10_MR: 'SSC इतिहास', SCIENCE10_MR: 'SSC विज्ञान', MATHS10_MR: 'SSC गणित', MARATHI10_MR: 'SSC मराठी', ENGLISH10_MR: 'SSC English', ENGLISH_6TH: '6th English', HISTORY_6TH: '6th इतिहास', MATHS_6TH: '6th गणित', GEOGRAPHY_6TH: '6th भूगोल', SCIENCE_6TH: '6th विज्ञान', ENGLISH_7TH: '7th English', HISTORY_7TH: '7th इतिहास', MATHS_7TH: '7th गणित', GEOGRAPHY_7TH: '7th भूगोल', MARATHI_7TH: '7th मराठी', SCIENCE_7TH: '7th विज्ञान', GEO_8TH: '8th भूगोल', GEOMETRY_8TH: '8th भूमिती', HISTORY_8TH: '8th इतिहास', ALGEBRA_8TH: '8th बीजगणित', SCIENCE_8TH: '8th विज्ञान', MARATHI_8TH: '8th मराठी', ENGLISH_8TH: '8th English', GEO9_MR: '9th भूगोल', HISTORY9_MR: '9th इतिहास-राज्यशास्त्र', MATHS9_MR: '9th गणित', SCIENCE9_MR: '9th विज्ञान', ENGLISH9_MR: '9th English', MARATHI9_MR: '9th मराठी', ACCOUNTS_12: '12th Commerce - Accounts', OCM_12: '12th Commerce - OCM', ECONOMICS_12: '12th Commerce - Economics', PHYSICS_12: '12th Physics', CHEMISTRY_12: '12th Chemistry', BIOLOGY_12: '12th Biology', MATHS_12: '12th Maths', ARTS12_HISTORY: '12th Arts - History', ARTS12_POLSCI: '12th Arts - Political Science', ARTS12_ECONOMICS: '12th Arts - Economics', ARTS12_GEOGRAPHY: '12th Arts - Geography', ARTS12_PSYCHOLOGY: '12th Arts - Psychology', ARTS12_SOCIOLOGY: '12th Arts - Sociology' };
   document.getElementById('stat-name').textContent = EXAM_DISPLAY_NAME[exam] || exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
   document.getElementById('stat-score').textContent = '0';
@@ -1758,6 +1800,7 @@ function applyDefaultStarIfNeeded() {
 
 var EXAM_CATEGORIES = [
   { label: 'Competitive Exams', exams: ['JEE','NEET','UPSC','IBPS','RAILWAY','NISM','MPSC','TALATHI','POLICE_BHARTI'] },
+  { label: 'Class 9 (CBSE BOARD)', exams: ['MATHS_9_CBSE','HISTORY_9_CBSE'], collapse: true },
   { label: 'Class 10 (CBSE BOARD)', exams: ['MATHS_10','HISTORY_10','SCIENCE_10'], collapse: true },
   { label: 'SSC 10th (SSC BOARD मराठी)', exams: ['SCIENCE10_MR','MATHS10_MR','HISTORY10_MR','GEO10_MR','MARATHI10_MR','ENGLISH10_MR'], collapse: true },
   { label: '6th Class (SSC BOARD)', exams: ['ENGLISH_6TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH'], collapse: true },
