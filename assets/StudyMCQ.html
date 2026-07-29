@@ -512,8 +512,8 @@ body{
       </div>
       <div class="exam-card ec-class10" onclick="showScreen('cbseboard-hub-screen')">
         <div class="ec-badge">🎓</div>
-        <div class="ec-name">CBSE बोर्ड</div>
-        <div class="ec-desc">6TH - 10TH</div>
+        <div class="ec-name">CBSE BOARD</div>
+        <div class="ec-desc">6TH to 10th - All Subjects</div>
       </div>
       <div class="exam-card ec-class12" onclick="showScreen('class12-screen')">
         <div class="ec-badge">🎓</div>
@@ -2238,7 +2238,7 @@ function renderManageStarsList() {
 
     var labelSpan = document.createElement('span');
     labelSpan.className = 'manage-cat-label';
-    labelSpan.textContent = cat.label + (cat.collapse ? ' (' + cat.exams.length + ' विषय)' : '');
+    labelSpan.textContent = cat.label + (cat.collapse ? ' (' + cat.exams.length + ' Subjects)' : '');
 
     var starAllBtn = document.createElement('span');
     starAllBtn.className = 'manage-cat-star-all' + (allStarred ? ' all-active' : '');
