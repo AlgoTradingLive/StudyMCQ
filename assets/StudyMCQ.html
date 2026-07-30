@@ -1118,6 +1118,8 @@ function saveExamProgress() {
       markingScheme: markingScheme,
       examOrigin: examOrigin,
       statName: (document.getElementById('stat-name')||{}).textContent || currentExam,
+      isDaily: !!isDailyExam,
+      dailyExamData: isDailyExam ? dailyExamData : null,
       ts: Date.now()
     }));
   } catch(e){}
@@ -1145,6 +1147,8 @@ function resumeExamProgress(data) {
   currentExam = data.exam;
   markingScheme = data.markingScheme || MARKING[data.exam] || {correct:1, wrong:0, label:'+1 | 0'};
   examOrigin = data.examOrigin || 'home-screen';
+  isDailyExam = !!data.isDaily;
+  dailyExamData = data.isDaily ? (data.dailyExamData || dailyExamData) : null;
 
   document.getElementById('stat-name').textContent = data.statName || data.exam;
   document.getElementById('stat-marking').textContent = markingScheme.label;
@@ -2393,6 +2397,24 @@ function renderManageStarsList() {
 }
 
 function startDailyExam(slot) {
+  var saved = loadExamProgress();
+  if(saved && saved.isDaily && saved.exam === slot.exam) {
+    var answeredCount = saved.currentIndex;
+    var totalCount = saved.questions.length;
+    var wantsResume = window.confirm(
+      'ही Daily परीक्षा तुम्ही अर्धवट सोडली होती (' + answeredCount + '/' + totalCount + ' प्रश्न झाले).\n' +
+      'तिथूनच पुढे सुरू ठेवायचं का?\n\n' +
+      'OK = पुढे सुरू ठेवा   |   Cancel = नवीन सुरुवात'
+    );
+    if(wantsResume) {
+      isDailyExam = true;
+      dailyExamData = saved.dailyExamData || slot;
+      resumeExamProgress(saved);
+      return;
+    } else {
+      clearExamProgress();
+    }
+  }
   loadExamScript(slot.exam, function() { _runDailyExam(slot); });
 }
 
