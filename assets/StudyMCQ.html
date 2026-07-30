@@ -1103,6 +1103,58 @@ var currentIndex = 0;
 var score = 0;
 var answered = false;
 var markingScheme = {correct:1, wrong:0, label:'+1 | 0'};
+var EXAM_PROGRESS_KEY = 'examProgressV1';
+
+// ── SAVE / LOAD / CLEAR IN-PROGRESS EXAM (so an accidental Back or app reload
+// does not wipe out questions already answered) ──
+function saveExamProgress() {
+  if(!currentExam || !questions.length) return;
+  try {
+    _lsSet(EXAM_PROGRESS_KEY, JSON.stringify({
+      exam: currentExam,
+      questions: questions,
+      currentIndex: currentIndex,
+      score: score,
+      markingScheme: markingScheme,
+      examOrigin: examOrigin,
+      statName: (document.getElementById('stat-name')||{}).textContent || currentExam,
+      ts: Date.now()
+    }));
+  } catch(e){}
+}
+
+function loadExamProgress() {
+  try {
+    var raw = _lsGet(EXAM_PROGRESS_KEY);
+    if(!raw) return null;
+    var data = JSON.parse(raw);
+    if(!data || !data.exam || !Array.isArray(data.questions) || !data.questions.length) return null;
+    if(typeof data.currentIndex !== 'number' || data.currentIndex >= data.questions.length) return null;
+    return data;
+  } catch(e){ return null; }
+}
+
+function clearExamProgress() {
+  try { _lsSet(EXAM_PROGRESS_KEY, ''); } catch(e){}
+}
+
+function resumeExamProgress(data) {
+  questions = data.questions;
+  currentIndex = data.currentIndex;
+  score = data.score;
+  currentExam = data.exam;
+  markingScheme = data.markingScheme || MARKING[data.exam] || {correct:1, wrong:0, label:'+1 | 0'};
+  examOrigin = data.examOrigin || 'home-screen';
+
+  document.getElementById('stat-name').textContent = data.statName || data.exam;
+  document.getElementById('stat-marking').textContent = markingScheme.label;
+  document.getElementById('stat-score').textContent = score.toFixed(2).replace(/\.00$/,'');
+
+  showScreen('quiz-screen');
+  renderQuestion();
+  toast('▶️ पुढे सुरू ठेवत आहे — Q' + (currentIndex+1));
+}
+
 var MARATHI_ONLY_EXAMS = ['GEO10_MR','HISTORY10_MR','SCIENCE10_MR','MATHS10_MR','MARATHI10_MR','ENGLISH10_MR','GEO9_MR','HISTORY9_MR','MATHS9_MR','SCIENCE9_MR','ENGLISH9_MR','GEO_8TH','GEOMETRY_8TH','HISTORY_8TH','ALGEBRA_8TH','SCIENCE_8TH','MARATHI_8TH','HISTORY_7TH','MATHS_7TH','GEOGRAPHY_7TH','MARATHI_7TH','SCIENCE_7TH','HISTORY_6TH','MATHS_6TH','GEOGRAPHY_6TH','SCIENCE_6TH','MPSC','TALATHI','POLICE_BHARTI']; // last 9th entry (English) has no translation, kept here only to hide the pointless EN/HI toggle
 
 var MARKING = {
@@ -1284,6 +1336,26 @@ function loadExamScript(exam, onReady) {
 }
 
 function startExam(exam) {
+  var saved = loadExamProgress();
+  if(saved && saved.exam === exam) {
+    var answeredCount = saved.currentIndex;
+    var totalCount = saved.questions.length;
+    var wantsResume = window.confirm(
+      'तुम्ही ही परीक्षा अर्धवट सोडली होती (' + answeredCount + '/' + totalCount + ' प्रश्न झाले).\n' +
+      'तिथूनच पुढे सुरू ठेवायचं का?\n\n' +
+      'OK = पुढे सुरू ठेवा   |   Cancel = नवीन सुरुवात'
+    );
+    if(wantsResume) {
+      resumeExamProgress(saved);
+      return;
+    } else {
+      clearExamProgress();
+    }
+  }
+  _startExam(exam);
+}
+
+function _startExam(exam) {
   var _activeEl = document.querySelector('.screen.active');
   if(_activeEl && _activeEl.id !== 'quiz-screen' && _activeEl.id !== 'result-screen') {
     examOrigin = _activeEl.id;
@@ -1407,6 +1479,7 @@ function renderQuestion() {
   }, 1000);
 
   answered = false;
+  saveExamProgress();
   var q = questions[currentIndex];
   var total = questions.length;
 
@@ -1510,6 +1583,7 @@ function checkAnswer(selected, correctIdx) {
   }
 
   document.getElementById('next-q-btn').style.display = 'block';
+  saveExamProgress();
 }
 
 // ── NEXT QUESTION ──
@@ -1525,6 +1599,7 @@ function loadNextQuestion() {
 
 // ── RESULT ──
 function showResult() {
+  clearExamProgress();
   var total = questions.length;
   var maxScore = total * markingScheme.correct;
   var pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
@@ -2477,10 +2552,82 @@ showResult = function() {
   isDailyExam = false;
 };
 
+// ── BACK BUTTON HANDLING ──
+// Plain WebViews have no history stack by default, so Android's hardware Back
+// button just kills the Activity instantly (no confirmation, no in-app nav).
+// We fake a history stack with pushState + popstate so Back is intercepted
+// by this page instead of exiting the app straight away.
+var _backGuardActive = true;
+
+function _pushBackGuard() {
+  try { history.pushState({ appGuard: true, t: Date.now() }, '', location.href); } catch(e){}
+}
+_pushBackGuard(); // seed one extra history entry so the first Back is caught
+
+window.addEventListener('popstate', function () {
+  if (!_backGuardActive) return; // we deliberately let this one through (real exit)
+  handleBackPress();
+});
+
+function handleBackPress() {
+  var activeScreen = document.querySelector('.screen.active');
+  var id = activeScreen ? activeScreen.id : 'home-screen';
+
+  if (id === 'quiz-screen') {
+    _pushBackGuard();
+    if (window.confirm('परीक्षा अर्धवट सोडायची का?\nतुमची प्रगती सेव्ह राहील, नंतर पुढे सुरू करता येईल.')) {
+      exitQuiz();
+    }
+    return;
+  }
+
+  if (id !== 'home-screen') {
+    // Any other inner screen: normal in-app back nav, no need to nag the user.
+    _pushBackGuard();
+    goToHome();
+    return;
+  }
+
+  // Already on home screen — this Back press means "leave the app".
+  if (window.confirm('App मधून बाहेर पडायचं आहे का?')) {
+    _backGuardActive = false; // let the following native back actually exit
+    try {
+      if (window.ExitAppBridge && window.ExitAppBridge.postMessage) {
+        window.ExitAppBridge.postMessage('exit'); // optional native hook, see note below
+      }
+    } catch(e){}
+    // Consume our guard entry so the next physical Back (or WebView's own
+    // canGoBack() check) hits real "no history left" and the wrapper exits.
+    history.back();
+  } else {
+    _pushBackGuard();
+  }
+}
+
 // Init
 applyDefaultStarIfNeeded();
 updateCoinsDisplay();
 renderStarredRows();
+
+// If the app/WebView got reloaded (e.g. accidental hardware Back) while an
+// exam was mid-way, offer to continue right where it was left off.
+(function offerResumeOnLoad(){
+  var saved = loadExamProgress();
+  if(!saved) return;
+  setTimeout(function(){
+    var wantsResume = window.confirm(
+      '"' + (saved.statName||saved.exam) + '" परीक्षा अर्धवट राहिली होती (' +
+      saved.currentIndex + '/' + saved.questions.length + ' प्रश्न झाले).\n' +
+      'तिथूनच पुढे सुरू ठेवायचं का?\n\n' +
+      'OK = पुढे सुरू ठेवा   |   Cancel = रद्द करा (प्रगती डिलीट होईल)'
+    );
+    if(wantsResume) {
+      resumeExamProgress(saved);
+    } else {
+      clearExamProgress();
+    }
+  }, 300);
+})();
 // Refresh every minute
 setInterval(renderStarredRows, 60000);
 
