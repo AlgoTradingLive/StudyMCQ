@@ -574,27 +574,27 @@ body{
       <div class="exam-card ec-class6" onclick="showScreen('class6-screen')">
         <div class="ec-badge">📒</div>
         <div class="ec-name">6th Class</div>
-        <div class="ec-desc">English · इतिहास · गणित · भूगोल · विज्ञान</div>
+        <div class="ec-desc">भूगोल · भूमिती · इतिहास · बीजगणित · विज्ञान · मराठी · इंग्रजी</div>
       </div>
       <div class="exam-card ec-class7" onclick="showScreen('class7-screen')">
         <div class="ec-badge">📙</div>
         <div class="ec-name">7th Class</div>
-        <div class="ec-desc">English · इतिहास · गणित · भूगोल · मराठी</div>
+        <div class="ec-desc">भूगोल · भूमिती · इतिहास · बीजगणित · विज्ञान · मराठी · इंग्रजी</div>
       </div>
       <div class="exam-card ec-class8" onclick="showScreen('class8-screen')">
         <div class="ec-badge">📗</div>
         <div class="ec-name">8th Class</div>
-        <div class="ec-desc">भूगोल · भूमिती · इतिहास · बीजगणित · विज्ञान · मराठी · English</div>
+        <div class="ec-desc">भूगोल · भूमिती · इतिहास · बीजगणित · विज्ञान · मराठी · इंग्रजी</div>
       </div>
       <div class="exam-card ec-class9" onclick="showScreen('class9-screen')">
         <div class="ec-badge">📕</div>
         <div class="ec-name">9th Class</div>
-        <div class="ec-desc">इंग्रजी · भूगोल · इतिहास · गणित · विज्ञान</div>
+        <div class="ec-desc">भूगोल · भूमिती · इतिहास · बीजगणित · विज्ञान · मराठी · इंग्रजी</div>
       </div>
       <div class="exam-card ec-sscboard" onclick="showScreen('sscboard-screen')">
         <div class="ec-badge">📘</div>
         <div class="ec-name">10th Class</div>
-        <div class="ec-desc">भूगोल · इतिहास · विज्ञान · गणित (मराठी)</div>
+        <div class="ec-desc">भूगोल · भूमिती · इतिहास · बीजगणित · विज्ञान · मराठी · इंग्रजी</div>
       </div>
     </div>
   </div>
@@ -1862,7 +1862,7 @@ function buildStarCard(slot, status) {
     '<div class="sc-status ' + statusClass + '">' + statusLabel + '</div>' +
     '<div class="sc-subject" style="color:' + slot.color + '">' + (slot.label || slot.exam) + '</div>' +
     '<div class="sc-time">🔁 ' + formatAmPm(amH, amM) + ' & ' + formatAmPm(pmH, pmM) + '</div>' +
-    '<div class="sc-coins">📝 ' + DAILY_QUESTIONS + ' Qs</div>';
+    '<div class="sc-coins">📝 ' + DAILY_QUESTIONS + ' Qs · 1-hour</div>';
 
   if(status === 'live') {
     card.onclick = function() { startDailyExam(slot); };
@@ -2218,13 +2218,32 @@ function generateCertificateDataUrl(record, name) {
 
 function downloadCertificate() {
   if(!_certDataUrl) { toast('⚠️ Certificate not ready'); return; }
+
+  // Inside an Android WebView, an <a download> click on a data: URL does NOT
+  // trigger the system Download Manager or save to Gallery — WebView silently
+  // ignores it. We must hand the base64 PNG to native code via a JS bridge,
+  // which decodes it and saves it into MediaStore (Pictures/Downloads).
+  if (window.CertBridge && window.CertBridge.postMessage) {
+    try {
+      var base64 = _certDataUrl.split(',')[1]; // strip "data:image/png;base64,"
+      window.CertBridge.postMessage(JSON.stringify({ filename: _certFileName, base64: base64 }));
+      toast('⬇️ Sent to app for saving...'); // DEBUG: confirms JS→native call fired
+      return;
+    } catch (e) {
+      toast('⚠️ Bridge call failed: ' + e.message); // DEBUG: JS-side error
+      return;
+    }
+  } else {
+    toast('⚠️ CertBridge not found in WebView'); // DEBUG: channel not registered / name mismatch
+  }
+
+  // Fallback for normal desktop/mobile browser testing (outside the app WebView)
   var a = document.createElement('a');
   a.href = _certDataUrl;
   a.download = _certFileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  toast('⬇️ Certificate downloaded!');
 }
 
 function shareCertificate() {
