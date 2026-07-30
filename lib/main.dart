@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:gal/gal.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -99,7 +104,32 @@ class _WebViewPageState extends State<WebViewPage> {
           }
         },
       )
+      ..addJavaScriptChannel(
+        'CertBridge',
+        onMessageReceived: (JavaScriptMessage message) async {
+          await _saveCertificateToGallery(message.message);
+        },
+      )
       ..loadFlutterAsset('assets/StudyMCQ.html');
+  }
+
+  // JS कडून पाठवलेला base64 PNG डेटा decode करून गॅलरीत सेव्ह करतो.
+  Future<void> _saveCertificateToGallery(String rawMessage) async {
+    try {
+      final Map<String, dynamic> data = jsonDecode(rawMessage);
+      final String base64Str = data['base64'] as String;
+      final String filename = data['filename'] as String;
+      final bytes = base64Decode(base64Str);
+
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$filename');
+      await file.writeAsBytes(bytes);
+
+      await Gal.putImage(file.path, album: 'StudyMCQ Certificates');
+      debugPrint('Certificate saved to gallery: $filename');
+    } catch (e) {
+      debugPrint('Certificate save FAILED: $e');
+    }
   }
 
   void _loadBannerAd() {
